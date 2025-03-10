@@ -148,7 +148,7 @@ namespace FootScout_Vue.WebAPI
                 options.AddPolicy("AllowReactDevClient",
                     b =>
                     {
-                        b.WithOrigins("http://localhost:3000")
+                        b.WithOrigins("http://localhost:5173")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .SetIsOriginAllowed(origin => true)
