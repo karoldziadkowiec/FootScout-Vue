@@ -201,19 +201,19 @@ const handleDeleteProfile = async () => {
           <div class="modal-body">
             <form @submit.prevent="handleEditProfile">
               <div class="mb-3">
-                <label class="form-label">First Name</label>
+                <label class="form-label">First Name*</label>
                 <input v-model="updateFormData.firstName" placeholder="First Name" required maxlength="20" class="form-control">
               </div>
               <div class="mb-3">
-                <label class="form-label">Last Name</label>
+                <label class="form-label">Last Name*</label>
                 <input v-model="updateFormData.lastName" placeholder="Last Name" required maxlength="30"  class="form-control">
               </div>
               <div class="mb-3">
-                <label class="form-label">Phone Number</label>
+                <label class="form-label">Phone Number*</label>
                 <input v-model="updateFormData.phoneNumber" placeholder="Phone Number" required maxlength="9"  class="form-control">
               </div>
               <div class="mb-3">
-                <label class="form-label">Location</label>
+                <label class="form-label">Location*</label>
                 <input v-model="updateFormData.location" placeholder="Location" required maxlength="40"  class="form-control">
               </div>
               <div class="modal-footer">
@@ -235,9 +235,9 @@ const handleDeleteProfile = async () => {
             <button type="button" class="btn-close" @click="closeModal('resetPasswordModal')"></button>
           </div>
           <div class="modal-body">
-            <p>Enter new password:</p>
+            <p>Enter new password*:</p>
             <input v-model="resetPasswordFormData.passwordHash" type="password"  placeholder="New password" required minlength="7" maxlength="30"  class="form-control">
-            <p class="mt-2">Confirm new password:</p>
+            <p class="mt-2">Confirm new password*:</p>
             <input v-model="resetPasswordFormData.confirmPasswordHash" type="password"  placeholder="Confirm new password" required minlength="7" maxlength="30"  class="form-control">
           </div>
           <div class="modal-footer">
