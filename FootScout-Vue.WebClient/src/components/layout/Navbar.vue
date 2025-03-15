@@ -41,39 +41,15 @@ const logout = async () => {
               <i class="bi bi-house-fill"></i> Home
             </router-link>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+          <li class="nav-item">
+            <router-link to="/player-advertisements" class="nav-link">
               <i class="bi bi-list-nested"></i> Advertisements
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <router-link to="/player-advertisements" class="dropdown-item">
-                  <i class="bi bi-person-bounding-box"></i> Player's
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/club-advertisements" class="dropdown-item">
-                  <i class="bi bi-shield-fill"></i> Club's
-                </router-link>
-              </li>
-            </ul>
+            </router-link>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+          <li class="nav-item">
+            <router-link to="/new-player-advertisement" class="nav-link">
               <i class="bi bi-file-earmark-plus"></i> New Advertisement
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <router-link to="/new-player-advertisement" class="dropdown-item">
-                  <i class="bi bi-person-bounding-box"></i> as Player
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/new-club-advertisement" class="dropdown-item">
-                  <i class="bi bi-shield-fill"></i> as Club
-                </router-link>
-              </li>
-            </ul>
+            </router-link>
           </li>
         </ul>
 
@@ -118,22 +94,12 @@ const logout = async () => {
               </li>
               <li>
                 <router-link to="/my-player-advertisements" class="dropdown-item">
-                  <i class="bi bi-person-bounding-box"></i> Player Ads
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/my-club-advertisements" class="dropdown-item">
-                  <i class="bi bi-shield-fill"></i> Club Ads
+                  <i class="bi bi-person-bounding-box"></i> My Ads
                 </router-link>
               </li>
               <li>
                 <router-link to="/my-favorite-player-advertisements" class="dropdown-item">
-                  <i class="bi bi-chat-square-heart"></i> Favorite Player Ads
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/my-favorite-club-advertisements" class="dropdown-item">
-                  <i class="bi bi-chat-square-heart-fill"></i> Favorite Club Ads
+                  <i class="bi bi-chat-square-heart"></i> Favorite Ads
                 </router-link>
               </li>
               <li>

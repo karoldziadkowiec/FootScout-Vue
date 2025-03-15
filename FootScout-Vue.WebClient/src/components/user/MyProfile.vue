@@ -182,12 +182,12 @@ const handleDeleteProfile = async () => {
     </div>
 
     <div class="data-container" v-if="user">
-      <p class="white-label"><strong>Email:</strong> {{ user.email }}</p>
-      <p class="white-label"><strong>First Name:</strong> {{ user.firstName }}</p>
-      <p class="white-label"><strong>Last Name:</strong> {{ user.lastName }}</p>
-      <p class="white-label"><strong>Phone Number:</strong> {{ user.phoneNumber }}</p>
-      <p class="white-label"><strong>Location:</strong> {{ user.location }}</p>
-      <p class="white-label"><strong>Creation Date:</strong> {{ TimeService.formatDateToEURWithHour(user.creationDate) }}</p>
+      <p class="white-label"><strong>Email:</strong> <span class="green-label">{{ user.email }}</span></p>
+      <p class="white-label"><strong>First Name:</strong> <span class="green-label">{{ user.firstName }}</span></p>
+      <p class="white-label"><strong>Last Name:</strong> <span class="green-label">{{ user.lastName }}</span></p>
+      <p class="white-label"><strong>Phone Number:</strong> <span class="green-label">{{ user.phoneNumber }}</span></p>
+      <p class="white-label"><strong>Location:</strong> <span class="green-label">{{ user.location }}</span></p>
+      <p class="white-label"><strong>Creation Date:</strong> <span class="green-label">{{ TimeService.formatDateToEURWithHour(user.creationDate) }}</span></p>
     </div>
 
     <!-- Modal Edycji -->

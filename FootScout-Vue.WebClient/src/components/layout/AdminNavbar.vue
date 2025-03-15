@@ -54,59 +54,15 @@ const isActive = (path: string) => route.path.startsWith(path);
               <i class="bi bi-chat-text-fill"></i> Chats
             </router-link>
           </li>
-
-          <!-- Dropdown Advertisements -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+          <li class="nav-item">
+            <router-link to="/admin/player-advertisements" class="nav-link" :class="{ active: isActive('/admin/player-advertisements') }">
               <i class="bi bi-list-nested"></i> Advertisements
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <router-link
-                  to="/admin/player-advertisements"
-                  class="dropdown-item"
-                  :class="{ active: isActive('/admin/player-advertisements') }"
-                >
-                  <i class="bi bi-person-bounding-box"></i> Player's
-                </router-link>
-              </li>
-              <li>
-                <router-link
-                  to="/admin/club-advertisements"
-                  class="dropdown-item"
-                  :class="{ active: isActive('/admin/club-advertisements') }"
-                >
-                  <i class="bi bi-shield-fill"></i> Club's
-                </router-link>
-              </li>
-            </ul>
+            </router-link>
           </li>
-
-          <!-- Dropdown Offers -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+          <li class="nav-item">
+            <router-link to="/admin/club-offers" class="nav-link" :class="{ active: isActive('/admin/club-offers') }">
               <i class="bi bi-briefcase-fill"></i> Offers
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <router-link
-                  to="/admin/player-offers"
-                  class="dropdown-item"
-                  :class="{ active: isActive('/admin/player-offers') }"
-                >
-                  <i class="bi bi-person-bounding-box"></i> Player's
-                </router-link>
-              </li>
-              <li>
-                <router-link
-                  to="/admin/club-offers"
-                  class="dropdown-item"
-                  :class="{ active: isActive('/admin/club-offers') }"
-                >
-                  <i class="bi bi-shield-fill"></i> Club's
-                </router-link>
-              </li>
-            </ul>
+            </router-link>
           </li>
 
           <!-- Dropdown Reports & Stats -->
@@ -140,24 +96,6 @@ const isActive = (path: string) => route.path.startsWith(path);
                   :class="{ active: isActive('/admin/reports/player-advertisements') }"
                 >
                   <i class="bi bi-person-bounding-box"></i> Player Advertisements
-                </router-link>
-              </li>
-              <li>
-                <router-link
-                  to="/admin/reports/club-advertisements"
-                  class="dropdown-item"
-                  :class="{ active: isActive('/admin/reports/club-advertisements') }"
-                >
-                  <i class="bi bi-shield-fill"></i> Club Advertisements
-                </router-link>
-              </li>
-              <li>
-                <router-link
-                  to="/admin/raports/player-offers"
-                  class="dropdown-item"
-                  :class="{ active: isActive('/admin/raports/player-offers') }"
-                >
-                  <i class="bi bi-briefcase"></i> Player Offers
                 </router-link>
               </li>
               <li>

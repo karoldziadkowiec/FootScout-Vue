@@ -7,8 +7,6 @@ import UserService from '../../services/api/UserService';
 import ChatService from '../../services/api/ChatService';
 import ProblemService from '../../services/api/ProblemService';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
-import ClubAdvertisementService from '../../services/api/ClubAdvertisementService';
-import PlayerOfferService from '../../services/api/PlayerOfferService';
 import ClubOfferService from '../../services/api/ClubOfferService';
 import '../../styles/admin/AdminDashboard.css';
 
@@ -20,8 +18,6 @@ const userCount = ref<number>(0);
 const chatCount = ref<number>(0);
 const unsolvedReportedProblemCount = ref<number>(0);
 const playerAdvertisementCount = ref<number>(0);
-const clubAdvertisementCount = ref<number>(0);
-const playerOfferCount = ref<number>(0);
 const clubOfferCount = ref<number>(0);
 
 const fetchCountData = async () => {
@@ -30,8 +26,6 @@ const fetchCountData = async () => {
     chatCount.value = await ChatService.getChatCount();
     unsolvedReportedProblemCount.value = await ProblemService.getUnsolvedProblemCount();
     playerAdvertisementCount.value = await PlayerAdvertisementService.getActivePlayerAdvertisementCount();
-    clubAdvertisementCount.value = await ClubAdvertisementService.getActiveClubAdvertisementCount();
-    playerOfferCount.value = await PlayerOfferService.getActivePlayerOfferCount();
     clubOfferCount.value = await ClubOfferService.getActiveClubOfferCount();
   } 
   catch (error) {
@@ -88,7 +82,7 @@ const handleCardClick = (route: string) => {
     </div>
 
     <div class="row">
-      <div class="col-md-3 mb-4">
+      <div class="col-md-6 mb-4">
         <div class="card bg-success text-white clickable-card" @click="handleCardClick('/admin/player-advertisements')">
           <div class="card-body">
             <h5 class="card-title"><i class="bi bi-person-bounding-box"></i> Player Ads</h5>
@@ -96,23 +90,7 @@ const handleCardClick = (route: string) => {
           </div>
         </div>
       </div>
-      <div class="col-md-3 mb-4">
-        <div class="card bg-warning text-white clickable-card" @click="handleCardClick('/admin/club-advertisements')">
-          <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-shield-fill"></i> Club Ads</h5>
-            <h4>{{ clubAdvertisementCount }}</h4>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mb-4">
-        <div class="card bg-dark text-white clickable-card" @click="handleCardClick('/admin/player-offers')">
-          <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-briefcase"></i> Player Offers</h5>
-            <h4>{{ playerOfferCount }}</h4>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mb-4">
+      <div class="col-md-6 mb-4">
         <div class="card bg-secondary text-white clickable-card" @click="handleCardClick('/admin/club-offers')">
           <div class="card-body">
             <h5 class="card-title"><i class="bi bi-briefcase-fill"></i> Club Offers</h5>
