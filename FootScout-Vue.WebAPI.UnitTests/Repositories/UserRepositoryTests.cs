@@ -243,8 +243,6 @@ namespace FootScout_Vue.WebAPI.UnitTests.Repositories
                 await SeedOfferStatusTestBase(dbContext);
                 await SeedPlayerAdvertisementTestBase(dbContext);
                 await SeedClubOfferTestBase(dbContext);
-                await SeedClubAdvertisementTestBase(dbContext);
-                await SeedPlayerOfferTestBase(dbContext);
                 var mapper = CreateMapper();
                 var passwordHasher = CreatePasswordHasher();
                 var _userRepository = new UserRepository(dbContext, mapper, userManager, passwordHasher);
@@ -275,11 +273,6 @@ namespace FootScout_Vue.WebAPI.UnitTests.Repositories
                     .ToListAsync();
                 Assert.Empty(playerFavorites);
 
-                var clubFavorites = await dbContext.FavoriteClubAdvertisements
-                    .Where(fca => fca.UserId == userId)
-                    .ToListAsync();
-                Assert.Empty(clubFavorites);
-
                 var playerAdvertisements = await dbContext.PlayerAdvertisements
                     .Where(pa => pa.PlayerId == userId)
                     .ToListAsync();
@@ -289,16 +282,6 @@ namespace FootScout_Vue.WebAPI.UnitTests.Repositories
                     .Where(co => co.ClubMemberId == userId)
                     .ToListAsync();
                 Assert.All(clubOffers, co => Assert.Equal("unknownUserId", co.ClubMemberId));
-
-                var clubAdvertisements = await dbContext.ClubAdvertisements
-                    .Where(ca => ca.ClubMemberId == userId)
-                    .ToListAsync();
-                Assert.All(clubAdvertisements, ca => Assert.Equal("unknownUserId", ca.ClubMemberId));
-
-                var playerOffers = await dbContext.PlayerOffers
-                    .Where(po => po.PlayerId == userId)
-                    .ToListAsync();
-                Assert.All(playerOffers, po => Assert.Equal("unknownUserId", po.PlayerId));
 
                 var problems = await dbContext.Problems
                     .Where(p => p.RequesterId == userId)
@@ -546,222 +529,6 @@ namespace FootScout_Vue.WebAPI.UnitTests.Repositories
                 Assert.NotNull(result);
                 Assert.All(result, co => Assert.Equal(userId, co.ClubMemberId));
                 Assert.True(result.All(co => co.OfferStatus != null));
-            }
-        }
-
-        [Fact]
-        public async Task GetUserClubAdvertisements_ReturnsClubAdvertisements()
-        {
-            // Arrange
-            var options = GetDbContextOptions("GetUserClubAdvertisements_ReturnsClubAdvertisements");
-            var userId = "leomessi";
-
-            using (var dbContext = new AppDbContext(options))
-            {
-                var userManager = CreateUserManager();
-                await SeedUserTestBase(dbContext, userManager);
-                await SeedClubAdvertisementTestBase(dbContext);
-                var mapper = CreateMapper();
-                var passwordHasher = CreatePasswordHasher();
-                var _userRepository = new UserRepository(dbContext, mapper, userManager, passwordHasher);
-
-                // Act
-                var result = await _userRepository.GetUserClubAdvertisements(userId);
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.All(result, ca => Assert.Equal(userId, ca.ClubMemberId));
-                Assert.True(result.All(ca => ca.PlayerPosition != null));
-            }
-        }
-
-        [Fact]
-        public async Task GetUserActiveClubAdvertisements_ReturnsActiveClubAdvertisements()
-        {
-            // Arrange
-            var options = GetDbContextOptions("GetUserActiveClubAdvertisements_ReturnsActiveClubAdvertisements");
-            var userId = "leomessi";
-            
-            using (var dbContext = new AppDbContext(options))
-            {
-                var userManager = CreateUserManager();
-                await SeedUserTestBase(dbContext, userManager);
-                await SeedClubAdvertisementTestBase(dbContext);
-                var mapper = CreateMapper();
-                var passwordHasher = CreatePasswordHasher();
-                var _userRepository = new UserRepository(dbContext, mapper, userManager, passwordHasher);
-
-                // Act
-                var result = await _userRepository.GetUserActiveClubAdvertisements(userId);
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.All(result, ca => Assert.Equal(userId, ca.ClubMemberId));
-                Assert.All(result, ca => Assert.True(ca.EndDate >= DateTime.Now));
-            }
-        }
-
-        [Fact]
-        public async Task GetUserInactiveClubAdvertisements_ReturnsInactiveClubAdvertisements()
-        {
-            // Arrange
-            var options = GetDbContextOptions("GetUserInactiveClubAdvertisements_ReturnsInactiveClubAdvertisements");
-            var userId = "leomessi";
-
-            using (var dbContext = new AppDbContext(options))
-            {
-                var userManager = CreateUserManager();
-                await SeedUserTestBase(dbContext, userManager);
-                await SeedClubAdvertisementTestBase(dbContext);
-                var mapper = CreateMapper();
-                var passwordHasher = CreatePasswordHasher();
-                var _userRepository = new UserRepository(dbContext, mapper, userManager, passwordHasher);
-
-                // Act
-                var result = await _userRepository.GetUserInactiveClubAdvertisements(userId);
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.All(result, ca => Assert.Equal(userId, ca.ClubMemberId));
-                Assert.All(result, ca => Assert.True(ca.EndDate < DateTime.Now));
-            }
-        }
-
-        [Fact]
-        public async Task GetUserFavoriteClubAdvertisements_ReturnsFavoriteClubAdvertisements()
-        {
-            // Arrange
-            var options = GetDbContextOptions("GetUserFavoriteClubAdvertisements_ReturnsFavoriteClubAdvertisements");
-            var userId = "leomessi";
-
-            using (var dbContext = new AppDbContext(options))
-            {
-                var userManager = CreateUserManager();
-                await SeedUserTestBase(dbContext, userManager);
-                await SeedClubAdvertisementTestBase(dbContext);
-                var mapper = CreateMapper();
-                var passwordHasher = CreatePasswordHasher();
-                var _userRepository = new UserRepository(dbContext, mapper, userManager, passwordHasher);
-
-                // Act
-                var result = await _userRepository.GetUserFavoriteClubAdvertisements(userId);
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.All(result, ca => Assert.Equal(userId, ca.UserId));
-                Assert.True(result.All(ca => ca.ClubAdvertisement != null));
-            }
-        }
-
-        [Fact]
-        public async Task GetUserActiveFavoriteClubAdvertisements_ReturnsActiveFavoriteClubAdvertisements()
-        {
-            // Arrange
-            var options = GetDbContextOptions("GetUserActiveFavoriteClubAdvertisements_ReturnsActiveFavoriteClubAdvertisements");
-            var userId = "leomessi";
-
-            using (var dbContext = new AppDbContext(options))
-            {
-                var userManager = CreateUserManager();
-                await SeedUserTestBase(dbContext, userManager);
-                await SeedClubAdvertisementTestBase(dbContext);
-                var mapper = CreateMapper();
-                var passwordHasher = CreatePasswordHasher();
-                var _userRepository = new UserRepository(dbContext, mapper, userManager, passwordHasher);
-
-                // Act
-                var result = await _userRepository.GetUserActiveFavoriteClubAdvertisements(userId);
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.All(result, ca => Assert.Equal(userId, ca.UserId));
-                Assert.All(result, ca => Assert.True(ca.ClubAdvertisement.EndDate >= DateTime.Now));
-            }
-        }
-
-        [Fact]
-        public async Task GetUserInactiveFavoriteClubAdvertisements_ReturnsInactiveFavoriteClubAdvertisements()
-        {
-            // Arrange
-            var options = GetDbContextOptions("GetUserInactiveFavoriteClubAdvertisements_ReturnsInactiveFavoriteClubAdvertisements");
-            var userId = "leomessi";
-
-            using (var dbContext = new AppDbContext(options))
-            {
-                var userManager = CreateUserManager();
-                await SeedUserTestBase(dbContext, userManager);
-                await SeedClubAdvertisementTestBase(dbContext);
-                var mapper = CreateMapper();
-                var passwordHasher = CreatePasswordHasher();
-                var _userRepository = new UserRepository(dbContext, mapper, userManager, passwordHasher);
-
-                // Act
-                var result = await _userRepository.GetUserInactiveFavoriteClubAdvertisements(userId);
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.All(result, ca => Assert.Equal(userId, ca.UserId));
-                Assert.All(result, ca => Assert.True(ca.ClubAdvertisement.EndDate < DateTime.Now));
-            }
-        }
-
-        [Fact]
-        public async Task GetReceivedPlayerOffers_ReturnsReceivedPlayerOffers()
-        {
-            // Arrange
-            var options = GetDbContextOptions("GetReceivedPlayerOffers_ReturnsReceivedPlayerOffers");
-            var userId = "leomessi";
-
-            using (var dbContext = new AppDbContext(options))
-            {
-                var userManager = CreateUserManager();
-                await SeedUserTestBase(dbContext, userManager);
-                await SeedPlayerPositionTestBase(dbContext);
-                await SeedPlayerFootTestBase(dbContext);
-                await SeedOfferStatusTestBase(dbContext);
-                await SeedClubAdvertisementTestBase(dbContext);
-                await SeedPlayerOfferTestBase(dbContext);
-                var mapper = CreateMapper();
-                var passwordHasher = CreatePasswordHasher();
-                var _userRepository = new UserRepository(dbContext, mapper, userManager, passwordHasher);
-
-                // Act
-                var result = await _userRepository.GetReceivedPlayerOffers(userId);
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.All(result, po => Assert.Equal(userId, po.ClubAdvertisement.ClubMemberId));
-                Assert.True(result.All(po => po.OfferStatus != null));
-            }
-        }
-
-        [Fact]
-        public async Task GetSentPlayerOffers_ReturnsSentPlayerOffers()
-        {
-            // Arrange
-            var options = GetDbContextOptions("GetSentPlayerOffers_ReturnsSentPlayerOffers");
-            var userId = "leomessi";
-
-            using (var dbContext = new AppDbContext(options))
-            {
-                var userManager = CreateUserManager();
-                await SeedUserTestBase(dbContext, userManager);
-                await SeedPlayerPositionTestBase(dbContext);
-                await SeedPlayerFootTestBase(dbContext);
-                await SeedOfferStatusTestBase(dbContext);
-                await SeedClubAdvertisementTestBase(dbContext);
-                await SeedPlayerOfferTestBase(dbContext);
-                var mapper = CreateMapper();
-                var passwordHasher = CreatePasswordHasher();
-                var _userRepository = new UserRepository(dbContext, mapper, userManager, passwordHasher);
-
-                // Act
-                var result = await _userRepository.GetSentPlayerOffers(userId);
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.All(result, po => Assert.Equal(userId, po.PlayerId));
-                Assert.True(result.All(po => po.OfferStatus != null));
             }
         }
 

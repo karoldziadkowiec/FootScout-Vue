@@ -100,11 +100,6 @@ namespace FootScout_Vue.WebAPI.Services.Classes
                     .ToListAsync();
             _dbContext.FavoritePlayerAdvertisements.RemoveRange(playerFavorites);
 
-            var clubFavorites = await _dbContext.FavoriteClubAdvertisements
-                    .Where(fca => fca.UserId == userId)
-                    .ToListAsync();
-            _dbContext.FavoriteClubAdvertisements.RemoveRange(clubFavorites);
-
             var unknownUser = await _dbContext.Users
                .Where(u => u.Email == "unknown@unknown.com")
                .SingleOrDefaultAsync();
@@ -140,29 +135,6 @@ namespace FootScout_Vue.WebAPI.Services.Classes
                     offer.OfferStatusId = rejectedStatus.Id;
                 }
                 offer.ClubMemberId = unknownUserId;
-            }
-
-            var clubAdvertisements = await _dbContext.ClubAdvertisements
-               .Where(ca => ca.ClubMemberId == userId)
-               .ToListAsync();
-
-            foreach (var advertisement in clubAdvertisements)
-            {
-                advertisement.EndDate = DateTime.Now;
-                advertisement.ClubMemberId = unknownUserId;
-            }
-
-            var playerOffers = await _dbContext.PlayerOffers
-               .Where(po => po.PlayerId == userId)
-               .ToListAsync();
-
-            foreach (var offer in playerOffers)
-            {
-                if (offer.OfferStatusId == offeredStatus.Id)
-                {
-                    offer.OfferStatusId = rejectedStatus.Id;
-                }
-                offer.PlayerId = unknownUserId;
             }
 
             var removeUserRoleResult = await _userManager.RemoveFromRoleAsync(user, Role.User);

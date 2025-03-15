@@ -173,11 +173,6 @@ namespace FootScout_Vue.WebAPI.IntegrationTests.Repositories
                 .ToListAsync();
             Assert.Empty(playerFavorites);
 
-            var clubFavorites = await _dbContext.FavoriteClubAdvertisements
-                .Where(fca => fca.UserId == userId)
-                .ToListAsync();
-            Assert.Empty(clubFavorites);
-
             var playerAdvertisements = await _dbContext.PlayerAdvertisements
                 .Where(pa => pa.PlayerId == userId)
                 .ToListAsync();
@@ -187,16 +182,6 @@ namespace FootScout_Vue.WebAPI.IntegrationTests.Repositories
                 .Where(co => co.ClubMemberId == userId)
                 .ToListAsync();
             Assert.All(clubOffers, co => Assert.Equal("unknownUserId", co.ClubMemberId));
-
-            var clubAdvertisements = await _dbContext.ClubAdvertisements
-                .Where(ca => ca.ClubMemberId == userId)
-                .ToListAsync();
-            Assert.All(clubAdvertisements, ca => Assert.Equal("unknownUserId", ca.ClubMemberId));
-
-            var playerOffers = await _dbContext.PlayerOffers
-                .Where(po => po.PlayerId == userId)
-                .ToListAsync();
-            Assert.All(playerOffers, po => Assert.Equal("unknownUserId", po.PlayerId));
 
             var problems = await _dbContext.Problems
                 .Where(p => p.RequesterId == userId)
@@ -337,126 +322,6 @@ namespace FootScout_Vue.WebAPI.IntegrationTests.Repositories
             Assert.NotNull(result);
             Assert.All(result, co => Assert.Equal(userId, co.ClubMemberId));
             Assert.True(result.All(co => co.OfferStatus != null));
-        }
-
-        [Fact]
-        public async Task GetUserClubAdvertisements_ReturnsClubAdvertisements()
-        {
-            // Arrange
-            var userId = "leomessi";
-
-            // Act
-            var result = await _userRepository.GetUserClubAdvertisements(userId);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.All(result, ca => Assert.Equal(userId, ca.ClubMemberId));
-            Assert.True(result.All(ca => ca.PlayerPosition != null));
-        }
-
-        [Fact]
-        public async Task GetUserActiveClubAdvertisements_ReturnsActiveClubAdvertisements()
-        {
-            // Arrange
-            var userId = "leomessi";
-
-            // Act
-            var result = await _userRepository.GetUserActiveClubAdvertisements(userId);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.All(result, ca => Assert.Equal(userId, ca.ClubMemberId));
-            Assert.All(result, ca => Assert.True(ca.EndDate >= DateTime.Now));
-        }
-
-        [Fact]
-        public async Task GetUserInactiveClubAdvertisements_ReturnsInactiveClubAdvertisements()
-        {
-            // Arrange
-            var userId = "leomessi";
-
-            // Act
-            var result = await _userRepository.GetUserInactiveClubAdvertisements(userId);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.All(result, ca => Assert.Equal(userId, ca.ClubMemberId));
-            Assert.All(result, ca => Assert.True(ca.EndDate < DateTime.Now));
-        }
-
-        [Fact]
-        public async Task GetUserFavoriteClubAdvertisements_ReturnsFavoriteClubAdvertisements()
-        {
-            // Arrange
-            var userId = "leomessi";
-
-            // Act
-            var result = await _userRepository.GetUserFavoriteClubAdvertisements(userId);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.All(result, ca => Assert.Equal(userId, ca.UserId));
-            Assert.True(result.All(ca => ca.ClubAdvertisement != null));
-        }
-
-        [Fact]
-        public async Task GetUserActiveFavoriteClubAdvertisements_ReturnsActiveFavoriteClubAdvertisements()
-        {
-            // Arrange
-            var userId = "leomessi";
-
-            // Act
-            var result = await _userRepository.GetUserActiveFavoriteClubAdvertisements(userId);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.All(result, ca => Assert.Equal(userId, ca.UserId));
-            Assert.All(result, ca => Assert.True(ca.ClubAdvertisement.EndDate >= DateTime.Now));
-        }
-
-        [Fact]
-        public async Task GetUserInactiveFavoriteClubAdvertisements_ReturnsInactiveFavoriteClubAdvertisements()
-        {
-            // Arrange
-            var userId = "leomessi";
-
-            // Act
-            var result = await _userRepository.GetUserInactiveFavoriteClubAdvertisements(userId);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.All(result, ca => Assert.Equal(userId, ca.UserId));
-            Assert.All(result, ca => Assert.True(ca.ClubAdvertisement.EndDate < DateTime.Now));
-        }
-
-        [Fact]
-        public async Task GetReceivedPlayerOffers_ReturnsReceivedPlayerOffers()
-        {
-            // Arrange
-            var userId = "leomessi";
-
-            // Act
-            var result = await _userRepository.GetReceivedPlayerOffers(userId);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.All(result, po => Assert.Equal(userId, po.ClubAdvertisement.ClubMemberId));
-            Assert.True(result.All(po => po.OfferStatus != null));
-        }
-
-        [Fact]
-        public async Task GetSentPlayerOffers_ReturnsSentPlayerOffers()
-        {
-            // Arrange
-            var userId = "leomessi";
-
-            // Act
-            var result = await _userRepository.GetSentPlayerOffers(userId);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.All(result, po => Assert.Equal(userId, po.PlayerId));
-            Assert.True(result.All(po => po.OfferStatus != null));
         }
 
         [Fact]

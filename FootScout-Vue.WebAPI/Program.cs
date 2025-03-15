@@ -75,7 +75,6 @@ namespace FootScout_Vue.WebAPI
             builder.Services.AddScoped<ICookieService, CookieService>();
             builder.Services.AddScoped<IChatService, ChatService>();
             builder.Services.AddScoped<IMessageService, MessageService>();
-            builder.Services.AddScoped<IPerformanceTestsService, PerformanceTestsService>();
 
             // Repositories
             builder.Services.AddScoped<IPlayerPositionRepository, PlayerPositionRepository>();
@@ -88,9 +87,6 @@ namespace FootScout_Vue.WebAPI
             builder.Services.AddScoped<IPlayerAdvertisementRepository, PlayerAdvertisementRepository>();
             builder.Services.AddScoped<IFavoritePlayerAdvertisementRepository, FavoritePlayerAdvertisementRepository>();
             builder.Services.AddScoped<IClubOfferRepository, ClubOfferRepository>();
-            builder.Services.AddScoped<IClubAdvertisementRepository, ClubAdvertisementRepository>();
-            builder.Services.AddScoped<IFavoriteClubAdvertisementRepository, FavoriteClubAdvertisementRepository>();
-            builder.Services.AddScoped<IPlayerOfferRepository, PlayerOfferRepository>();
             builder.Services.AddScoped<IProblemRepository, ProblemRepository>();
 
             // AutoMapper service

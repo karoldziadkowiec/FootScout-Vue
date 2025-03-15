@@ -260,43 +260,5 @@ namespace FootScout_Vue.WebAPI.IntegrationTests.TestManager
             });
             await dbContext.SaveChangesAsync();
         }
-
-        public static async Task SeedClubAdvertisementTestBase(AppDbContext dbContext)
-        {
-            // salary range
-            dbContext.SalaryRanges.AddRange(new List<SalaryRange>
-            {
-                new SalaryRange { Min = 150, Max = 200 },
-                new SalaryRange { Min = 145, Max = 195 },
-            });
-            await dbContext.SaveChangesAsync();
-
-            // club advertisement
-            dbContext.ClubAdvertisements.AddRange(new List<ClubAdvertisement>
-            {
-                new ClubAdvertisement { PlayerPositionId = 15,  ClubName = "Manchester City", League = "Premier League", Region = "England", SalaryRangeId = 3, CreationDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), ClubMemberId = "pepguardiola" },
-                new ClubAdvertisement { PlayerPositionId = 14,  ClubName = "Manchester City", League = "Premier League", Region = "England", SalaryRangeId = 4, CreationDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), ClubMemberId = "pepguardiola" },
-            });
-            await dbContext.SaveChangesAsync();
-
-            // favorite club advertisement
-            dbContext.FavoriteClubAdvertisements.AddRange(new List<FavoriteClubAdvertisement>
-            {
-                new FavoriteClubAdvertisement { ClubAdvertisementId = 1, UserId = "leomessi" },
-                new FavoriteClubAdvertisement { ClubAdvertisementId = 2, UserId = "leomessi" },
-            });
-            await dbContext.SaveChangesAsync();
-        }
-
-        public static async Task SeedPlayerOfferTestBase(AppDbContext dbContext)
-        {
-            // player offer
-            dbContext.PlayerOffers.AddRange(new List<PlayerOffer>
-            {
-                new PlayerOffer { ClubAdvertisementId = 1, OfferStatusId = 1, PlayerPositionId = 15, Age = 37, Height = 167, PlayerFootId = 1, Salary = 160, AdditionalInformation = "no info", CreationDate = DateTime.Now, PlayerId = "leomessi" },
-                new PlayerOffer { ClubAdvertisementId = 2, OfferStatusId = 2, PlayerPositionId = 14, Age = 37, Height = 167, PlayerFootId = 1, Salary = 155, AdditionalInformation = "no info", CreationDate = DateTime.Now, PlayerId = "leomessi" },
-            });
-            await dbContext.SaveChangesAsync();
-        }
     }
 }

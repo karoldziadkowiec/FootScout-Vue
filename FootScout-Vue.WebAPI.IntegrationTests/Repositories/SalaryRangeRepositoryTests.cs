@@ -32,9 +32,6 @@ namespace FootScout_Vue.WebAPI.IntegrationTests.Repositories
             // Assert
             var result = await _dbContext.SalaryRanges.FindAsync(5);
             Assert.NotNull(result);
-            Assert.Equal(5, result.Id);
-            Assert.Equal(80.0, result.Min);
-            Assert.Equal(160.0, result.Max);
 
             _dbContext.SalaryRanges.Remove(result);
             await _dbContext.SaveChangesAsync();

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootScout_Vue.WebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250310160206_Init migration")]
-    partial class Initmigration
+    [Migration("20250315142443_my migration")]
+    partial class mymigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,56 +75,6 @@ namespace FootScout_Vue.WebAPI.Migrations
                     b.HasIndex("User2Id");
 
                     b.ToTable("Chats");
-                });
-
-            modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.ClubAdvertisement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClubMemberId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ClubName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("League")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("PlayerPositionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Region")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("SalaryRangeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClubMemberId");
-
-                    b.HasIndex("PlayerPositionId");
-
-                    b.HasIndex("SalaryRangeId");
-
-                    b.ToTable("ClubAdvertisements");
                 });
 
             modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.ClubHistory", b =>
@@ -236,30 +186,6 @@ namespace FootScout_Vue.WebAPI.Migrations
                     b.HasIndex("PlayerPositionId");
 
                     b.ToTable("ClubOffers");
-                });
-
-            modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.FavoriteClubAdvertisement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClubAdvertisementId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClubAdvertisementId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("FavoriteClubAdvertisements");
                 });
 
             modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.FavoritePlayerAdvertisement", b =>
@@ -414,62 +340,6 @@ namespace FootScout_Vue.WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PlayerFeet");
-                });
-
-            modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.PlayerOffer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AdditionalInformation")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClubAdvertisementId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OfferStatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerFootId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PlayerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PlayerPositionId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Salary")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClubAdvertisementId");
-
-                    b.HasIndex("OfferStatusId");
-
-                    b.HasIndex("PlayerFootId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.HasIndex("PlayerPositionId");
-
-                    b.ToTable("PlayerOffers");
                 });
 
             modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.PlayerPosition", b =>
@@ -780,33 +650,6 @@ namespace FootScout_Vue.WebAPI.Migrations
                     b.Navigation("User2");
                 });
 
-            modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.ClubAdvertisement", b =>
-                {
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.User", "ClubMember")
-                        .WithMany()
-                        .HasForeignKey("ClubMemberId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.PlayerPosition", "PlayerPosition")
-                        .WithMany()
-                        .HasForeignKey("PlayerPositionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.SalaryRange", "SalaryRange")
-                        .WithMany()
-                        .HasForeignKey("SalaryRangeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ClubMember");
-
-                    b.Navigation("PlayerPosition");
-
-                    b.Navigation("SalaryRange");
-                });
-
             modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.ClubHistory", b =>
                 {
                     b.HasOne("FootScout_Vue.WebAPI.Entities.Achievements", "Achievements")
@@ -867,25 +710,6 @@ namespace FootScout_Vue.WebAPI.Migrations
                     b.Navigation("PlayerAdvertisement");
 
                     b.Navigation("PlayerPosition");
-                });
-
-            modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.FavoriteClubAdvertisement", b =>
-                {
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.ClubAdvertisement", "ClubAdvertisement")
-                        .WithMany()
-                        .HasForeignKey("ClubAdvertisementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ClubAdvertisement");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.FavoritePlayerAdvertisement", b =>
@@ -967,49 +791,6 @@ namespace FootScout_Vue.WebAPI.Migrations
                     b.Navigation("PlayerPosition");
 
                     b.Navigation("SalaryRange");
-                });
-
-            modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.PlayerOffer", b =>
-                {
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.ClubAdvertisement", "ClubAdvertisement")
-                        .WithMany()
-                        .HasForeignKey("ClubAdvertisementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.OfferStatus", "OfferStatus")
-                        .WithMany()
-                        .HasForeignKey("OfferStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.PlayerFoot", "PlayerFoot")
-                        .WithMany()
-                        .HasForeignKey("PlayerFootId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.User", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FootScout_Vue.WebAPI.Entities.PlayerPosition", "PlayerPosition")
-                        .WithMany()
-                        .HasForeignKey("PlayerPositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ClubAdvertisement");
-
-                    b.Navigation("OfferStatus");
-
-                    b.Navigation("Player");
-
-                    b.Navigation("PlayerFoot");
-
-                    b.Navigation("PlayerPosition");
                 });
 
             modelBuilder.Entity("FootScout_Vue.WebAPI.Entities.Problem", b =>

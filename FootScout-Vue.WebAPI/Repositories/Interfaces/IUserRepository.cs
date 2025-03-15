@@ -23,14 +23,6 @@ namespace FootScout_Vue.WebAPI.Repositories.Interfaces
         Task<IEnumerable<FavoritePlayerAdvertisement>> GetUserInactiveFavoritePlayerAdvertisements(string userId);
         Task<IEnumerable<ClubOffer>> GetReceivedClubOffers(string userId);
         Task<IEnumerable<ClubOffer>> GetSentClubOffers(string userId);
-        Task<IEnumerable<ClubAdvertisement>> GetUserClubAdvertisements(string userId);
-        Task<IEnumerable<ClubAdvertisement>> GetUserActiveClubAdvertisements(string userId);
-        Task<IEnumerable<ClubAdvertisement>> GetUserInactiveClubAdvertisements(string userId);
-        Task<IEnumerable<FavoriteClubAdvertisement>> GetUserFavoriteClubAdvertisements(string userId);
-        Task<IEnumerable<FavoriteClubAdvertisement>> GetUserActiveFavoriteClubAdvertisements(string userId);
-        Task<IEnumerable<FavoriteClubAdvertisement>> GetUserInactiveFavoriteClubAdvertisements(string userId);
-        Task<IEnumerable<PlayerOffer>> GetReceivedPlayerOffers(string userId);
-        Task<IEnumerable<PlayerOffer>> GetSentPlayerOffers(string userId);
         Task<IEnumerable<Chat>> GetUserChats(string userId);
         Task<MemoryStream> ExportUsersToCsv();
     }
