@@ -6,8 +6,8 @@ import Login from '../components/account/Login.vue';
 import Registration from '../components/account/Registration.vue';
 // User
 import Home from '../components/home/Home.vue';
-/*import MyProfile from '../components/user/MyProfile.vue';
-import ClubHistory from '../components/user/ClubHistory.vue';
+import MyProfile from '../components/user/MyProfile.vue';
+/*import ClubHistory from '../components/user/ClubHistory.vue';
 import PlayerAdvertisements from '../components/playerAdvertisement/PlayerAdvertisements.vue';
 import ClubAdvertisements from '../components/clubAdvertisement/ClubAdvertisements.vue';
 import PlayerAdvertisement from '../components/playerAdvertisement/PlayerAdvertisement.vue';
@@ -15,14 +15,14 @@ import ClubAdvertisement from '../components/clubAdvertisement/ClubAdvertisement
 import MyPlayerAdvertisements from '../components/user/MyPlayerAdvertisements.vue';
 import MyClubAdvertisements from '../components/user/MyClubAdvertisements.vue';
 import MyFavoritePlayerAdvertisements from '../components/user/MyFavoritePlayerAdvertisements.vue';
-import MyFavoriteClubAdvertisements from '../components/user/MyFavoriteClubAdvertisements.vue';
+import MyFavoriteClubAdvertisements from '../components/user/MyFavoriteClubAdvertisements.vue';*/
 import Chats from '../components/chat/Chats.vue';
 import Chat from '../components/chat/Chat.vue';
-import MyOffersAsPlayer from '../components/user/MyOffersAsPlayer.vue';
+/*import MyOffersAsPlayer from '../components/user/MyOffersAsPlayer.vue';
 import MyOffersAsClub from '../components/user/MyOffersAsClub.vue';
 import NewPlayerAdvertisement from '../components/playerAdvertisement/NewPlayerAdvertisement.vue';
-import NewClubAdvertisement from '../components/clubAdvertisement/NewClubAdvertisement.vue';
-import Support from '../components/support/Support.vue';*/
+import NewClubAdvertisement from '../components/clubAdvertisement/NewClubAdvertisement.vue';*/
+import Support from '../components/support/Support.vue';
 // Admin
 import AdminDashboard from '../components/admin/AdminDashboard.vue';
 /*import AdminUsers from '../components/admin/AdminUsers.vue';
@@ -49,8 +49,8 @@ const routes = [
 
   // User
   { path: '/home', name: 'Home', component: Home, meta: { roles: [Role.User] } },
-  /*{ path: '/my-profile', name: 'MyProfile', component: MyProfile, meta: { roles: [Role.Admin, Role.User] } },
-  { path: '/club-history', name: 'ClubHistory', component: ClubHistory, meta: { roles: [Role.User] } },
+  { path: '/my-profile', name: 'MyProfile', component: MyProfile, meta: { roles: [Role.Admin, Role.User] } },
+  /*{ path: '/club-history', name: 'ClubHistory', component: ClubHistory, meta: { roles: [Role.User] } },
   { path: '/player-advertisements', name: 'PlayerAdvertisements', component: PlayerAdvertisements, meta: { roles: [Role.Admin, Role.User] } },
   { path: '/club-advertisements', name: 'ClubAdvertisements', component: ClubAdvertisements, meta: { roles: [Role.Admin, Role.User] } },
   { path: '/player-advertisement/:id', name: 'PlayerAdvertisement', component: PlayerAdvertisement, meta: { roles: [Role.Admin, Role.User] } },
@@ -58,14 +58,14 @@ const routes = [
   { path: '/my-player-advertisements', name: 'MyPlayerAdvertisements', component: MyPlayerAdvertisements, meta: { roles: [Role.User] } },
   { path: '/my-club-advertisements', name: 'MyClubAdvertisements', component: MyClubAdvertisements, meta: { roles: [Role.User] } },
   { path: '/my-favorite-player-advertisements', name: 'MyFavoritePlayerAdvertisements', component: MyFavoritePlayerAdvertisements, meta: { roles: [Role.User] } },
-  { path: '/my-favorite-club-advertisements', name: 'MyFavoriteClubAdvertisements', component: MyFavoriteClubAdvertisements, meta: { roles: [Role.User] } },
+  { path: '/my-favorite-club-advertisements', name: 'MyFavoriteClubAdvertisements', component: MyFavoriteClubAdvertisements, meta: { roles: [Role.User] } },*/
   { path: '/chats', name: 'Chats', component: Chats, meta: { roles: [Role.Admin, Role.User] } },
   { path: '/chat/:id', name: 'Chat', component: Chat, meta: { roles: [Role.Admin, Role.User] } },
-  { path: '/my-offers-as-player', name: 'MyOffersAsPlayer', component: MyOffersAsPlayer, meta: { roles: [Role.User] } },
+  /*{ path: '/my-offers-as-player', name: 'MyOffersAsPlayer', component: MyOffersAsPlayer, meta: { roles: [Role.User] } },
   { path: '/my-offers-as-club', name: 'MyOffersAsClub', component: MyOffersAsClub, meta: { roles: [Role.User] } },
   { path: '/new-player-advertisement', name: 'NewPlayerAdvertisement', component: NewPlayerAdvertisement, meta: { roles: [Role.User] } },
-  { path: '/new-club-advertisement', name: 'NewClubAdvertisement', component: NewClubAdvertisement, meta: { roles: [Role.User] } },
-  { path: '/support', name: 'Support', component: Support, meta: { roles: [Role.Admin, Role.User] } },*/
+  { path: '/new-club-advertisement', name: 'NewClubAdvertisement', component: NewClubAdvertisement, meta: { roles: [Role.User] } },*/
+  { path: '/support', name: 'Support', component: Support, meta: { roles: [Role.Admin, Role.User] } },
 
   // Admin routes
   { path: '/admin/dashboard', name: 'AdminDashboard', component: AdminDashboard, meta: { roles: [Role.Admin] } },

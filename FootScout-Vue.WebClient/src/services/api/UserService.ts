@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ApiURL } from '../../config/ApiURL';
-import { AccountService } from '../../services/api/AccountService';
+import { AccountService } from './AccountService';
 import type { UserDTO } from '../../models/dtos/UserDTO';
 import type { UserUpdateDTO } from '../../models/dtos/UserUpdateDTO';
 import type { UserResetPasswordDTO } from '../../models/dtos/UserResetPasswordDTO';
