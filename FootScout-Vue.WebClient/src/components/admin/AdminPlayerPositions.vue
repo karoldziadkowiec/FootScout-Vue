@@ -94,7 +94,7 @@
             <div class="modal-body">
               <form @submit.prevent="createPosition">
                 <div class="mb-3">
-                  <label for="positionName" class="form-label">Position Name</label>
+                  <label for="positionName" class="form-label">Position Name*</label>
                   <input
                     id="positionName"
                     type="text"

@@ -20,11 +20,10 @@ import NewPlayerAdvertisement from '../components/playerAdvertisement/NewPlayerA
 import Support from '../components/support/Support.vue';
 // Admin
 import AdminDashboard from '../components/admin/AdminDashboard.vue';
-//import AdminUsers from '../components/admin/AdminUsers.vue';
-//import AdminChats from '../components/admin/AdminChats.vue';
-//import AdminChat from '../components/admin/AdminChat.vue';
-//import AdminPlayerAdvertisements from '../components/admin/AdminPlayerAdvertisements.vue';
-//import AdminClubOffers from '../components/admin/AdminClubOffers.vue';
+import AdminUsers from '../components/admin/AdminUsers.vue';
+import AdminChats from '../components/admin/AdminChats.vue';
+import AdminChat from '../components/admin/AdminChat.vue';
+import AdminPlayerAdvertisements from '../components/admin/AdminPlayerAdvertisements.vue';import AdminClubOffers from '../components/admin/AdminClubOffers.vue';
 import AdminSupport from '../components/admin/AdminSupport.vue';
 import AdminPlayerPositions from '../components/admin/AdminPlayerPositions.vue';
 import AdminMakeAnAdmin from '../components/admin/AdminMakeAnAdmin.vue';
@@ -55,11 +54,11 @@ const routes = [
 
   // Admin routes
   { path: '/admin/dashboard', name: 'AdminDashboard', component: AdminDashboard, meta: { roles: [Role.Admin] } },
-  //{ path: '/admin/users', name: 'AdminUsers', component: AdminUsers, meta: { roles: [Role.Admin] } },
-  //{ path: '/admin/chats', name: 'AdminChats', component: AdminChats, meta: { roles: [Role.Admin] } },
-  //{ path: '/admin/chat/:id', name: 'AdminChat', component: AdminChat, meta: { roles: [Role.Admin] } },
-  //{ path: '/admin/player-advertisements', name: 'AdminPlayerAdvertisements', component: AdminPlayerAdvertisements, meta: { roles: [Role.Admin] } },
-  //{ path: '/admin/club-offers', name: 'AdminClubOffers', component: AdminClubOffers, meta: { roles: [Role.Admin] } },
+  { path: '/admin/users', name: 'AdminUsers', component: AdminUsers, meta: { roles: [Role.Admin] } },
+  { path: '/admin/chats', name: 'AdminChats', component: AdminChats, meta: { roles: [Role.Admin] } },
+  { path: '/admin/chat/:id', name: 'AdminChat', component: AdminChat, meta: { roles: [Role.Admin] } },
+  { path: '/admin/player-advertisements', name: 'AdminPlayerAdvertisements', component: AdminPlayerAdvertisements, meta: { roles: [Role.Admin] } },
+  { path: '/admin/club-offers', name: 'AdminClubOffers', component: AdminClubOffers, meta: { roles: [Role.Admin] } },
   { path: '/admin/support', name: 'AdminSupport', component: AdminSupport, meta: { roles: [Role.Admin] } },
   { path: '/admin/player-positions', name: 'AdminPlayerPositions', component: AdminPlayerPositions, meta: { roles: [Role.Admin] } },
   { path: '/admin/make-admin', name: 'AdminMakeAnAdmin', component: AdminMakeAnAdmin, meta: { roles: [Role.Admin] } },
