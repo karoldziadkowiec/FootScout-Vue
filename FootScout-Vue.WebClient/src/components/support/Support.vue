@@ -69,7 +69,7 @@ const handleReportProblem = async () => {
         <form @submit.prevent="handleReportProblem">
           <!-- Title -->
           <div class="mb-3">
-            <label for="title" class="white-label">Title</label>
+            <label for="title" class="white-label">Title*</label>
             <input
               type="text"
               id="title"
@@ -83,7 +83,7 @@ const handleReportProblem = async () => {
 
           <!-- Description -->
           <div class="mb-3">
-            <label for="description" class="white-label">Description</label>
+            <label for="description" class="white-label">Description*</label>
             <textarea
               id="description"
               v-model="problemCreateDTO.description"

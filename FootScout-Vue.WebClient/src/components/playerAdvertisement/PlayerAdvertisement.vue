@@ -554,7 +554,7 @@ const handleOpenChat = async () => {
                     <div class="modal-body">
                         <form @submit.prevent="handleEditPlayerAdvertisement">
                             <div class="mb-3">
-                                <label for="formPosition" class="form-label">Position</label>
+                                <label for="formPosition" class="form-label">Position*</label>
                                 <select v-model="editFormData.playerPositionId" class="form-select">
                                     <option v-for="position in positions" :key="position.id" :value="position.id">
                                         {{ position.positionName }}
@@ -565,13 +565,13 @@ const handleOpenChat = async () => {
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="formLeague" class="form-label">Preferred League</label>
+                                        <label for="formLeague" class="form-label">Preferred League*</label>
                                         <input type="text" class="form-control" v-model="editFormData.league" placeholder="League" maxlength="30" required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="formRegion" class="form-label">Region</label>
+                                        <label for="formRegion" class="form-label">Region*</label>
                                         <input type="text" class="form-control" v-model="editFormData.region" placeholder="Region" maxlength="30" required>
                                     </div>
                                 </div>
@@ -580,20 +580,20 @@ const handleOpenChat = async () => {
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="formAge" class="form-label">Age</label>
+                                        <label for="formAge" class="form-label">Age*</label>
                                         <input type="number" class="form-control" v-model="editFormData.age" placeholder="Age" required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="formHeight" class="form-label">Height (cm)</label>
+                                        <label for="formHeight" class="form-label">Height (cm)*</label>
                                         <input type="number" class="form-control" v-model="editFormData.height" placeholder="Height" required>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="formFoot" class="form-label">Foot</label>
+                                <label for="formFoot" class="form-label">Foot*</label>
                                 <select v-model="editFormData.playerFootId" class="form-select">
                                     <option value="">Select Foot</option>
                                     <option v-for="foot in feet" :key="foot.id" :value="foot.id">
@@ -605,13 +605,13 @@ const handleOpenChat = async () => {
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="formMin" class="form-label">Min Salary (zł.) / month</label>
+                                        <label for="formMin" class="form-label">Min Salary (zł.) / month*</label>
                                         <input type="number" class="form-control" v-model="editFormData.salaryRange.min" placeholder="Min" required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="formMax" class="form-label">Max Salary (zł.) / month</label>
+                                        <label for="formMax" class="form-label">Max Salary (zł.) / month*</label>
                                         <input type="number" class="form-control" v-model="editFormData.salaryRange.max" placeholder="Max" required>
                                     </div>
                                 </div>
@@ -694,7 +694,7 @@ const handleOpenChat = async () => {
                     <div class="modal-body">
                     <form @submit.prevent="handleSubmitClubOffer">
                         <div class="mb-3 row">
-                        <label for="formPosition" class="col-sm-3 col-form-label">Position</label>
+                        <label for="formPosition" class="col-sm-3 col-form-label">Position*</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="formPosition" v-model="createFormData.playerPositionId">
                             <option v-for="position in positions" :key="position.id" :value="position.id">
@@ -705,28 +705,28 @@ const handleOpenChat = async () => {
                         </div>
 
                         <div class="mb-3 row">
-                        <label for="formClubName" class="col-sm-3 col-form-label">Club Name</label>
+                        <label for="formClubName" class="col-sm-3 col-form-label">Club Name*</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="formClubName" placeholder="Club Name" v-model="createFormData.clubName" maxlength="30" required>
                         </div>
                         </div>
 
                         <div class="mb-3 row">
-                        <label for="formLeague" class="col-sm-3 col-form-label">League</label>
+                        <label for="formLeague" class="col-sm-3 col-form-label">League*</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="formLeague" placeholder="League" v-model="createFormData.league" maxlength="30" required>
                         </div>
                         </div>
 
                         <div class="mb-3 row">
-                        <label for="formRegion" class="col-sm-3 col-form-label">Region</label>
+                        <label for="formRegion" class="col-sm-3 col-form-label">Region*</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="formRegion" placeholder="Region" v-model="createFormData.region" maxlength="30" required>
                         </div>
                         </div>
 
                         <div class="mb-3 row">
-                        <label for="formSalary" class="col-sm-3 col-form-label">Salary (zł.) / month</label>
+                        <label for="formSalary" class="col-sm-3 col-form-label">Salary (zł.) / month*</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="formSalary" placeholder="Salary" v-model.number="createFormData.salary" required>
                         </div>

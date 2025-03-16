@@ -334,7 +334,7 @@ const handleDeleteClubHistory = async () => {
           <div class="modal-body">
             <form @submit.prevent="handleEditClubHistory">
               <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">Position</label>
+                <label class="col-sm-3 col-form-label">Position*</label>
                 <div class="col-sm-9">
                   <select class="form-select" v-model="editFormData.playerPositionId" required>
                     <option v-for="position in positions" :key="position.id" :value="position.id">
@@ -345,56 +345,56 @@ const handleDeleteClubHistory = async () => {
               </div>
 
               <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">Club Name</label>
+                <label class="col-sm-3 col-form-label">Club Name*</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" v-model="editFormData.clubName" placeholder="Club Name" maxlength="30" required />
                 </div>
               </div>
 
               <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">League</label>
+                <label class="col-sm-3 col-form-label">League*</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" v-model="editFormData.league" placeholder="League" maxlength="30" required />
                 </div>
               </div>
 
               <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">Region</label>
+                <label class="col-sm-3 col-form-label">Region*</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" v-model="editFormData.region" placeholder="Region" maxlength="30" required />
                 </div>
               </div>
 
               <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">Start Date</label>
+                <label class="col-sm-3 col-form-label">Start Date*</label>
                 <div class="col-sm-9">
                   <input type="date" class="form-control" v-model="editFormData.startDate" required />
                 </div>
               </div>
 
               <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">End Date</label>
+                <label class="col-sm-3 col-form-label">End Date*</label>
                 <div class="col-sm-9">
                   <input type="date" class="form-control" v-model="editFormData.endDate" required />
                 </div>
               </div>
 
               <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">Matches</label>
+                <label class="col-sm-3 col-form-label">Matches*</label>
                 <div class="col-sm-9">
                   <input type="number" class="form-control" v-model.number="editFormData.achievements.numberOfMatches" required />
                 </div>
               </div>
 
               <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">Goals</label>
+                <label class="col-sm-3 col-form-label">Goals*</label>
                 <div class="col-sm-9">
                   <input type="number" class="form-control" v-model.number="editFormData.achievements.goals" required />
                 </div>
               </div>
 
               <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">Assists</label>
+                <label class="col-sm-3 col-form-label">Assists*</label>
                 <div class="col-sm-9">
                   <input type="number" class="form-control" v-model.number="editFormData.achievements.assists" required />
                 </div>

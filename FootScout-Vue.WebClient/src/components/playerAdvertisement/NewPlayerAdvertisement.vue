@@ -104,7 +104,7 @@ const handleCreate = async () => {
         <div class="col-md-6">
         <form @submit.prevent="handleCreate">
             <div class="mb-3">
-            <label for="position" class="white-label">Position</label>
+            <label for="position" class="white-label">Position*</label>
             <select v-model="playerAdvertisementDTO.playerPositionId" id="position" class="form-select" required>
                 <option v-for="position in positions" :key="position.id" :value="position.id">
                 {{ position.positionName }}
@@ -115,13 +115,13 @@ const handleCreate = async () => {
             <div class="row">
             <div class="col">
                 <div class="mb-3">
-                <label for="league" class="white-label">Preferred League</label>
+                <label for="league" class="white-label">Preferred League*</label>
                 <input type="text" id="league" v-model="playerAdvertisementDTO.league" class="form-control" placeholder="League" maxlength="30" required />
                 </div>
             </div>
             <div class="col">
                 <div class="mb-3">
-                <label for="region" class="white-label">Region</label>
+                <label for="region" class="white-label">Region*</label>
                 <input type="text" id="region" v-model="playerAdvertisementDTO.region" class="form-control" placeholder="Region" maxlength="30" required />
                 </div>
             </div>
@@ -130,20 +130,20 @@ const handleCreate = async () => {
             <div class="row">
             <div class="col">
                 <div class="mb-3">
-                <label for="age" class="white-label">Age</label>
+                <label for="age" class="white-label">Age*</label>
                 <input type="number" id="age" v-model="playerAdvertisementDTO.age" class="form-control" required />
                 </div>
             </div>
             <div class="col">
                 <div class="mb-3">
-                <label for="height" class="white-label">Height (cm)</label>
+                <label for="height" class="white-label">Height (cm)*</label>
                 <input type="number" id="height" v-model="playerAdvertisementDTO.height" class="form-control" required />
                 </div>
             </div>
             </div>
 
             <div class="mb-3">
-            <label for="foot" class="white-label">Foot</label>
+            <label for="foot" class="white-label">Foot*</label>
             <select v-model="playerAdvertisementDTO.playerFootId" id="foot" class="form-select" required>
                 <option v-for="foot in feet" :key="foot.id" :value="foot.id">
                 {{ foot.footName }}
@@ -154,13 +154,13 @@ const handleCreate = async () => {
             <div class="row">
             <div class="col">
                 <div class="mb-3">
-                <label for="minSalary" class="white-label">Min Salary (zł.)/month</label>
+                <label for="minSalary" class="white-label">Min Salary (zł.)/month*</label>
                 <input type="number" id="minSalary" v-model="playerAdvertisementDTO.salaryRangeDTO.min" class="form-control" required />
                 </div>
             </div>
             <div class="col">
                 <div class="mb-3">
-                <label for="maxSalary" class="white-label">Max Salary (zł.)/month</label>
+                <label for="maxSalary" class="white-label">Max Salary (zł.)/month*</label>
                 <input type="number" id="maxSalary" v-model="playerAdvertisementDTO.salaryRangeDTO.max" class="form-control" required />
                 </div>
             </div>
