@@ -27,10 +27,10 @@ import AdminPlayerAdvertisements from '../components/admin/AdminPlayerAdvertisem
 import AdminSupport from '../components/admin/AdminSupport.vue';
 import AdminPlayerPositions from '../components/admin/AdminPlayerPositions.vue';
 import AdminMakeAnAdmin from '../components/admin/AdminMakeAnAdmin.vue';
-//import AdminRaportsUsers from '../components/admin/AdminRaportsUsers.vue';
-//import AdminRaportsChats from '../components/admin/AdminRaportsChats.vue';
-//import AdminRaportsPlayerAdvertisements from '../components/admin/AdminRaportsPlayerAdvertisements.vue';
-//import AdminRaportsClubOffers from '../components/admin/AdminRaportsClubOffers.vue';
+import AdminRaportsUsers from '../components/admin/AdminRaportsUsers.vue';
+import AdminRaportsChats from '../components/admin/AdminRaportsChats.vue';
+import AdminRaportsPlayerAdvertisements from '../components/admin/AdminRaportsPlayerAdvertisements.vue';
+import AdminRaportsClubOffers from '../components/admin/AdminRaportsClubOffers.vue';
 
 const routes = [
   // Public
@@ -62,10 +62,10 @@ const routes = [
   { path: '/admin/support', name: 'AdminSupport', component: AdminSupport, meta: { roles: [Role.Admin] } },
   { path: '/admin/player-positions', name: 'AdminPlayerPositions', component: AdminPlayerPositions, meta: { roles: [Role.Admin] } },
   { path: '/admin/make-admin', name: 'AdminMakeAnAdmin', component: AdminMakeAnAdmin, meta: { roles: [Role.Admin] } },
-  //{ path: '/admin/raports/users', name: 'AdminRaportsUsers', component: AdminRaportsUsers, meta: { roles: [Role.Admin] } },
-  //{ path: '/admin/raports/chats', name: 'AdminRaportsChats', component: AdminRaportsChats, meta: { roles: [Role.Admin] } },
-  //{ path: '/admin/raports/player-advertisements', name: 'AdminRaportsPlayerAdvertisements', component: AdminRaportsPlayerAdvertisements, meta: { roles: [Role.Admin] } },
-  //{ path: '/admin/raports/club-offers', name: 'AdminRaportsClubOffers', component: AdminRaportsClubOffers, meta: { roles: [Role.Admin] } },
+  { path: '/admin/raports/users', name: 'AdminRaportsUsers', component: AdminRaportsUsers, meta: { roles: [Role.Admin] } },
+  { path: '/admin/raports/chats', name: 'AdminRaportsChats', component: AdminRaportsChats, meta: { roles: [Role.Admin] } },
+  { path: '/admin/raports/player-advertisements', name: 'AdminRaportsPlayerAdvertisements', component: AdminRaportsPlayerAdvertisements, meta: { roles: [Role.Admin] } },
+  { path: '/admin/raports/club-offers', name: 'AdminRaportsClubOffers', component: AdminRaportsClubOffers, meta: { roles: [Role.Admin] } },
 ];
 
 const router = createRouter({
@@ -74,7 +74,7 @@ const router = createRouter({
 });
 
 // Middleware autoryzacji
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _from, next) => {
   const isAuthenticated = await AccountService.isAuthenticated();
   const userRole = await AccountService.getRole();
   const isTokenValid = await AccountService.isTokenAvailable();

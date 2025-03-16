@@ -244,10 +244,10 @@ const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPer
                     <td class="offer-row">{{ offer.playerAdvertisement.player.firstName }} {{ offer.playerAdvertisement.player.lastName }}</td>
                     <td class="offer-row">{{ offer.playerPosition.positionName }}</td>
                     <td class="offer-row">
-                    <button class="btn btn-primary me-1" @click="handleShowOfferDetails(offer)">
+                    <button class="btn btn-primary me-1" data-bs-toggle="modal" data-bs-target="#offerDetailsModal" @click="handleShowOfferDetails(offer)">
                         <i class="bi bi-info-circle"></i> Offer
                     </button>
-                    <button class="btn btn-danger me-1" @click="handleShowDeleteModal(offer.id)">
+                    <button class="btn btn-danger me-1" data-bs-toggle="modal" data-bs-target="#deleteOfferModal" @click="handleShowDeleteModal(offer.id)">
                         <i class="bi bi-trash"></i>
                     </button>
                     <span class="button-spacing">|</span>
@@ -264,9 +264,9 @@ const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPer
                 </tr>
                 </tbody>
             </table>
-            </div>
+        </div>
 
-            <!-- Details Modal -->
+        <!-- Details Modal -->
         <div class="modal" id="offerDetailsModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">

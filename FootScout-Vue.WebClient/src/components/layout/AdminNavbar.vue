@@ -73,27 +73,27 @@ const isActive = (path: string) => route.path.startsWith(path);
             <ul class="dropdown-menu">
               <li>
                 <router-link
-                  to="/admin/reports/users"
+                  to="/admin/raports/users"
                   class="dropdown-item"
-                  :class="{ active: isActive('/admin/reports/users') }"
+                  :class="{ active: isActive('/admin/raports/users') }"
                 >
                   <i class="bi bi-people-fill"></i> Users
                 </router-link>
               </li>
               <li>
                 <router-link
-                  to="/admin/reports/chats"
+                  to="/admin/raports/chats"
                   class="dropdown-item"
-                  :class="{ active: isActive('/admin/reports/chats') }"
+                  :class="{ active: isActive('/admin/raports/chats') }"
                 >
                   <i class="bi bi-chat-text-fill"></i> Chats
                 </router-link>
               </li>
               <li>
                 <router-link
-                  to="/admin/reports/player-advertisements"
+                  to="/admin/raports/player-advertisements"
                   class="dropdown-item"
-                  :class="{ active: isActive('/admin/reports/player-advertisements') }"
+                  :class="{ active: isActive('/admin/raports/player-advertisements') }"
                 >
                   <i class="bi bi-person-bounding-box"></i> Player Advertisements
                 </router-link>
