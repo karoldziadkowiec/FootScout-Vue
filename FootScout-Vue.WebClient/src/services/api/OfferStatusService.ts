@@ -3,6 +3,7 @@ import { ApiURL } from '../../config/ApiURL';
 import { AccountService } from './AccountService';
 import type { OfferStatus } from '../../models/interfaces/OfferStatus';
 
+// Serwis do zarządzania statusami ofert, wykorzystujący axios do komunikacji z API
 const OfferStatusService = {
     async getOfferStatuses(): Promise<OfferStatus[]> {
         try {

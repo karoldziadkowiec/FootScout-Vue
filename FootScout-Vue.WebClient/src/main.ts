@@ -10,4 +10,8 @@ import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
-createApp(App).use(router).use(ToastContainer).use(createBootstrap()).mount('#app');
+createApp(App)
+.use(router) // Router do przekierowań stron
+.use(ToastContainer) // Kontener Toast do wyświetlania na ekranie komunikatów
+.use(createBootstrap()) // Style bootstrap-vue-next
+.mount('#app');

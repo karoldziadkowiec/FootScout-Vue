@@ -155,7 +155,7 @@ const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPer
             <p></p>
 
             <div class="d-flex align-items-center mb-3">
-            <!-- Search -->
+            <!-- Wyszukiwanie ofert -->
             <div>
                 <label class="form-label"><strong>Search</strong></label>
                 <input 
@@ -166,7 +166,7 @@ const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPer
                 />
             </div>
 
-            <!-- Status -->
+            <!-- Filtrowanie po statusie -->
             <div class="ms-auto">
                 <label class="form-label"><strong>Ad Status</strong></label>
                 <select class="form-select" v-model="selectedStatus">
@@ -176,7 +176,7 @@ const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPer
                 </select>
             </div>
 
-            <!-- Filter Positions -->
+            <!-- Filtrowanie po pozycji -->
             <div class="ms-auto">
                 <label class="form-label"><strong>Filter Positions</strong></label>
                 <select class="form-select" v-model="selectedPosition">
@@ -187,7 +187,7 @@ const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPer
                 </select>
             </div>
 
-            <!-- Sort -->
+            <!-- Sortowanie -->
             <div class="ms-auto">
                 <label class="form-label"><strong>Sort by</strong></label>
                 <select class="form-select" v-model="sortCriteria">
@@ -266,7 +266,7 @@ const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPer
             </table>
         </div>
 
-        <!-- Details Modal -->
+        <!-- Modal szczegółów oferty -->
         <div class="modal" id="offerDetailsModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -290,7 +290,7 @@ const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPer
             </div>
         </div>
 
-        <!-- Delete Modal -->
+        <!-- Modal usuwania oferty -->
         <div class="modal" id="deleteOfferModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -307,7 +307,7 @@ const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPer
             </div>
         </div>
 
-        <!-- Pagination -->
+        <!-- Paginacja -->
         <nav class="admin-pagination-container">
             <ul class="pagination pagination-blue">
                 <li class="page-item" :class="{ disabled: currentPage === 1 }">

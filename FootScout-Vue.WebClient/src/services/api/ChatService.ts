@@ -4,6 +4,7 @@ import { AccountService } from './AccountService';
 import type { Chat } from '../../models/interfaces/Chat';
 import type { ChatCreateDTO } from '../../models/dtos/ChatCreateDTO';
 
+// Serwis do zarządzania czatami, wykorzystujący axios do komunikacji z API
 const ChatService = {
     async getChatById(chatId: number): Promise<Chat> {
         try {

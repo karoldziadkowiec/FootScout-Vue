@@ -67,7 +67,7 @@
       await ChatService.deleteChat(deleteChatRoomId.value);
       toast.success("Your chat room has been deleted successfully.");
   
-      // Refresh chat data
+      // Odśwież dane
       const chats = await UserService.getUserChats(userId.value);
       userChats.value = chats;
       await fetchLastMessageDates(chats);
@@ -119,7 +119,7 @@
         </table>
         </div>
 
-        <!-- Delete Chat Room Modal -->
+        <!-- Modal usuwania chat roomu -->
         <div class="modal" id="deleteChatRoomModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

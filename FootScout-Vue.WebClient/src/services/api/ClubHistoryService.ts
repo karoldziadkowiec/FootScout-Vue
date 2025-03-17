@@ -4,6 +4,7 @@ import { AccountService } from './AccountService';
 import type { ClubHistoryModel } from '../../models/interfaces/ClubHistory';
 import type { ClubHistoryCreateDTO } from '../../models/dtos/ClubHistoryCreateDTO';
 
+// Serwis do zarządzania historiami klubowymi użytkowników, wykorzystujący axios do komunikacji z API
 const ClubHistoryService = {
     async getClubHistory(clubHistoryId: number): Promise<ClubHistoryModel> {
         try {

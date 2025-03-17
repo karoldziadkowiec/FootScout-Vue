@@ -20,7 +20,7 @@ const registerDTO = ref<RegisterDTO>({
 });
 
 onMounted(async () => {
-    // // Clearing AuthToken when the Login component is rendered
+    // wyczyść AuthToken w cookies na wejściu
     await AccountService.logout();
 });
 
@@ -44,16 +44,16 @@ const handleRegister = async () => {
 const validateForm = () => {
     const { email, password, confirmPassword, firstName, lastName, phoneNumber, location } = registerDTO.value;
 
-    // Checking empty fields
+    // sprawdź puste pola
     if (!email || !password || !confirmPassword || !firstName || !lastName || !phoneNumber || !location)
         return 'All fields are required.';
 
-    // E-mail validation
+    // walidacja E-mail
     const emailError = emailValidator(email);
     if (emailError)
         return emailError;
 
-    // Password validation
+    // walidacja hasła
     const passwordError = passwordValidator(password);
     if (passwordError)
         return passwordError;
@@ -62,11 +62,11 @@ const validateForm = () => {
     if (password !== confirmPassword)
         return 'Passwords do not match.';
 
-    // Checking phone number type
+    // walidacja typu numeru telefonu
     if (isNaN(Number(phoneNumber)))
         return 'Phone number must be a number.';
 
-    // Checking phone number length
+    // walidacja długości numeru telefonu
     if (phoneNumber.length !== 9)
         return 'Phone number must contain exactly 9 digits.';
 

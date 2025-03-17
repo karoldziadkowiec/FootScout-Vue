@@ -3,11 +3,12 @@
   import { Chart, registerables } from 'chart.js';
   import { BarChart } from 'vue-chart-3';
 
-  // Rejestrujemy moduły Chart.js
+  // Rejestrowanie modułów Chart.js
   Chart.register(...registerables);
 
   const props = defineProps<{ chartData: any }>();
 
+  // opcje histogramu
   const chartOptions = reactive({
     responsive: true,
     maintainAspectRatio: false,
@@ -20,6 +21,6 @@
 
 <template>
   <div>
-    <BarChart :chart-data="chartData" :chart-options="chartOptions" />
+    <BarChart :chart-data="chartData" :chart-options="chartOptions" /> <!-- wyświetl histogram -->
   </div>
 </template>

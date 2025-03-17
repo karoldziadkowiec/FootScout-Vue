@@ -177,7 +177,7 @@ const handleOpenChat = async (receiverId: string) => {
             </table>
         </div>
         
-        <!-- Details of Received Club Offer -->
+        <!-- Modal ze szczegółami oferty klubu -->
         <div class="modal" id="offerDetailsModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -226,7 +226,7 @@ const handleOpenChat = async (receiverId: string) => {
             </div>
         </div>
 
-        <!-- Accept Received Club Offer -->
+        <!-- Modal akceptowania oferty klubu  -->
         <div class="modal" id="acceptOfferModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -245,7 +245,7 @@ const handleOpenChat = async (receiverId: string) => {
             </div>
         </div>
         
-        <!-- Reject Received Club Offer -->
+        <!-- Modal odrzucania oferty klubu -->
         <div class="modal" id="rejectOfferModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">

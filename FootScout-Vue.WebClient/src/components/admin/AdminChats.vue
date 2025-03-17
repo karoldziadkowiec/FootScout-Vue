@@ -195,7 +195,7 @@ const totalPages = computed(() => Math.ceil(sortedChats.value.length / itemsPerP
       </table>
     </div>
 
-    <!-- Delete Chat Room Modal -->
+    <!-- Modal usuwania chat roomu -->
     <div class="modal" id="deleteChatRoomModal" tabindex="-1">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -214,7 +214,7 @@ const totalPages = computed(() => Math.ceil(sortedChats.value.length / itemsPerP
         </div>
     </div>
 
-    <!-- Pagination -->
+    <!-- Paginacja -->
     <nav class="admin-pagination-container">
         <ul class="pagination pagination-blue">
             <li class="page-item" :class="{ disabled: currentPage === 1 }">

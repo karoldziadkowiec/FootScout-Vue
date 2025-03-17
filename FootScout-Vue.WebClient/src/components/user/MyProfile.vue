@@ -74,15 +74,15 @@ const handleEditProfile = async () => {
 const validateEditForm = () => {
     const { firstName, lastName, phoneNumber, location } = updateFormData.value;
 
-    // Checking empty fields
+    // Sprawdź czy są puste formsy
     if (!firstName || !lastName || !phoneNumber || !location)
         return 'All fields are required.';
 
-    // Checking phone number type
+    // walidacja typu numeru telefonu
     if (isNaN(Number(phoneNumber)))
         return 'Phone number must be a number.';
 
-    // Checking phone number length
+    // walidacja długosci numeru telefonu
     if (phoneNumber.length !== 9)
         return 'Phone number must contain exactly 9 digits.';
 
@@ -114,19 +114,19 @@ const handleResetPassword = async () => {
 const validateResetPasswordForm = () => {
     const { passwordHash, confirmPasswordHash } = resetPasswordFormData.value;
 
-    // Checking empty fields
+    // sprawdź czy istnieją niewypełnione formsy
     if (!passwordHash || !confirmPasswordHash)
         return 'All fields are required.';
 
-    // Checking phone number length
+    // sprawdź długość haseł
     if (passwordHash.length < 7 || confirmPasswordHash.length < 7)
         return 'Password must contain minimum 7 digits.';
 
-    // Passwords matcher
+    // porównanie haseł
     if (passwordHash !== confirmPasswordHash)
         return 'New passwords do not match.';
 
-    // Password validation
+    // walidacja hasła
     const passwordError = passwordValidator(passwordHash);
     if (passwordError)
         return passwordError;

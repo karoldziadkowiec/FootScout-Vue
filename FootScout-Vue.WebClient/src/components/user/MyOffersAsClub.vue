@@ -144,7 +144,7 @@ const handleOpenChat = async (receiverId: string) => {
       </table>
     </div>
 
-    <!-- Offer Details Modal -->
+    <!-- Modal szczegółów oferty  -->
     <div class="modal" id="offerDetailsModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -195,7 +195,7 @@ const handleOpenChat = async (receiverId: string) => {
         </div>
     </div>
 
-    <!-- Delete Offer Modal -->
+    <!-- Modal usuwania oferty -->
     <div class="modal" id="deleteOfferModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

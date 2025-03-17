@@ -65,7 +65,7 @@ const checkProblemSolved = async () => {
     });
     toast.success("Reported problem has been set to solved.");
 
-    // Odświeżenie danych
+    // Odświeżanie danych
     unsolvedProblems.value = await ProblemService.getUnsolvedProblems();
     unsolvedProblemCount.value = await ProblemService.getUnsolvedProblemCount();
     solvedProblems.value = await ProblemService.getSolvedProblems();
@@ -233,7 +233,7 @@ const exportDataToCSV = async () => {
         </div>
       </div>
   
-      <!-- Problem Details Modal -->
+      <!-- Modal szczegółów problemu -->
     <div class="modal" id="problemDetailsModal" tabindex="-1">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -262,7 +262,7 @@ const exportDataToCSV = async () => {
       </div>
     </div>
 
-    <!-- Confirm Problem Solved Modal -->
+    <!-- Modal do zaznaczania problemu jako rozwiązany -->
     <div class="modal" id="checkProblemSolvedModal" tabindex="-1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

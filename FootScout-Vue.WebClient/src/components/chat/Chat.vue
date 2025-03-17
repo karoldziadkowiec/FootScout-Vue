@@ -249,7 +249,7 @@ async function deleteMessage() {
       </form>
     </div>
 
-    <!-- Delete Chat Room Modal -->
+    <!-- Modal usuwania chat roomu -->
       <div class="modal" id="deleteChatRoomModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -268,7 +268,7 @@ async function deleteMessage() {
         </div>
       </div>
 
-      <!-- Delete Chat Message -->
+      <!-- Modal usuwania wiadomości -->
       <div class="modal" id="deleteMessageModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

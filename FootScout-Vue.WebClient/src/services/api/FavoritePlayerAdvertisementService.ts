@@ -3,6 +3,7 @@ import { ApiURL } from '../../config/ApiURL';
 import { AccountService } from './AccountService';
 import type { FavoritePlayerAdvertisementCreateDTO } from '../../models/dtos/FavoritePlayerAdvertisementCreateDTO';
 
+// Serwis do zarządzania polubionymi ogłoszeniami piłkarskimi, wykorzystujący axios do komunikacji z API
 const FavoritePlayerAdvertisementService = {
     async addToFavorites(dto: FavoritePlayerAdvertisementCreateDTO): Promise<void> {
         try {

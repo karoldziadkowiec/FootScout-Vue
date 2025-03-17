@@ -3,6 +3,7 @@ import { ApiURL } from '../../config/ApiURL';
 import { AccountService } from './AccountService';
 import type { PlayerFoot } from '../../models/interfaces/PlayerFoot';
 
+// Serwis do zarządzania preferowanymi nogami piłkarzy, wykorzystujący axios do komunikacji z API
 const PlayerFootService = {
     async getPlayerFeet(): Promise<PlayerFoot[]> {
         try {

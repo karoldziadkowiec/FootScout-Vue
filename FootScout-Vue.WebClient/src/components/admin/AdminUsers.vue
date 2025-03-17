@@ -117,29 +117,29 @@ const register = async () => {
 const validateForm = () => {
     const { email, password, confirmPassword, firstName, lastName, phoneNumber, location } = createDTO;
 
-    // Checking empty fields
+    // sprawdź czy są niewypełnione formsy
     if (!email || !password || !confirmPassword || !firstName || !lastName || !phoneNumber || !location)
         return 'All fields are required.';
 
-    // E-mail validation
+    // walidacja E-mail
     const emailError = emailValidator(email);
     if (emailError)
         return emailError;
 
-    // Password validation
+    // walidacja hasła
     const passwordError = passwordValidator(password);
     if (passwordError)
         return passwordError;
 
-    // Passwords matcher
+    // porównywanie haseł
     if (password !== confirmPassword)
         return 'Passwords do not match.';
 
-    // Checking phone number type
+    // sprawdź typ numeru telefonu
     if (isNaN(Number(phoneNumber)))
         return 'Phone number must be a number.';
 
-    // Checking phone number length
+    // sprawdź długość numeru telefonu
     if (phoneNumber.length !== 9)
         return 'Phone number must contain exactly 9 digits.';
 
@@ -192,15 +192,15 @@ const editProfile = async () => {
 const validateEditForm = () => {
     const { firstName, lastName, phoneNumber, location } = updateFormData.value;
 
-    // Checking empty fields
+    // sprawdź czy istnieją niewypełnione formsy
     if (!firstName || !lastName || !phoneNumber || !location)
         return 'All fields are required.';
 
-    // Checking phone number type
+    // sprawdź typ numeru telefonu
     if (isNaN(Number(phoneNumber)))
         return 'Phone number must be a number.';
 
-    // Checking phone number length
+    // sprawdź długość numeru telefonu
     if (phoneNumber.length !== 9)
         return 'Phone number must contain exactly 9 digits.';
 
@@ -323,7 +323,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
       <p></p>
   
       <div class="d-flex align-items-center mb-3">
-        <!-- Search -->
+        <!-- Przycisk szukania -->
         <div>
           <label class="form-label"><strong>Search</strong></label>
           <input 
@@ -333,7 +333,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
             v-model="searchTerm"
           />
         </div>
-        <!-- Filter Roles -->
+        <!-- Filtrowanie roli -->
         <div class="ms-auto">
           <label class="form-label"><strong>Filter Roles</strong></label>
           <select class="form-select" v-model="selectedRole">
@@ -341,7 +341,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
             <option v-for="role in roles" :key="role">{{ role }}</option>
           </select>
         </div>
-        <!-- Sort -->
+        <!-- Sortowanie -->
         <div class="ms-auto">
           <label class="form-label"><strong>Sort by</strong></label>
           <select class="form-select" v-model="sortCriteria">
@@ -361,7 +361,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
         </div>
       </div>
   
-      <!-- Users Table -->
+      <!-- Tabela użytkowników -->
       <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-light">
           <thead class="table-dark">
@@ -424,7 +424,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
         </table>
       </div>
   
-      <!-- Create User Modal -->
+      <!-- Modal tworzenia użytkownika -->
       <div class="modal" id="registerModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -494,7 +494,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
         </div>
     </div>
 
-    <!-- Edit Profile Modal -->
+    <!-- Modal edycji danych użytkownika -->
     <div class="modal" id="editProfileModal" tabindex="-1">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -530,7 +530,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
         </div>
     </div>
 
-    <!-- Delete User Modal -->
+    <!-- Modal usuwania profilu użytkownika -->
     <div class="modal" id="deleteProfileModal" tabindex="-1">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -549,7 +549,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
         </div>
     </div>
 
-    <!-- Details of Club History Modal -->
+    <!-- Modal szczegółów/danych konta -->
     <div class="modal" id="profileDetailsModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -595,7 +595,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
         </div>
     </div>
 
-     <!-- Pagination -->
+     <!-- Paginacja -->
      <nav class="admin-pagination-container">
         <ul class="pagination pagination-blue">
             <li class="page-item" :class="{ disabled: currentPage === 1 }">

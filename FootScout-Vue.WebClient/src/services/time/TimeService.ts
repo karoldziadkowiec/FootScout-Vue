@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 
+// Serwis do konwertowania/formatowania czasu i dat
 export const TimeService = {
   getCurrentDateTime(): string {
     const now = new Date();

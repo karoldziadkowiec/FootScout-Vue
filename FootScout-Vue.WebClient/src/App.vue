@@ -6,6 +6,7 @@ import './style.css';
 
 <template>
   <div class="App">
+  <!-- Navbar na samej górze strony dla usera/admina albo w ogóle -->
     <DynamicNavbar>
       <router-view></router-view> <!-- Dynamiczne strony aplikacji -->
     </DynamicNavbar>

@@ -3,6 +3,7 @@ import { ApiURL } from '../../config/ApiURL';
 import { AccountService } from './AccountService';
 import type { PlayerPosition } from '../../models/interfaces/PlayerPosition';
 
+// Serwis do zarządzania pozycjami piłkarskimi, wykorzystujący axios do komunikacji z API
 const PlayerPositionService = {
     async getPlayerPositions(): Promise<PlayerPosition[]> {
         try {

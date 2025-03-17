@@ -6,6 +6,7 @@ import type { RegisterDTO } from '../../models/dtos/RegisterDTO';
 import { jwtDecode } from 'jwt-decode'
 import { Role } from '../../models/enums/Role';
 
+// Serwis do zarządzania użytkownikami, autoryzacją, tokanami itd... wykorzystujący axios do komunikacji z API
 export const AccountService = {
   async registerUser(registerDTO: RegisterDTO) {
     try {

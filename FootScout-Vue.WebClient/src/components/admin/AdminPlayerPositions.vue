@@ -83,7 +83,7 @@
         </table>
       </div>
   
-      <!-- Create Position Modal -->
+      <!-- Modal tworzenia nowej pozycji -->
       <div class="modal" id="createPositionModal" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">

@@ -4,6 +4,7 @@ import { AccountService } from './AccountService';
 import type { Problem } from '../../models/interfaces/Problem';
 import type { ProblemCreateDTO } from '../../models/dtos/ProblemCreateDTO';
 
+// Serwis do zarządzania zgłoszonymi problemami przez użytkowników, wykorzystujący axios do komunikacji z API
 const ProblemService = {
     async getProblem(problemId: number): Promise<Problem> {
         try {

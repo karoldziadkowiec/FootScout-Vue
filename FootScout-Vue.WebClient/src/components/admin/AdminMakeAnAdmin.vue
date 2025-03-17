@@ -245,7 +245,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
             </div>
         </div>
 
-        <!-- Modal: Make an Admin -->
+        <!-- Modal zmiany użytkownika na admina -->
         <div class="modal" id="makeAnAdminModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -264,7 +264,7 @@ const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPe
             </div>
         </div>
 
-        <!-- Modal: Make a User -->
+        <!-- Modal zmiany admina na użytkownika -->
         <div class="modal" id="makeAnUserModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">

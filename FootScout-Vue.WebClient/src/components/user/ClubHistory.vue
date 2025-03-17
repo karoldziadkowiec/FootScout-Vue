@@ -249,7 +249,7 @@ const handleDeleteClubHistory = async () => {
                 </div>
               </div>
 
-              <!-- Achievements -->
+              <!-- Achievements - Osiągnięcia klubowe -->
               <div class="mb-3 row">
                 <label class="col-sm-3 col-form-label">Matches*</label>
                 <div class="col-sm-9">
@@ -286,7 +286,7 @@ const handleDeleteClubHistory = async () => {
       </div>
     </div>
 
-    <!-- Details of Club History Modal -->
+    <!-- Modal szczegółów historii klubowych -->
     <div class="modal" id="clubHistoryDetailsModal" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -323,7 +323,7 @@ const handleDeleteClubHistory = async () => {
       </div>
     </div>
 
-    <!-- Edit Club History Modal -->
+    <!-- Modal edycji historii klubowej -->
     <div v-if="editFormData" class="modal" id="editClubHistoryModal" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -416,7 +416,7 @@ const handleDeleteClubHistory = async () => {
       </div>
     </div>
     
-    <!-- Delete Club History Modal -->
+    <!-- Modal usuwania historii klubowej -->
     <div class="modal" id="deleteClubHistoryModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">

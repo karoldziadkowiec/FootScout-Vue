@@ -178,7 +178,7 @@ const handleDeletePlayerAdvertisement = async () => {
 
     try {
         await PlayerAdvertisementService.deletePlayerAdvertisement(playerAdvertisement.value.id);
-        if(isAdminRole)
+        if(isAdminRole.value === true)
         {
             toast.success('Player advertisement has been deleted successfully.');
             closeModal('deletePlayerAdvertisementModal');

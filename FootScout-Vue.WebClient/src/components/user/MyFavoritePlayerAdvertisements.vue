@@ -217,7 +217,7 @@ const handleOpenChat = async (receiverId: string) => {
             </div>
         </div>
 
-        <!-- Modal: Delete confirmation -->
+        <!-- Modal usuwania ogłoszenia z ulubionych -->
         <div class="modal" id="deleteFromFavoritesModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">

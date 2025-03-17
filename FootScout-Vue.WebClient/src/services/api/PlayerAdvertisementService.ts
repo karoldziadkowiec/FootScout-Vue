@@ -4,6 +4,7 @@ import { AccountService } from './AccountService';
 import type { PlayerAdvertisement } from '../../models/interfaces/PlayerAdvertisement';
 import type { PlayerAdvertisementCreateDTO } from '../../models/dtos/PlayerAdvertisementCreateDTO';
 
+// Serwis do zarządzania ogłoszeniami piłkarskimi, wykorzystujący axios do komunikacji z API
 const PlayerAdvertisementService = {
     async getPlayerAdvertisement(playerAdvertisementId: number): Promise<PlayerAdvertisement> {
         try {

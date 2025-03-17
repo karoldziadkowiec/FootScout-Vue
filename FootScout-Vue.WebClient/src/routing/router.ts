@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { AccountService } from '../services/api/AccountService';
 import { Role } from '../models/enums/Role';
-// Public
+// Publiczne dostępne strony
 import Login from '../components/account/Login.vue';
 import Registration from '../components/account/Registration.vue';
-// User
+// Strony użytkownika
 import Home from '../components/home/Home.vue';
 import MyProfile from '../components/user/MyProfile.vue';
 import ClubHistory from '../components/user/ClubHistory.vue';
@@ -18,7 +18,7 @@ import MyOffersAsPlayer from '../components/user/MyOffersAsPlayer.vue';
 import MyOffersAsClub from '../components/user/MyOffersAsClub.vue';
 import NewPlayerAdvertisement from '../components/playerAdvertisement/NewPlayerAdvertisement.vue';
 import Support from '../components/support/Support.vue';
-// Admin
+// Strony admina
 import AdminDashboard from '../components/admin/AdminDashboard.vue';
 import AdminUsers from '../components/admin/AdminUsers.vue';
 import AdminChats from '../components/admin/AdminChats.vue';
@@ -32,12 +32,13 @@ import AdminRaportsChats from '../components/admin/AdminRaportsChats.vue';
 import AdminRaportsPlayerAdvertisements from '../components/admin/AdminRaportsPlayerAdvertisements.vue';
 import AdminRaportsClubOffers from '../components/admin/AdminRaportsClubOffers.vue';
 
+// ścieżki
 const routes = [
-  // Public
+  // Publiczne dostępne strony
   { path: '/', name: 'Login', component: Login },
   { path: '/registration', name: 'Registration', component: Registration },
 
-  // User
+  // Strony użytkownika
   { path: '/home', name: 'Home', component: Home, meta: { roles: [Role.User] } },
   { path: '/my-profile', name: 'MyProfile', component: MyProfile, meta: { roles: [Role.Admin, Role.User] } },
   { path: '/club-history', name: 'ClubHistory', component: ClubHistory, meta: { roles: [Role.User] } },
@@ -52,7 +53,7 @@ const routes = [
   { path: '/new-player-advertisement', name: 'NewPlayerAdvertisement', component: NewPlayerAdvertisement, meta: { roles: [Role.User] } },
   { path: '/support', name: 'Support', component: Support, meta: { roles: [Role.Admin, Role.User] } },
 
-  // Admin routes
+  // Strony admina
   { path: '/admin/dashboard', name: 'AdminDashboard', component: AdminDashboard, meta: { roles: [Role.Admin] } },
   { path: '/admin/users', name: 'AdminUsers', component: AdminUsers, meta: { roles: [Role.Admin] } },
   { path: '/admin/chats', name: 'AdminChats', component: AdminChats, meta: { roles: [Role.Admin] } },
@@ -68,34 +69,39 @@ const routes = [
   { path: '/admin/raports/club-offers', name: 'AdminRaportsClubOffers', component: AdminRaportsClubOffers, meta: { roles: [Role.Admin] } },
 ];
 
+// Tworzenie routera Vue z wykorzystaniem historii przeglądarki
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+  history: createWebHistory(), // Używa historii HTML5 do obsługi nawigacji bez przeładowania strony
+  routes, // Przekazanie zdefiniowanych ścieżek do routera
 });
 
-// Middleware autoryzacji
+// Middleware autoryzacji – wywoływane przed każdą zmianą trasy
 router.beforeEach(async (to, _from, next) => {
-  const isAuthenticated = await AccountService.isAuthenticated();
-  const userRole = await AccountService.getRole();
-  const isTokenValid = await AccountService.isTokenAvailable();
+  const isAuthenticated = await AccountService.isAuthenticated(); // Sprawdź czy użytkownik jest zalogowany
+  const userRole = await AccountService.getRole(); // Pobierz rolę aktualnie zalogowanego użytkownika
+  const isTokenValid = await AccountService.isTokenAvailable(); // Sprawdź czy token sesji jest nadal ważny
 
   // Pobierz wymagane role, jeśli istnieją
   const requiredRoles = to.meta.roles as Role[] | undefined;
 
+  // Jeśli trasa wymaga określonych ról..
   if (requiredRoles?.length) {
+    // Jeśli użytkownik nie jest zalogowany przekierowuje go na stronę główną z komunikatem
     if (!isAuthenticated) {
       return next({ path: '/', state: { toastMessage: "You are not authenticated. Please log in." } });
     }
 
+    // Jeśli token sesji jest nieważny wymusza ponowne logowanie
     if (!isTokenValid) {
       return next({ path: '/', state: { toastMessage: "Session expired. Please log in again." } });
     }
 
+    // Jeśli użytkownik nie ma odpowiedniej roli odmawia dostępu
     if (!userRole || !requiredRoles.includes(userRole)) {
       return next({ path: '/', state: { toastMessage: "Access denied. Wrong role." } });
     }
   }
-  next();
+  next(); // Jeśli wszystkie warunki zostały spełnione przejdź do docelowej trasy
 });
 
 export default router;

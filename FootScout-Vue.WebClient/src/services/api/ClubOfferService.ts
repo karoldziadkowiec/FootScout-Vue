@@ -4,6 +4,7 @@ import { AccountService } from './AccountService';
 import type { ClubOffer } from '../../models/interfaces/ClubOffer';
 import type { ClubOfferCreateDTO } from '../../models/dtos/ClubOfferCreateDTO';
 
+// Serwis do zarządzania ofertami klubów, wykorzystujący axios do komunikacji z API
 const ClubOfferService = {
     async getClubOffer(clubOfferId: number): Promise<ClubOffer> {
         try {

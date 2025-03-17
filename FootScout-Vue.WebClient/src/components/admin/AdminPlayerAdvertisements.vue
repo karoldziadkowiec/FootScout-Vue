@@ -193,7 +193,7 @@ const totalPages = computed(() => Math.ceil(filteredAdvertisements.value.length 
         <h1><i class="bi bi-list-nested"></i> Player Advertisements</h1>
         <p></p>
         <div class="d-flex align-items-center mb-3">
-            <!-- Search -->
+            <!-- Szukanie ogłoszenia -->
             <div>
                 <label class="form-label"><strong>Search</strong></label>
                 <input
@@ -203,7 +203,7 @@ const totalPages = computed(() => Math.ceil(filteredAdvertisements.value.length 
                     v-model="searchTerm"
                 />
             </div>
-            <!-- Status -->
+            <!-- Filtrowanie po statusie -->
             <div class="ms-auto">
                 <label class="form-label"><strong>Status</strong></label>
                 <select class="form-select" v-model="selectedStatus">
@@ -212,7 +212,7 @@ const totalPages = computed(() => Math.ceil(filteredAdvertisements.value.length 
                     <option value="inactive">Inactive</option>
                 </select>
             </div>
-            <!-- Filter Positions -->
+            <!-- Filtrowanie po pozycji -->
             <div class="ms-auto">
                 <label class="form-label"><strong>Filter Positions</strong></label>
                 <select class="form-select" v-model="selectedPosition">
@@ -222,7 +222,7 @@ const totalPages = computed(() => Math.ceil(filteredAdvertisements.value.length 
                     </option>
                 </select>
             </div>
-            <!-- Sort -->
+            <!-- Sortowanie -->
             <div class="ms-auto">
                 <label class="form-label"><strong>Sort by</strong></label>
                 <select class="form-select" v-model="sortCriteria">
@@ -292,7 +292,7 @@ const totalPages = computed(() => Math.ceil(filteredAdvertisements.value.length 
             </table>
         </div>
 
-        <!-- Finish Player Advertisement Modal -->
+        <!-- Modal zakończenia ogłoszenia piłkarskiego -->
         <div class="modal" id="finishAdvertisementModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -311,7 +311,7 @@ const totalPages = computed(() => Math.ceil(filteredAdvertisements.value.length 
             </div>
         </div>
 
-        <!-- Delete Advertisement Modal -->
+        <!-- Modal usuwania ogłoszenia piłkarskiego -->
         <div class="modal" id="deleteAdvertisementModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -330,7 +330,7 @@ const totalPages = computed(() => Math.ceil(filteredAdvertisements.value.length 
             </div>
         </div>
 
-        <!-- Pagination -->
+        <!-- Paginacja -->
         <nav class="admin-pagination-container">
             <ul class="pagination pagination-blue">
                 <li class="page-item" :class="{ disabled: currentPage === 1 }">

@@ -10,7 +10,7 @@ const role = ref<Role | null>(null);
 const route = useRoute(); // Pobierz aktualną trasę
 
 const fetchRole = async () => {
-  role.value = await AccountService.getRole();
+  role.value = await AccountService.getRole(); // pobierz rolę
 };
 
 // Pobierz rolę przy zamontowaniu komponentu

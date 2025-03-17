@@ -14,7 +14,7 @@ const email = ref<string>('');
 const password = ref<string>('');
 
 onMounted(async () => {
-  // Clearing AuthToken when the Login component is rendered
+  // wyczyść AuthToken w cookies na wejściu
   await AccountService.logout();
   if (route.query.toastMessage) {
     toast.info(route.query.toastMessage as string);

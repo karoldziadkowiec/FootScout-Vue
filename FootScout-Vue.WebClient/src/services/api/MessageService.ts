@@ -3,6 +3,7 @@ import { ApiURL } from '../../config/ApiURL';
 import { AccountService } from './AccountService';
 import type { Message } from '../../models/interfaces/Message';
 
+// Serwis do zarządzania wiadomomściami czatów, wykorzystujący axios do komunikacji z API
 const MessageService = {
     async getAllMessages(): Promise<Message[]> {
         try {

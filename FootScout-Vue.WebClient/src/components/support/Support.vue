@@ -67,7 +67,7 @@ const handleReportProblem = async () => {
     <div v-if="!isSubmitted" class="row justify-content-md-center forms-container">
       <div class="col-md-6">
         <form @submit.prevent="handleReportProblem">
-          <!-- Title -->
+          <!-- Tytuł -->
           <div class="mb-3">
             <label for="title" class="white-label">Title*</label>
             <input
@@ -81,7 +81,7 @@ const handleReportProblem = async () => {
             />
           </div>
 
-          <!-- Description -->
+          <!-- Opis -->
           <div class="mb-3">
             <label for="description" class="white-label">Description*</label>
             <textarea
@@ -94,7 +94,7 @@ const handleReportProblem = async () => {
             ></textarea>
           </div>
 
-          <!-- Submit Button -->
+          <!-- Przycisk do zgłoszenia problemu -->
           <button type="submit" class="btn btn-primary">
             <i class="bi bi-flag-fill"></i> Submit
           </button>
@@ -102,7 +102,7 @@ const handleReportProblem = async () => {
       </div>
     </div>
 
-    <!-- Success Message -->
+    <!-- Kontener wiadomości o poprawnym zgłoszeniu problemu -->
     <div v-else class="text-center mt-4 success-container">
       <h5 class="text-success">Problem/request has been reported successfully!</h5>
       <i class="bi bi-check-circle-fill text-success fs-3"></i>
