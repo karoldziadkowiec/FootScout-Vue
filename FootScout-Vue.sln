@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootScout-Vue.WebAPI", "Foo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootScout-Vue.WebAPI.UnitTests", "FootScout-Vue.WebAPI.UnitTests\FootScout-Vue.WebAPI.UnitTests.csproj", "{31631491-52F7-43A2-9134-1BE3E3811F2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootScout-Vue.WebAPI.IntegrationTests", "FootScout-Vue.WebAPI.IntegrationTests\FootScout-Vue.WebAPI.IntegrationTests.csproj", "{93654C83-333B-46B6-8896-C76C7AA71CC6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{31631491-52F7-43A2-9134-1BE3E3811F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31631491-52F7-43A2-9134-1BE3E3811F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31631491-52F7-43A2-9134-1BE3E3811F2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93654C83-333B-46B6-8896-C76C7AA71CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93654C83-333B-46B6-8896-C76C7AA71CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93654C83-333B-46B6-8896-C76C7AA71CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93654C83-333B-46B6-8896-C76C7AA71CC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
