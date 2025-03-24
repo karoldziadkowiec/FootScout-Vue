@@ -20,7 +20,7 @@ const isActive = (path: string) => route.path.startsWith(path);
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-primary bg-primary sticky-top">
     <div class="container">
       <img src="../../img/logo.png" alt="logo" class="logo" />
       <router-link to="/admin/dashboard" class="navbar-brand">FootScout</router-link>
