@@ -9,6 +9,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Services
 {
+    // Testy jednostkowe dla metod serwisów związanych z ciasteczkami
     public class CookieServiceTests : TestBase
     {
         [Fact]

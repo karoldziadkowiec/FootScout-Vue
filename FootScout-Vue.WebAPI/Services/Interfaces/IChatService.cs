@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Services.Interfaces
 {
+    // Interfejs deklarujący operacje związane z czatem
     public interface IChatService
     {
         Task<Chat> GetChatById(int chatId);

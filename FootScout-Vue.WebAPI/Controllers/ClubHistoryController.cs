@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla historii klubowych
     [Route("api/club-history")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -23,7 +24,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/club-history/:clubHistoryId
+        // GET: api/club-history/:clubHistoryId  ->  zwróć historie klubu dla konkretnego id
         [HttpGet("{clubHistoryId}")]
         public async Task<ActionResult<ClubHistory>> GetClubHistory(int clubHistoryId)
         {
@@ -34,7 +35,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(clubHistory);
         }
 
-        // GET: api/club-history
+        // GET: api/club-history  ->  zwróć wszystkie historie klubowe
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClubHistory>>> GetAllClubHistory()
         {
@@ -42,7 +43,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(clubHistories);
         }
 
-        // GET: api/club-history/count
+        // GET: api/club-history/count  ->  zwróć liczbę historii klubowych
         [HttpGet("count")]
         public async Task<IActionResult> GetClubHistoryCount()
         {
@@ -50,7 +51,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // POST: api/club-history
+        // POST: api/club-history  ->  utwórdz nową historię klubową
         [HttpPost]
         public async Task<ActionResult> CreateClubHistory([FromBody] ClubHistoryCreateDTO dto)
         {
@@ -67,7 +68,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(clubHistory);
         }
 
-        // PUT: api/club-history/:clubHistoryId
+        // PUT: api/club-history/:clubHistoryId  ->  zaktualizuj konkretną historię klubową
         [HttpPut("{clubHistoryId}")]
         public async Task<ActionResult> UpdateClubHistory(int clubHistoryId, [FromBody] ClubHistory clubHistory)
         {
@@ -81,7 +82,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/club-history/:clubHistoryId
+        // DELETE: api/club-history/:clubHistoryId  ->  usuń konkretną historię klubową
         [HttpDelete("{clubHistoryId}")]
         public async Task<ActionResult> DeleteClubHistory(int clubHistoryId)
         {

@@ -9,6 +9,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z czatami
     public class ChatControllerTests
     {
         private readonly Mock<IChatService> _mockChatService;

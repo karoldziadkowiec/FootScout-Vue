@@ -6,6 +6,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych ze statusami ofert
     public class OfferStatusControllerTests
     {
         private readonly Mock<IOfferStatusRepository> _mockOfferStatusRepository;

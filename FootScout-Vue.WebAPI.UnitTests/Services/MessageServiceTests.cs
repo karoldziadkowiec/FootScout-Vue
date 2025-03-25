@@ -5,6 +5,7 @@ using FootScout_Vue.WebAPI.UnitTests.TestManager;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Services
 {
+    // Testy jednostkowe dla metod serwisów związanych z wiadomościami
     public class MessageServiceTests : TestBase
     {
         [Fact]

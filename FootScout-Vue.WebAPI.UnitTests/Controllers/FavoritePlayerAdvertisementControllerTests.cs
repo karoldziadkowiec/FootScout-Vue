@@ -8,6 +8,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z ulubionymi ogłoszeniami
     public class FavoritePlayerAdvertisementControllerTests
     {
         private readonly Mock<IFavoritePlayerAdvertisementRepository> _mockFavoritePlayerAdvertisementRepository;

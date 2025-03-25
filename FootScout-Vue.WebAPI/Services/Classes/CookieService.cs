@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace FootScout_Vue.WebAPI.Services.Classes
 {
+    // Serwis z zaimplementowanymi metodami związanymi z ciasteczkami
     public class CookieService : ICookieService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -12,6 +13,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             _httpContextAccessor = httpContextAccessor;
         }
 
+        // Ustaw ciasteczka
         public async Task SetCookies(JwtSecurityToken token, string tokenString)
         {
             var cookieOptions = new CookieOptions

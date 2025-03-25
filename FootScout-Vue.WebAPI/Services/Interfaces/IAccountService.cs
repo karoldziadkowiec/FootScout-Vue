@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Services.Interfaces
 {
+    // Interfejs deklarujący operacje związane z zarządzaniem kontem użytkownika 
     public interface IAccountService
     {
         Task Register(RegisterDTO registerDTO);

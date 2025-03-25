@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla ulubionych ogłoszeń piłkarzy
     [Route("api/player-advertisements/favorites")]
     [Authorize(Policy = "UserRights")]
     [ApiController]
@@ -21,7 +22,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        // POST: api/player-advertisements/favorites
+        // POST: api/player-advertisements/favorites  ->  dodaj konkretne ogłoszenie do ulubionych
         [HttpPost]
         public async Task<ActionResult> AddToFavorites([FromBody] FavoritePlayerAdvertisementCreateDTO dto)
         {
@@ -34,7 +35,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(favoritePlayerAdvertisement);
         }
 
-        // DELETE: api/player-advertisements/favorites/:favoritePlayerAdvertisementId
+        // DELETE: api/player-advertisements/favorites/:favoritePlayerAdvertisementId  ->  usuń konkretne ogłoszenie z ulubionych
         [HttpDelete("{favoritePlayerAdvertisementId}")]
         public async Task<ActionResult> DeleteFromFavorites(int favoritePlayerAdvertisementId)
         {
@@ -42,7 +43,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // GET: api/player-advertisements/favorites/check/:playerAdvertisementId/:userId
+        // GET: api/player-advertisements/favorites/check/:playerAdvertisementId/:userId  ->  sprawdź czy ogłoszenie jest w ulubionych, jeżeli tak to zwróć jego id, jeżeli nie to zwróć 0
         [HttpGet("check/{playerAdvertisementId}/{userId}")]
         public async Task<IActionResult> CheckPlayerAdvertisementIsFavorite(int playerAdvertisementId, string userId)
         {

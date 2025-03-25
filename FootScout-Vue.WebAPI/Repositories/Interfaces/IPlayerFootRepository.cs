@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Repositories.Interfaces
 {
+    // Interfejs deklarujący operacje związane z nogami piłkarzy
     public interface IPlayerFootRepository
     {
         Task<IEnumerable<PlayerFoot>> GetPlayerFeet();

@@ -5,6 +5,7 @@ using FootScout_Vue.WebAPI.UnitTests.TestManager;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Repositories
 {
+    // Testy jednostkowe dla metod repozytoriów związanych z historiami klubowymi
     public class ClubHistoryRepositoryTests : TestBase
     {
         [Fact]

@@ -3,6 +3,7 @@ using FootScout_Vue.WebAPI.Models.DTOs;
 
 namespace FootScout_Vue.WebAPI.Repositories.Interfaces
 {
+    // Interfejs deklarujący operacje związane z użytkownikiem
     public interface IUserRepository
     {
         Task<UserDTO> GetUser(string userId);

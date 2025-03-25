@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FootScout_Vue.WebAPI.Entities
 {
+    // Model (encja) chat roomu
     public class Chat
     {
         [Key]

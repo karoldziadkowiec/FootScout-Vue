@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FootScout_Vue.WebAPI.Models.DTOs
+﻿namespace FootScout_Vue.WebAPI.Models.DTOs
 {
+    // Model DTO dla aktualizacji profilu użytkownika
     public class UserUpdateDTO
     {
         public string FirstName { get; set; }

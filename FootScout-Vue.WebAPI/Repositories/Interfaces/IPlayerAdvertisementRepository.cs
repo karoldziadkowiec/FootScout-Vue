@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Repositories.Interfaces
 {
+    // Interfejs deklarujący operacje związane z ogłoszeniami piłkarskimi
     public interface IPlayerAdvertisementRepository
     {
         Task<PlayerAdvertisement> GetPlayerAdvertisement(int playerAdvertisementId);

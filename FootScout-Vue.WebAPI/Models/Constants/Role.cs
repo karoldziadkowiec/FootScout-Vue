@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FootScout_Vue.WebAPI.Models.Constants
+﻿namespace FootScout_Vue.WebAPI.Models.Constants
 {
+    // Stałe dla ról w aplikacji
     public static class Role
     {
         public const string Admin = "Admin";

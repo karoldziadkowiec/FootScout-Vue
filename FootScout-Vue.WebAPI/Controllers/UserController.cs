@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla użytkowników
     [Route("api/users")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -19,7 +20,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _userRepository = userRepository;
         }
 
-        // GET: api/users/:userId
+        // GET: api/users/:userId  ->  zwróć użytkownika dla konkretnego id
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUser(string userId)
         {
@@ -30,7 +31,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userDTO);
         }
 
-        // GET: api/users
+        // GET: api/users  ->  zwróć wszystkich użytkowników
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
@@ -38,7 +39,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userDTOs);
         }
 
-        // GET: api/users/role/user
+        // GET: api/users/role/user  ->  zwróć użytkowników dla roli User
         [HttpGet("role/user")]
         public async Task<IActionResult> GetOnlyUsers()
         {
@@ -46,7 +47,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(onlyUserDTOs);
         }
 
-        // GET: api/users/role/admin
+        // GET: api/users/role/admin  ->  zwróć użytkowników dla roli Admin
         [HttpGet("role/admin")]
         public async Task<IActionResult> GetOnlyAdmins()
         {
@@ -54,7 +55,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(onlyAdminDTOs);
         }
 
-        // GET: api/users/:userId/role
+        // GET: api/users/:userId/role  ->  zwróć rolę dla konkretnego użytkownika
         [HttpGet("{userId}/role")]
         public async Task<IActionResult> GetUserRole(string userId)
         {
@@ -62,7 +63,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(role);
         }
 
-        // GET: api/users/count
+        // GET: api/users/count  ->  zwróć liczbę wszystkich użytkowników
         [HttpGet("count")]
         public async Task<IActionResult> GetUserCount()
         {
@@ -70,7 +71,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // PUT: api/users/:userId
+        // PUT: api/users/:userId  ->  zaktualizuj konkretnego użytkownika
         [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUser(string userId, [FromBody]UserUpdateDTO dto)
         {
@@ -88,7 +89,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // PUT: api/users/reset-password/:userId
+        // PUT: api/users/reset-password/:userId  ->  zresetuj hasło konkretnego użytkownika
         [HttpPut("reset-password/{userId}")]
         public async Task<IActionResult> ResetUserPassword(string userId, [FromBody] UserResetPasswordDTO dto)
         {
@@ -106,7 +107,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/users/:userId
+        // DELETE: api/users/:userId  ->  usuń konkretnego uzytkownika
         [HttpDelete("{userId}")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
@@ -129,7 +130,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // GET: api/users/:userId/club-history
+        // GET: api/users/:userId/club-history  ->  zwróć historie klubowe dla konkretnego użytkownika
         [HttpGet("{userId}/club-history")]
         public async Task<ActionResult<IEnumerable<ClubHistory>>> GetUserClubHistory(string userId)
         {
@@ -137,7 +138,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userClubHistories);
         }
 
-        // GET: api/users/:userId/player-advertisements
+        // GET: api/users/:userId/player-advertisements  ->  zwróć ogłoszenia dla konkretnego użytkownika
         [HttpGet("{userId}/player-advertisements")]
         public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetUserPlayerAdvertisements(string userId)
         {
@@ -145,7 +146,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userPlayerAdvertisements);
         }
 
-        // GET: api/users/:userId/player-advertisements/active
+        // GET: api/users/:userId/player-advertisements/active  ->  zwróć aktywne ogłoszenia dla konkretnego użytkownika
         [HttpGet("{userId}/player-advertisements/active")]
         public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetUserActivePlayerAdvertisements(string userId)
         {
@@ -153,7 +154,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userActivePlayerAdvertisements);
         }
 
-        // GET: api/users/:userId/player-advertisements/inactive
+        // GET: api/users/:userId/player-advertisements/inactive  ->  zwróć nieaktywne ogłoszenia dla konkretnego użytkownika
         [HttpGet("{userId}/player-advertisements/inactive")]
         public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetUserInactivePlayerAdvertisements(string userId)
         {
@@ -161,7 +162,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userInactivePlayerAdvertisements);
         }
 
-        // GET: api/users/:userId/player-advertisements/favorites
+        // GET: api/users/:userId/player-advertisements/favorites  ->  zwróć ulubione ogłoszenia dla konkretnego użytkownika
         [HttpGet("{userId}/player-advertisements/favorites")]
         public async Task<ActionResult<IEnumerable<FavoritePlayerAdvertisement>>> GetUserFavoritePlayerAdvertisements(string userId)
         {
@@ -169,7 +170,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userFavoritePlayerAdvertisements);
         }
 
-        // GET: api/users/:userId/player-advertisements/favorites/active
+        // GET: api/users/:userId/player-advertisements/favorites/active  ->  zwróć aktywne ulubione ogłoszenia dla konkretnego użytkownika
         [HttpGet("{userId}/player-advertisements/favorites/active")]
         public async Task<ActionResult<IEnumerable<FavoritePlayerAdvertisement>>> GetUserActiveFavoritePlayerAdvertisements(string userId)
         {
@@ -177,7 +178,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userActiveFavoritePlayerAdvertisements);
         }
 
-        // GET: api/users/:userId/player-advertisements/favorites/inactive
+        // GET: api/users/:userId/player-advertisements/favorites/inactive  ->  zwróć nieaktywne ulubione ogłoszenia dla konkretnego użytkownika
         [HttpGet("{userId}/player-advertisements/favorites/inactive")]
         public async Task<ActionResult<IEnumerable<FavoritePlayerAdvertisement>>> GetUserInactiveFavoritePlayerAdvertisements(string userId)
         {
@@ -185,7 +186,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userInactiveFavoritePlayerAdvertisements);
         }
 
-        // GET: api/users/:userId/club-offers/received
+        // GET: api/users/:userId/club-offers/received  ->  zwróć otrzymane oferty klubowe dla konkretnego użytkownika
         [HttpGet("{userId}/club-offers/received")]
         public async Task<ActionResult<IEnumerable<ClubOffer>>> GetReceivedClubOffers(string userId)
         {
@@ -193,7 +194,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(receivedClubOffers);
         }
 
-        // GET: api/users/:userId/club-offers/sent
+        // GET: api/users/:userId/club-offers/sent  ->  zwróć wysłane ogłoszenia klubowe dla konkretnego użytkownika
         [HttpGet("{userId}/club-offers/sent")]
         public async Task<ActionResult<IEnumerable<ClubOffer>>> GetSentClubOffers(string userId)
         {
@@ -201,7 +202,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(sentClubOffers);
         }
 
-        // GET: api/users/:userId/chats
+        // GET: api/users/:userId/chats  ->  zwróć czaty dla konkretnego użytkownika
         [HttpGet("{userId}/chats")]
         public async Task<ActionResult<IEnumerable<Chat>>> GetUserChats(string userId)
         {
@@ -209,7 +210,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(userChats);
         }
 
-        // GET: api/users/export
+        // GET: api/users/export  ->  eksportuj użytkowników do pliku .csv
         [HttpGet("export")]
         public async Task<IActionResult> ExportUsersToCsv()
         {

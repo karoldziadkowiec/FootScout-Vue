@@ -6,6 +6,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.Services.Classes
 {
+    // Serwis z zaimplementowanymi metodami związanymi z czatami
     public class ChatService : IChatService
     {
         private readonly AppDbContext _dbContext;
@@ -15,6 +16,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             _dbContext = dbContext;
         }
 
+        // Zwróć czat dla konkretnego id
         public async Task<Chat> GetChatById(int chatId)
         {
             return await _dbContext.Chats
@@ -23,6 +25,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
                 .FirstOrDefaultAsync(c => c.Id == chatId);
         }
 
+        // Zwróć wszystkie czaty
         public async Task<IEnumerable<Chat>> GetChats()
         {
             return await _dbContext.Chats
@@ -31,11 +34,13 @@ namespace FootScout_Vue.WebAPI.Services.Classes
                 .ToListAsync();
         }
 
+        // Zwróć liczbę wszystkich czatów
         public async Task<int> GetChatCount()
         {
             return await _dbContext.Chats.CountAsync();
         }
 
+        // Zwróć id czatu dla konkretnych użytkowników
         public async Task<int> GetChatIdBetweenUsers(string user1Id, string user2Id)
         {
             var chatId = await _dbContext.Chats
@@ -46,12 +51,14 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             return chatId;
         }
 
+        // Utwórz nowy czat
         public async Task CreateChat(Chat chat)
         {
             _dbContext.Chats.Add(chat);
             await _dbContext.SaveChangesAsync();
         }
 
+        // Usuń konkretny czat
         public async Task DeleteChat(int chatId)
         {
             var chat = await _dbContext.Chats.FindAsync(chatId);
@@ -68,6 +75,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        // Eksportuj czaty do pliku .csv
         public async Task<MemoryStream> ExportChatsToCsv()
         {
             var chats = await GetChats();

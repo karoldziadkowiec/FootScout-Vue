@@ -6,6 +6,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z pozycjami piłkarskimi
     public class PlayerPositionControllerTests
     {
         private readonly Mock<IPlayerPositionRepository> _mockPlayerPositionRepository;

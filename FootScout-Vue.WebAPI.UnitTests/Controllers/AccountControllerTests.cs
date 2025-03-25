@@ -7,6 +7,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z kontami użytkowników
     public class AccountControllerTests
     {
         private readonly Mock<IAccountService> _mockAccountService;

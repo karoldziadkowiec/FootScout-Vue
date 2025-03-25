@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Entities
 {
+    // Model (encja) widełek płacowych
     public class SalaryRange
     {
         [Key]

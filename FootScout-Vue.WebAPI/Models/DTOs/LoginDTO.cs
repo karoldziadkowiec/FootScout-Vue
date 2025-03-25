@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Models.DTOs
 {
+    // Model DTO dla logowania
     public class LoginDTO
     {
         [Required]

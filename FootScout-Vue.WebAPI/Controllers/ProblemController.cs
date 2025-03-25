@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla problemów aplikacji
     [Route("api/problems")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -21,7 +22,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/problems/:problemId
+        // GET: api/problems/:problemId  ->  zwróć problem dla konkretnego id
         [HttpGet("{problemId}")]
         public async Task<ActionResult<Problem>> GetProblem(int problemId)
         {
@@ -32,7 +33,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(problem);
         }
 
-        // GET: api/problems
+        // GET: api/problems  ->  zwróć wszystkie problemy
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Problem>>> GetAllProblems()
         {
@@ -40,7 +41,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(problems);
         }
 
-        // GET: api/problems/solved
+        // GET: api/problems/solved  ->  zwróć rozwiązane problemy
         [HttpGet("solved")]
         public async Task<ActionResult<IEnumerable<Problem>>> GetSolvedProblems()
         {
@@ -48,7 +49,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(solvedProblemss);
         }
 
-        // GET: api/problems/solved/count
+        // GET: api/problems/solved/count  ->  zwróć liczbę rozwiązanych problemów
         [HttpGet("solved/count")]
         public async Task<IActionResult> GetSolvedProblemCount()
         {
@@ -56,7 +57,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // GET: api/problems/unsolved
+        // GET: api/problems/unsolved  ->  zwróć nierozwiązane problemy
         [HttpGet("unsolved")]
         public async Task<ActionResult<IEnumerable<Problem>>> GetUnsolvedProblems()
         {
@@ -64,7 +65,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(unsolvedProblemss);
         }
 
-        // GET: api/problems/unsolved/count
+        // GET: api/problems/unsolved/count  ->  zwróć liczbę nierozwiązanych problemów
         [HttpGet("unsolved/count")]
         public async Task<IActionResult> GetUnsolvedProblemCount()
         {
@@ -72,7 +73,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // POST: api/problems
+        // POST: api/problems  ->  utwórz nowy problem
         [HttpPost]
         public async Task<ActionResult> CreateProblem([FromBody] ProblemCreateDTO dto)
         {
@@ -85,7 +86,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(problem);
         }
 
-        // PUT: api/problems/:problemId
+        // PUT: api/problems/:problemId  ->  oznacz konkretny problem jako rozwiązany
         [HttpPut("{problemId}")]
         public async Task<ActionResult> CheckProblemSolved(int problemId, [FromBody] Problem problem)
         {
@@ -99,7 +100,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // GET: api/problems/export
+        // GET: api/problems/export  ->  eksportuj problemy do pliku .csv
         [HttpGet("export")]
         public async Task<IActionResult> ExportProblemsToCsv()
         {

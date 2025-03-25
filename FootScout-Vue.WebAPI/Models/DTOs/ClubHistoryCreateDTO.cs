@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Models.DTOs
 {
+    // Model DTO dla tworzenia nowej historii klubowej
     public class ClubHistoryCreateDTO
     {
         public int PlayerPositionId { get; set; }

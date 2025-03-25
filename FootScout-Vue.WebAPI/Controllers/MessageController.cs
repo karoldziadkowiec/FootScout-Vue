@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla wiadomości
     [Route("api/messages")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -16,7 +17,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _messageService = messageService;
         }
 
-        // GET: api/messages
+        // GET: api/messages  ->  zwróć wszystkie wiadomości
         [HttpGet]
         public async Task<IActionResult> GetAllMessages()
         {
@@ -24,7 +25,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(messages);
         }
 
-        // GET: api/messages/count
+        // GET: api/messages/count  ->  zwróć liczbę wszystkich wiadomości
         [HttpGet("count")]
         public async Task<IActionResult> GetAllMessagesCount()
         {
@@ -32,7 +33,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // GET: api/messages/chat/:chatId
+        // GET: api/messages/chat/:chatId  ->  zwróć wiadomości dla konkretnego czatu
         [HttpGet("chat/{chatId}")]
         public async Task<IActionResult> GetMessagesForChat(int chatId)
         {
@@ -40,7 +41,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(messages);
         }
 
-        // GET: api/messages/chat/:chatId/count
+        // GET: api/messages/chat/:chatId/count  ->  zwróć liczbę wiadomości dla konkretnego czatu
         [HttpGet("chat/{chatId}/count")]
         public async Task<IActionResult> GetMessagesForChatCount(int chatId)
         {
@@ -48,7 +49,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // GET: api/messages/chat/:chatId/last-message-date
+        // GET: api/messages/chat/:chatId/last-message-date  ->  zwróć datę ostatniej wiadomości dla konkretnego czatu
         [HttpGet("chat/{chatId}/last-message-date")]
         public async Task<IActionResult> GetLastMessageDateForChat(int chatId)
         {
@@ -56,7 +57,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(lastMessageDate);
         }
 
-        // DELETE: api/messages/:messageId
+        // DELETE: api/messages/:messageId  ->  usuń konkretną wiadomość
         [HttpDelete("{messageId}")]
         public async Task<IActionResult> DeleteMessage(int messageId)
         {

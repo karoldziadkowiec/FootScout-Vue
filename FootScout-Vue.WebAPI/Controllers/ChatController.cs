@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla czatu
     [Route("api/chats")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -21,7 +22,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/chats/:chatId
+        // GET: api/chats/:chatId  ->  zwróć czat dla konkretnego id
         [HttpGet("{chatId}")]
         public async Task<IActionResult> GetChatById(int chatId)
         {
@@ -32,7 +33,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(chat);
         }
 
-        // GET: api/chats
+        // GET: api/chats  ->  zwróć wszystkie czaty
         [HttpGet]
         public async Task<IActionResult> GetChats()
         {
@@ -40,7 +41,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(chats);
         }
 
-        // GET: api/chats/count
+        // GET: api/chats/count  ->  zwróć liczbę czatów w aplikacji
         [HttpGet("count")]
         public async Task<IActionResult> GetChatCount()
         {
@@ -48,7 +49,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // GET: api/chats/between/:user1Id/:user2Id
+        // GET: api/chats/between/:user1Id/:user2Id  ->  zwróć id czatu dla 2 użytkowników
         [HttpGet("between/{user1Id}/{user2Id}")]
         public async Task<IActionResult> GetChatIdBetweenUsers(string user1Id, string user2Id)
         {
@@ -56,7 +57,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(chatId);
         }
 
-        // POST: api/chats
+        // POST: api/chats  ->  utwórz nowy czat
         [HttpPost]
         public async Task<IActionResult> CreateChat([FromBody] ChatCreateDTO dto)
         {
@@ -65,7 +66,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return CreatedAtAction(nameof(GetChatById), new { chatId = chat.Id }, chat);
         }
 
-        // DELETE: api/chats/:chatId
+        // DELETE: api/chats/:chatId  ->  usuń konkretny czat
         [HttpDelete("{chatId}")]
         public async Task<IActionResult> DeleteChat(int chatId)
         {
@@ -77,7 +78,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // GET: api/chats/export
+        // GET: api/chats/export  ->  eksportuj czaty do pliku .csv
         [HttpGet("export")]
         public async Task<IActionResult> ExportChatsToCsv()
         {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla oferty klubowej
     [Route("api/offer-statuses")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -17,7 +18,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _offerStatusRepository = offerStatusRepository;
         }
 
-        // GET: api/offer-statuses
+        // GET: api/offer-statuses  ->  zwróć wszystkie statusy ofert
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OfferStatus>>> GetOfferStatuses()
         {
@@ -25,7 +26,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(offerStatuses);
         }
 
-        // GET: api/offer-statuses/:offerStatusId
+        // GET: api/offer-statuses/:offerStatusId  ->  zwróć status oferty dla konkrentego id
         [HttpGet("{offerStatusId}")]
         public async Task<IActionResult> GetOfferStatus(int offerStatusId)
         {
@@ -36,7 +37,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(offerStatus);
         }
 
-        // GET: api/offer-statuses/name/:statusId
+        // GET: api/offer-statuses/name/:statusId  ->  zwróć nazwę statusu oferty dla konkretnego id
         [HttpGet("name/{statusId}")]
         public async Task<IActionResult> GetOfferStatusName(int statusId)
         {
@@ -47,7 +48,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(statusName);
         }
 
-        // GET: api/offer-statuses/id/:statusName
+        // GET: api/offer-statuses/id/:statusName  ->  zwróć id statusu oferty dla konkretnej nazwy
         [HttpGet("id/{statusName}")]
         public async Task<IActionResult> GetOfferStatusId(string statusName)
         {

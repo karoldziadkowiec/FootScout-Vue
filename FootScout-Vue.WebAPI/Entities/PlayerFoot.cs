@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Entities
 {
+    // Model (encja) nogi piłkarza
     public class PlayerFoot
     {
         [Key]

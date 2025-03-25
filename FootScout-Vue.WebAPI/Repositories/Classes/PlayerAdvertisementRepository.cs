@@ -6,6 +6,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.Repositories.Classes
 {
+    // Repozytorium z zaimplementowanymi metodami związanymi z ogłoszeniami piłkarskimi
     public class PlayerAdvertisementRepository : IPlayerAdvertisementRepository
     {
         private readonly AppDbContext _dbContext;
@@ -15,6 +16,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             _dbContext = dbContext;
         }
 
+        // Zwróć konkretne ogłoszenie piłkarskie
         public async Task<PlayerAdvertisement> GetPlayerAdvertisement(int playerAdvertisementId)
         {
             return await _dbContext.PlayerAdvertisements
@@ -25,6 +27,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .FirstOrDefaultAsync(pa => pa.Id == playerAdvertisementId);
         }
 
+        // Zwróć wszystkie ogłoszenia
         public async Task<IEnumerable<PlayerAdvertisement>> GetAllPlayerAdvertisements()
         {
             return await _dbContext.PlayerAdvertisements
@@ -36,6 +39,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć wszystkie aktywne ogłoszenia
         public async Task<IEnumerable<PlayerAdvertisement>> GetActivePlayerAdvertisements()
         {
             return await _dbContext.PlayerAdvertisements
@@ -48,11 +52,13 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć liczbę wszystkich aktywnych ogłoszeń
         public async Task<int> GetActivePlayerAdvertisementCount()
         {
             return await _dbContext.PlayerAdvertisements.Where(pa => pa.EndDate >= DateTime.Now).CountAsync();
         }
 
+        // Zwróć wszystkie nieaktywne ogłoszenia
         public async Task<IEnumerable<PlayerAdvertisement>> GetInactivePlayerAdvertisements()
         {
             return await _dbContext.PlayerAdvertisements
@@ -65,6 +71,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Utwórz nowe ogłoszenie
         public async Task CreatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement)
         {
             playerAdvertisement.CreationDate = DateTime.Now;
@@ -74,12 +81,14 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        // Zaktualizuj konkretne ogłoszenie
         public async Task UpdatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement)
         {
             _dbContext.PlayerAdvertisements.Update(playerAdvertisement);
             await _dbContext.SaveChangesAsync();
         }
 
+        // Usuń konkretne ogłoszenie
         public async Task DeletePlayerAdvertisement(int playerAdvertisementId)
         {
             var playerAdvertisement = await _dbContext.PlayerAdvertisements.FindAsync(playerAdvertisementId);
@@ -112,6 +121,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        // Eksportuj ogłoszenia do pliku .csv
         public async Task<MemoryStream> ExportPlayerAdvertisementsToCsv()
         {
             var playerAdvertisements = await GetAllPlayerAdvertisements();

@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FootScout_Vue.WebAPI.DbManager
 {
+    // Kontekst bazy danych do pracy z danymi z bazy danych, wykorzystując Entity Framework Core oraz IdentityDbContext do zarządzania użytkownikami.
     public class AppDbContext : IdentityDbContext<User>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        // Tabele bazy danych...
         public DbSet<Achievements> Achievements { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<ClubHistory> ClubHistories { get; set; }
@@ -21,10 +23,12 @@ namespace FootScout_Vue.WebAPI.DbManager
         public DbSet<SalaryRange> SalaryRanges { get; set; }
         public DbSet<User> Users { get; set; }
 
+        // Konfiguracja modelu bazy danych (definiowanie relacji między encjami, kluczy obcych, strategii usuwania)
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            // Indywidualne konfiguracje...
             modelBuilder.Entity<Chat>()
                 .HasOne(c => c.User1)
                 .WithMany()

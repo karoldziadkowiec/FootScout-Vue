@@ -1,5 +1,6 @@
 ﻿namespace FootScout_Vue.WebAPI.Models.Constants
 {
+    // Stałe dla pozycji piłkarskich
     public class Position
     {
         public const string Goalkeeper = "Goalkeeper";

@@ -9,6 +9,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z użytkownikami
     public class UserControllerTests
     {
         private readonly Mock<IUserRepository> _mockUserRepository;

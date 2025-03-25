@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Repositories.Interfaces
 {
+    // Interfejs deklarujący operacje związane z problemami aplikacji
     public interface IProblemRepository
     {
         Task<Problem> GetProblem(int playerAdvertisementId);

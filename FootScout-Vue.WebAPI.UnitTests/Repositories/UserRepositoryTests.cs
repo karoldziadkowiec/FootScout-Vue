@@ -10,6 +10,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Repositories
 {
+    // Testy jednostkowe dla metod repozytoriów związanych z użytkownikami
     public class UserRepositoryTests : TestBase
     {
         [Fact]

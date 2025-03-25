@@ -9,6 +9,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.Repositories.Classes
 {
+    // Repozytorium z zaimplementowanymi metodami związanymi z użytkownikiem
     public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _dbContext;
@@ -24,6 +25,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             _passwordHasher = passwordHasher;
         }
 
+        // Zwróć konkretnego użytkownika
         public async Task<UserDTO> GetUser(string userId)
         {
             var user = await _dbContext.Users.FindAsync(userId);
@@ -31,6 +33,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             return userDTO;
         }
 
+        // Zwróć wszystkich użytkowników
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
             var users = await _dbContext.Users.OrderByDescending(u => u.CreationDate).ToListAsync();
@@ -38,6 +41,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             return userDTOs;
         }
 
+        // Zwróć użytkowników dla roli User
         public async Task<IEnumerable<UserDTO>> GetOnlyUsers()
         {
             var onlyUsers = await _userManager.GetUsersInRoleAsync("User");
@@ -46,6 +50,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             return onlyUserDTOs;
         }
 
+        // Zwróć użytkowników dla roli Admin
         public async Task<IEnumerable<UserDTO>> GetOnlyAdmins()
         {
             var onlyAdmins = await _userManager.GetUsersInRoleAsync("Admin");
@@ -54,6 +59,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             return onlyAdminDTOs;
         }
 
+        // Zwróć rolę dla konkretnego użytkownika
         public async Task<string> GetUserRole(string userId)
         {
             return await (from ur in _dbContext.UserRoles
@@ -62,11 +68,13 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                                   select r.Name).FirstOrDefaultAsync();
         }
 
+        // Zwróć liczbę wszystkich użytkowników
         public async Task<int> GetUserCount()
         {
             return await _dbContext.Users.CountAsync();
         }
 
+        // Zaktualizuj konkretnego użytkownika 
         public async Task UpdateUser(string userId, UserUpdateDTO dto)
         {
             var user = await _dbContext.Users.FindAsync(userId);
@@ -78,6 +86,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             }
         }
 
+        // Zresetuj hasło dla konkretnego użytkownika 
         public async Task ResetUserPassword(string userId, UserResetPasswordDTO dto)
         {
             if (!dto.PasswordHash.Equals(dto.ConfirmPasswordHash))
@@ -96,12 +105,15 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             }
         }
 
+        // Usuń konkretnego użytkownika
         public async Task DeleteUser(string userId)
         {
+            // znajdź użytkownika
             var user = await _dbContext.Users.FindAsync(userId);
             if (user == null)
                 throw new Exception("User not found");
 
+            // znajdź i usuń historie klubowe użytkownika
             var clubHistories = await _dbContext.ClubHistories
                 .Where(ch => ch.PlayerId == userId)
                 .ToListAsync();
@@ -117,6 +129,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             }
             _dbContext.ClubHistories.RemoveRange(clubHistories);
 
+            // znajdź i usuń czaty i wiadomości użytkownika
             var chats = await _dbContext.Chats
                 .Where(c => c.User1Id == userId || c.User2Id == userId)
                 .ToListAsync();
@@ -135,11 +148,13 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             }
             _dbContext.Chats.RemoveRange(chats);
 
+            // znajdź i usuń ulubione ogłoszenia użytkownika
             var playerFavorites = await _dbContext.FavoritePlayerAdvertisements
                     .Where(fpa => fpa.UserId == userId)
                     .ToListAsync();
             _dbContext.FavoritePlayerAdvertisements.RemoveRange(playerFavorites);
 
+            // znajdź użytkownika unkown (do przypisania niektórych zasobów)
             var unknownUser = await _dbContext.Users
                .Where(u => u.Email == "unknown@unknown.com")
                .SingleOrDefaultAsync();
@@ -177,15 +192,18 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 offer.ClubMemberId = unknownUserId;
             }
 
+            // zwróć i usuń wszystkie problemy
             var problems = await _dbContext.Problems
                 .Where(p => p.RequesterId == userId)
                 .ToListAsync();
             _dbContext.Problems.RemoveRange(problems);
 
+            // finalnie usuń użytkownika
             _dbContext.Users.Remove(user);
             await _dbContext.SaveChangesAsync();
         }
 
+        // Zwróć historię klubową dla konkretnego użytkownika
         public async Task<IEnumerable<ClubHistory>> GetUserClubHistory(string userId)
         {
             return await _dbContext.ClubHistories
@@ -198,18 +216,20 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć ogłoszenia dla konkretnego użytkownika
         public async Task<IEnumerable<PlayerAdvertisement>> GetUserPlayerAdvertisements(string userId)
         {
             return await _dbContext.PlayerAdvertisements
-                .Include(pa => pa.PlayerPosition)
-                .Include(pa => pa.PlayerFoot)
-                .Include(pa => pa.SalaryRange)
-                .Include(pa => pa.Player)
-                .Where(pa => pa.PlayerId == userId)
-                .OrderByDescending(pa => pa.EndDate)
-                .ToListAsync();
+                .Include(pa => pa.PlayerPosition) // podepnij pozycję dla tego ogłoszenia
+                .Include(pa => pa.PlayerFoot) // podepnij nogę dla tego ogłoszenia
+                .Include(pa => pa.SalaryRange) // podepnij widełki płacowe dla tego ogłoszenia
+                .Include(pa => pa.Player) // podepnij użytkownika dla tego ogłoszenia
+                .Where(pa => pa.PlayerId == userId) // znajdź użytkownika dla tego id
+                .OrderByDescending(pa => pa.EndDate) // posortu malejąco bazując na dacie
+                .ToListAsync(); // zapisz to listy
         }
 
+        // Zwróć aktywne ogłoszenia dla konkretnego użytkownika
         public async Task<IEnumerable<PlayerAdvertisement>> GetUserActivePlayerAdvertisements(string userId)
         {
             return await _dbContext.PlayerAdvertisements
@@ -222,6 +242,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć nieaktywne ogłoszenia dla konkretnego użytkownika
         public async Task<IEnumerable<PlayerAdvertisement>> GetUserInactivePlayerAdvertisements(string userId)
         {
             return await _dbContext.PlayerAdvertisements
@@ -234,6 +255,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć ulubione ogłoszenia dla konkretnego użytkownika
         public async Task<IEnumerable<FavoritePlayerAdvertisement>> GetUserFavoritePlayerAdvertisements(string userId)
         {
             return await _dbContext.FavoritePlayerAdvertisements
@@ -248,6 +270,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć aktywne ulubione ogłoszenia dla konkretnego użytkownika
         public async Task<IEnumerable<FavoritePlayerAdvertisement>> GetUserActiveFavoritePlayerAdvertisements(string userId)
         {
             return await _dbContext.FavoritePlayerAdvertisements
@@ -262,6 +285,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć nieaktywne ulubione dla konkretnego użytkownika
         public async Task<IEnumerable<FavoritePlayerAdvertisement>> GetUserInactiveFavoritePlayerAdvertisements(string userId)
         {
             return await _dbContext.FavoritePlayerAdvertisements
@@ -276,6 +300,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć otrzymane oferty dla konkretnego użytkownika
         public async Task<IEnumerable<ClubOffer>> GetReceivedClubOffers(string userId)
         {
             return await _dbContext.ClubOffers
@@ -292,6 +317,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć wysłane oferty dla konkretnego użytkownika
         public async Task<IEnumerable<ClubOffer>> GetSentClubOffers(string userId)
         {
             return await _dbContext.ClubOffers
@@ -308,6 +334,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć wszystkie czaty dla konkretnego użytkownika
         public async Task<IEnumerable<Chat>> GetUserChats(string userId)
         {
             var chats = await _dbContext.Chats
@@ -333,6 +360,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToList();
         }
 
+        // Eksportuj użytkowników do pliku .csv
         public async Task<MemoryStream> ExportUsersToCsv()
         {
             var users = await GetUsers();

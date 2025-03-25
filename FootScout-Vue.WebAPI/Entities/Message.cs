@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FootScout_Vue.WebAPI.Entities
 {
+    // Model (encja) wiadomości
     public class Message
     {
         [Key]

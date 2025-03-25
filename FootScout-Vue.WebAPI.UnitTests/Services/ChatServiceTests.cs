@@ -7,6 +7,7 @@ using System.Text;
 
 namespace FootScout.WebAPI.UnitTests.Services
 {
+    // Testy jednostkowe dla metod serwisów związanych z czatami
     public class ChatServiceTests : TestBase
     {
         [Fact]

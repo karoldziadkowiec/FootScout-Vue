@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Entities
 {
+    // Model (encja) statusu oferty
     public class OfferStatus
     {
         [Key]

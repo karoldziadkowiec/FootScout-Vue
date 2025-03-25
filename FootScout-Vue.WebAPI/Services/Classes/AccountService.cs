@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FootScout_Vue.WebAPI.Services.Classes
 {
+    // Serwis z zaimplementowanymi metodami związanymi z kontem użytkownika
     public class AccountService : IAccountService
     {
         private readonly AppDbContext _dbContext;
@@ -29,6 +30,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             _cookieService = cookieService;
         }
 
+        // Zarejestruj nowego użytkownika
         public async Task Register(RegisterDTO registerDTO)
         {
             var userByEmail = await _userManager.FindByEmailAsync(registerDTO.Email);
@@ -49,9 +51,10 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             }
         }
 
+        // Zaloguj się i zwróć token JWT
         public async Task<string> Login(LoginDTO loginDTO)
         {
-            var user = await _userManager.FindByEmailAsync(loginDTO.Email);
+            var user = await _userManager.FindByEmailAsync(loginDTO.Email); // znajdź użytkownika bazując na emailu
             if (user == null)
             {
                 throw new ArgumentException($"User {loginDTO.Email} does not exist.");
@@ -61,19 +64,21 @@ namespace FootScout_Vue.WebAPI.Services.Classes
                 throw new ArgumentException($"Unable to authenticate user {loginDTO.Email} - wrong password.");
             }
 
-            var token = await _tokenService.CreateTokenJWT(user);
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            await _cookieService.SetCookies(token, tokenString);
+            var token = await _tokenService.CreateTokenJWT(user); // utwórz  dla użytkownika token JWT oraz go zwróć
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token); // zapisz token JWT jako string 
+            await _cookieService.SetCookies(token, tokenString); // ustaw token JWT w ciasteczkach
 
             return tokenString;
         }
 
+        // Zwróć wszystkie role aplikacji
         public async Task<IEnumerable<string>> GetRoles()
         {
             var roles = await _roleManager.Roles.ToListAsync();
             return roles.Select(role => role.Name);
         }
 
+        // Nadaj konkretnemu użytkownikowi uprawnienia administratora
         public async Task MakeAnAdmin(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -150,6 +155,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             }
         }
 
+        // Zdegraduj administratora do roli użytkownika
         public async Task MakeAnUser(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -169,6 +175,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             }
         }
 
+        // Zwróć error poczas rejestracji
         private string GetRegisterError(IEnumerable<IdentityError> errors)
         {
             return string.Join(", ", errors.Select(error => error.Description).ToArray());

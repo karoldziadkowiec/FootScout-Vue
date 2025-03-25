@@ -22,28 +22,28 @@ namespace FootScout_Vue.WebAPI
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
 
-            // MS SQL database connection
+            // Connection string z baz¹ danych MS SQL
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("MSSQLConnectionString") ??
                     throw new InvalidOperationException("MS SQL connection string is not found!"));
             });
 
-            // Identity with support for roles
+            // Identity u¿ytkownika ze wsparciem dla ról
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Default authentication scheme
+            // Domyœlny schemat uwierzytelniania
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            // JWT Bearer
+            // JWT Bearer Token
             .AddJwtBearer(options =>
             {
                 options.SaveToken = true;
@@ -58,7 +58,7 @@ namespace FootScout_Vue.WebAPI
                 };
             });
 
-            // Authorization policies
+            // Zasady autoryzacji
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminRights", policy =>
@@ -69,14 +69,14 @@ namespace FootScout_Vue.WebAPI
                     policy.RequireRole(Role.Admin, Role.User));
             });
 
-            // Services
+            // Serwisy (bez kontaktu z baz¹ danych)
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<ICookieService, CookieService>();
             builder.Services.AddScoped<IChatService, ChatService>();
             builder.Services.AddScoped<IMessageService, MessageService>();
 
-            // Repositories
+            // Repozytoria (kontakt z baz¹ danych)
             builder.Services.AddScoped<IPlayerPositionRepository, PlayerPositionRepository>();
             builder.Services.AddScoped<IPlayerFootRepository, PlayerFootRepository>();
             builder.Services.AddScoped<IOfferStatusRepository, OfferStatusRepository>();
@@ -89,23 +89,23 @@ namespace FootScout_Vue.WebAPI
             builder.Services.AddScoped<IClubOfferRepository, ClubOfferRepository>();
             builder.Services.AddScoped<IProblemRepository, ProblemRepository>();
 
-            // AutoMapper service
+            // AutoMapper
             builder.Services.AddAutoMapper(typeof(Program));
 
             // Password hasher
             builder.Services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
 
-            // Accessing HttpContext property (cookies)
+            // Dostêp do w³aœciwoœci HttpContext (pliki cookie)
             builder.Services.AddHttpContextAccessor();
 
-            // Real time chat (SignalR)
+            // Serwis do komunikacji w czasie rzeczywistym (SignalR)
             builder.Services.AddSignalR();
 
             // Controller handler
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
 
-            // Swagger authentication
+            // Uwierzytelnianie Swagger
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FootScout API", Version = "v1" });
@@ -138,10 +138,10 @@ namespace FootScout_Vue.WebAPI
                 });
             });
 
-            // CORS policy
+            // Zasady CORS
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowReactDevClient",
+                options.AddPolicy("AllowVueDevClient",
                     b =>
                     {
                         b.WithOrigins("http://localhost:5173")
@@ -154,30 +154,30 @@ namespace FootScout_Vue.WebAPI
 
             var app = builder.Build();
 
-            // HTTP request pipeline
+            // Proces ¿¹dañ HTTP
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-            // Using CORS policy
-            app.UseCors("AllowReactDevClient");
+            // Wykorzystanie zasad CORS
+            app.UseCors("AllowVueDevClient");
             app.UseHttpsRedirection();
 
-            // Auth middleware
+            // Middleware uwierzytelniania
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // Endpoints
+            // Endpointy
             app.MapControllers();
             app.MapHub<ChatHub>("/chathub");
 
-            // Seeders
+            // Tworzenie zakresów dla apliakcji
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                await AppSeeder.Seed(services);
+                await AppSeeder.Seed(services); // Seeder do wype³niania tabel bazy danych podczas pierwszego uruchomienia aplikacji
             }
 
             app.Run();

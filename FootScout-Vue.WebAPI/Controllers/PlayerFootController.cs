@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla nóg piłkarzy
     [Route("api/player-feet")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -17,7 +18,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _playerFootRepository = playerFootRepository;
         }
 
-        // GET: api/player-feet
+        // GET: api/player-feet  ->  zwróć nogi piłkarza
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlayerFoot>>> GetPlayerFeet()
         {
@@ -25,7 +26,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(playerFeet);
         }
 
-        // GET: api/player-feet/:footId
+        // GET: api/player-feet/:footId  ->  zwróć nazwę nogi dla konkretnego id
         [HttpGet("{footId}")]
         public async Task<IActionResult> GetPlayerFootName(int footId)
         {

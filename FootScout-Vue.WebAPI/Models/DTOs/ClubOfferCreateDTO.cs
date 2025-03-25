@@ -1,5 +1,6 @@
 ﻿namespace FootScout_Vue.WebAPI.Models.DTOs
 {
+    // Model DTO dla tworzenia oferty klubowej
     public class ClubOfferCreateDTO
     {
         public int PlayerAdvertisementId { get; set; }

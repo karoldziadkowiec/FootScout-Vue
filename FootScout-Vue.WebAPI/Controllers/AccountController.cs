@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla konta uzytkownika
     [Route("api/account")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -17,7 +18,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _accountService = accountService;
         }
 
-        // POST: api/account/register
+        // POST: api/account/register  ->  zarejestruj nowe konto użytkownika
         [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
@@ -39,7 +40,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             }
         }
 
-        // POST: api/account/login
+        // POST: api/account/login  ->  zaloguj się i zwróć token JWT
         [AllowAnonymous]
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
@@ -61,7 +62,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             }
         }
 
-        // GET: api/account/roles
+        // GET: api/account/roles  ->  zwróć wszystkie role aplikacji
         [Authorize(Roles = Role.Admin)]
         [HttpGet("roles")]
         public async Task<ActionResult<IEnumerable<string>>> GetRoles()
@@ -70,7 +71,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(roles);
         }
 
-        // POST: api/account/roles/make-admin/:userId
+        // POST: api/account/roles/make-admin/:userId  ->  nadaj prawa administratora użytkownikowi
         [Authorize(Roles = Role.Admin)]
         [HttpPost("roles/make-admin/{userId}")]
         public async Task<IActionResult> MakeAnAdmin(string userId)
@@ -79,7 +80,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/account/roles/make-user/:userId
+        // POST: api/account/roles/make-user/:userId  ->  odbierz prawa administratora użytkownikowi
         [Authorize(Roles = Role.Admin)]
         [HttpPost("roles/make-user/{userId}")]
         public async Task<IActionResult> DemoteFromAdmin(string userId)

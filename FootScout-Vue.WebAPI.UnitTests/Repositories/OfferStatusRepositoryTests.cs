@@ -4,6 +4,7 @@ using FootScout_Vue.WebAPI.UnitTests.TestManager;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Repositories
 {
+    // Testy jednostkowe dla metod repozytoriów związanych ze statusami ofert
     public class OfferStatusRepositoryTests : TestBase
     {
         [Fact]

@@ -6,6 +6,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.Repositories.Classes
 {
+    // Repozytorium z zaimplementowanymi metodami związanymi z problemami aplikacji
     public class ProblemRepository : IProblemRepository
     {
         private readonly AppDbContext _dbContext;
@@ -15,6 +16,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             _dbContext = dbContext;
         }
 
+        // Zwróć konkretny problem
         public async Task<Problem> GetProblem(int problemId)
         {
             return await _dbContext.Problems
@@ -22,6 +24,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .FirstOrDefaultAsync(p => p.Id == problemId);
         }
 
+        // Zwróć wszystkie problemy
         public async Task<IEnumerable<Problem>> GetAllProblems()
         {
             return await _dbContext.Problems
@@ -30,6 +33,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć wszystkie rozwiązane problemy
         public async Task<IEnumerable<Problem>> GetSolvedProblems()
         {
             return await _dbContext.Problems
@@ -39,11 +43,13 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć liczbę wszystkich rozwiązanych problemów
         public async Task<int> GetSolvedProblemCount()
         {
             return await _dbContext.Problems.Where(p => p.IsSolved == true).CountAsync();
         }
 
+        // Zwróć wszystkie nierozwiązane problemy
         public async Task<IEnumerable<Problem>> GetUnsolvedProblems()
         {
             return await _dbContext.Problems
@@ -53,11 +59,13 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć liczbę wszystkich nierozwiązanych problemów
         public async Task<int> GetUnsolvedProblemCount()
         {
             return await _dbContext.Problems.Where(p => p.IsSolved == false).CountAsync();
         }
 
+        // Utwórz nowy problem
         public async Task CreateProblem(Problem problem)
         {
             problem.CreationDate = DateTime.Now;
@@ -67,6 +75,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        // Oznacz konkretny problem jako rozwiązany
         public async Task CheckProblemSolved(Problem problem)
         {
             problem.IsSolved = true;
@@ -75,6 +84,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        // Eksportuj problem do pliku .csv
         public async Task<MemoryStream> ExportProblemsToCsv()
         {
             var problems = await GetAllProblems();

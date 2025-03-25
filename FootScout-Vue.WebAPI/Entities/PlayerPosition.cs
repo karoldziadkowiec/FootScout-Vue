@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Entities
 {
+    // Model (encja) pozycji piłkarskiej
     public class PlayerPosition
     {
         [Key]

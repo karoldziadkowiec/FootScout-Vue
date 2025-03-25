@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FootScout_Vue.WebAPI.Services.Classes
 {
+    // Serwis z zaimplementowanymi metodami związanymi z wiadomościami
     public class MessageService : IMessageService
     {
         private readonly AppDbContext _dbContext;
@@ -15,6 +16,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             _dbContext = dbContext;
         }
 
+        // Zwróć wszystkie wiadomości
         public async Task<IEnumerable<Message>> GetAllMessages()
         {
             return await _dbContext.Messages
@@ -25,11 +27,13 @@ namespace FootScout_Vue.WebAPI.Services.Classes
                 .ToListAsync();
         }
 
+        // Zwróć liczbę wszystkich wiadomości
         public async Task<int> GetAllMessagesCount()
         {
             return await _dbContext.Messages.CountAsync();
         }
 
+        // Zwróć wszystkie wiadomości dla konkretnego czatu
         public async Task<IEnumerable<Message>> GetMessagesForChat(int chatId)
         {
             return await _dbContext.Messages
@@ -41,6 +45,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
                 .ToListAsync();
         }
 
+        // Zwróć liczbę wiadomości dla konkretnego czatu
         public async Task<int> GetMessagesForChatCount(int chatId)
         {
             return await _dbContext.Messages
@@ -48,6 +53,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
                 .CountAsync();
         }
 
+        // Zwróć datę ostatniej wiadomości dla konkretnego czatu
         public async Task<DateTime> GetLastMessageDateForChat(int chatId)
         {
             return await _dbContext.Messages
@@ -57,6 +63,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
                 .FirstOrDefaultAsync();
         }
 
+        // Wyślij (utwórz) nową wiadomość
         public async Task<Message> SendMessage(MessageSendDTO dto)
         {
             var message = new Message
@@ -74,6 +81,7 @@ namespace FootScout_Vue.WebAPI.Services.Classes
             return message;
         }
 
+        // Usuń konkretną wiadomość
         public async Task DeleteMessage(int messageId)
         {
             var message = await _dbContext.Messages.FindAsync(messageId);

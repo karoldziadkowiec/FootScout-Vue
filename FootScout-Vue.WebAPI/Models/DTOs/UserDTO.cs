@@ -1,5 +1,6 @@
 ﻿namespace FootScout_Vue.WebAPI.Models.DTOs
 {
+    // Model DTO dla użytkownika (dane z których korzysta aplikacja)
     public class UserDTO
     {
         public string Id { get; set; }

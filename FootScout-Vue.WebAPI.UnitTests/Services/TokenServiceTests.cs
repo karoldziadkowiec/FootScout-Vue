@@ -7,6 +7,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Services
 {
+    // Testy jednostkowe dla metod serwisów związanych z tokenami JWT
     public class TokenServiceTests : TestBase
     {
         [Fact]

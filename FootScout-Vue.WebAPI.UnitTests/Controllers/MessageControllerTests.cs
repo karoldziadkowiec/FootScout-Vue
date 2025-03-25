@@ -6,6 +6,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z wiadomościami
     public class MessageControllerTests
     {
         private readonly Mock<IMessageService> _mockMessageService;

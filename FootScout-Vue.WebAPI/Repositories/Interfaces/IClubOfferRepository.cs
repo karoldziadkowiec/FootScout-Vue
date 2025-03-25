@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Repositories.Interfaces
 {
+    // Interfejs deklarujący operacje związane z ofertami klubowymi
     public interface IClubOfferRepository
     {
         Task<ClubOffer> GetClubOffer(int clubOfferId);

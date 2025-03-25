@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Entities
 {
+    // Model (encja) osiągnięć dla historii klubowej
     public class Achievements
     {
         [Key]

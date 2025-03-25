@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Repositories.Interfaces
 {
+    // Interfejs deklarujący operacje związane z historiami klubowymi
     public interface IClubHistoryRepository
     {
         Task<ClubHistory> GetClubHistory(int clubHistoryId);

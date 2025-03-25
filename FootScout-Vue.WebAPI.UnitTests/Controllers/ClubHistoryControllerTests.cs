@@ -8,6 +8,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z historiami klubowymi
     public class ClubHistoryControllerTests
     {
         private readonly Mock<IClubHistoryRepository> _mockClubHistoryRepository;

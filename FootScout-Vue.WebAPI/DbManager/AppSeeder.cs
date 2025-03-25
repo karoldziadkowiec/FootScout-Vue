@@ -7,6 +7,7 @@ namespace FootScout_Vue.WebAPI.DbManager
 {
     public static class AppSeeder
     {
+        // Główna metoda wywołująca inne metody wypełniające tabele bazy danych podczas pierwszego uruchamiania aplikacji
         public static async Task Seed(IServiceProvider services)
         {
             using (var dbContext = services.GetRequiredService<AppDbContext>())
@@ -20,6 +21,7 @@ namespace FootScout_Vue.WebAPI.DbManager
             }
         }
 
+        // Tworzenie ról w tabeli UserRoles
         private static async Task SeedRoles(IServiceProvider services)
         {
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
@@ -32,6 +34,7 @@ namespace FootScout_Vue.WebAPI.DbManager
             }
         }
 
+        // Tworzenie konta administratora wraz z przypisaniem roli
         private static async Task SeedAdminRole(IServiceProvider services)
         {
             string adminEmail = "admin@admin.com";
@@ -59,6 +62,7 @@ namespace FootScout_Vue.WebAPI.DbManager
             }
         }
 
+        // Tworzenie statusów ofert w bazie danych
         private static async Task SeedOfferStatuses(IServiceProvider services, AppDbContext dbContext)
         {
             var statuses = new List<string> { OfferStatusName.Offered, OfferStatusName.Accepted, OfferStatusName.Rejected };
@@ -77,6 +81,7 @@ namespace FootScout_Vue.WebAPI.DbManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie pozycji piłkarskich w bazie danych
         private static async Task SeedPlayerPositions(IServiceProvider services, AppDbContext dbContext)
         {
             var positions = new List<string> { Position.Goalkeeper, Position.RightBack, Position.CenterBack, Position.LeftBack, Position.RightWingBack, Position.LeftWingBack, Position.CentralDefensiveMidfield, Position.CentralMidfield, Position.CentralAttackingMidfield, Position.RightMidfield, Position.RightWing, Position.LeftMidfield, Position.LeftWing, Position.CentreForward, Position.Striker };
@@ -95,6 +100,7 @@ namespace FootScout_Vue.WebAPI.DbManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie nóg dla piłkarzy w bazie danych
         private static async Task SeedPlayerFeet(IServiceProvider services, AppDbContext dbContext)
         {
             var feet = new List<string> { Foot.Left, Foot.Right, Foot.TwoFooted };
@@ -113,6 +119,7 @@ namespace FootScout_Vue.WebAPI.DbManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie konta unknown wraz z przypisaniem roli do przyspiania zasobów systemów podczas usuwania użytkownika
         private static async Task SeedUnknownUser(IServiceProvider services)
         {
             string unknownUserEmail = "unknown@unknown.com";

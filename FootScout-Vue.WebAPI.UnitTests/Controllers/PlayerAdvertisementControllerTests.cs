@@ -9,6 +9,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z ogłoszeniami piłkarskimi
     public class PlayerAdvertisementControllerTests
     {
         private readonly Mock<IPlayerAdvertisementRepository> _mockPlayerAdvertisementRepository;

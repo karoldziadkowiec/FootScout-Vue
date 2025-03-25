@@ -6,6 +6,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.Repositories.Classes
 {
+    // Repozytorium z zaimplementowanymi metodami związanymi z ofertami klubowymi
     public class ClubOfferRepository : IClubOfferRepository
     {
         private readonly AppDbContext _dbContext;
@@ -15,6 +16,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             _dbContext = dbContext;
         }
 
+        // Zwróć konkrentą ofertę klubową
         public async Task<ClubOffer> GetClubOffer(int clubOfferId)
         {
             return await _dbContext.ClubOffers
@@ -29,6 +31,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .FirstOrDefaultAsync(co => co.Id == clubOfferId);
         }
 
+        // Zwróć wszystkie oferty klubowe
         public async Task<IEnumerable<ClubOffer>> GetClubOffers()
         {
             return await _dbContext.ClubOffers
@@ -44,6 +47,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć wszystkie aktywne oferty klubowe
         public async Task<IEnumerable<ClubOffer>> GetActiveClubOffers()
         {
             return await _dbContext.ClubOffers
@@ -60,11 +64,13 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć liczbę wszystkich aktywnych ofert klubowych
         public async Task<int> GetActiveClubOfferCount()
         {
             return await _dbContext.ClubOffers.Where(co => co.PlayerAdvertisement.EndDate >= DateTime.Now).CountAsync();
         }
 
+        // Zwróć wszystkie nieaktywne oferty klubowe
         public async Task<IEnumerable<ClubOffer>> GetInactiveClubOffers()
         {
             return await _dbContext.ClubOffers
@@ -81,6 +87,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Utwórz nową ofertę klubową
         public async Task CreateClubOffer(ClubOffer clubOffer)
         {
             clubOffer.CreationDate = DateTime.Now;
@@ -94,12 +101,14 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        // Zaktualizuj konkretną ofertę klubową
         public async Task UpdateClubOffer(ClubOffer clubOffer)
         {
             _dbContext.ClubOffers.Update(clubOffer);
             await _dbContext.SaveChangesAsync();
         }
 
+        // Usuń konkretną ofertę klubową
         public async Task DeleteClubOffer(int clubOfferId)
         {
             var clubOffer = await _dbContext.ClubOffers.FindAsync(clubOfferId);
@@ -112,6 +121,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        // Zaakceptuj konkretną ofertę klubową
         public async Task AcceptClubOffer(ClubOffer clubOffer)
         {
             var acceptedStatus = await _dbContext.OfferStatuses
@@ -123,6 +133,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        // Odrzuć konkretną ofertę klubową
         public async Task RejectClubOffer(ClubOffer clubOffer)
         {
             var rejectedStatus = await _dbContext.OfferStatuses
@@ -134,6 +145,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        // Zwróć id statusu oferty klubowej
         public async Task<int> GetClubOfferStatusId(int playerAdvertisementId, string userId)
         {
             var offerStatusId = await _dbContext.ClubOffers
@@ -144,6 +156,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             return offerStatusId;
         }
 
+        // Eksportuj oferty klubowe do pliku .csv
         public async Task<MemoryStream> ExportClubOffersToCsv()
         {
             var clubOffers = await GetClubOffers();

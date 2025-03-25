@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FootScout_Vue.WebAPI.Repositories.Classes
 {
+    // Repozytorium z zaimplementowanymi metodami związanymi z historiami klubowymi
     public class ClubHistoryRepository : IClubHistoryRepository
     {
         private readonly AppDbContext _dbContext;
@@ -14,6 +15,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             _dbContext = dbContext;
         }
 
+        // Zwróć konkretną historię klubową dla danego id
         public async Task<ClubHistory> GetClubHistory(int clubHistoryId)
         {
             return await _dbContext.ClubHistories
@@ -23,6 +25,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .FirstOrDefaultAsync(ch => ch.Id == clubHistoryId);
         }
 
+        // Zwróć wszystkie historie klubowe
         public async Task<IEnumerable<ClubHistory>> GetAllClubHistory()
         {
             return await _dbContext.ClubHistories
@@ -32,23 +35,27 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        // Zwróć liczbę wszystkich historii klubowych
         public async Task<int> GetClubHistoryCount()
         {
             return await _dbContext.ClubHistories.CountAsync();
         }
 
+        // Utwórz nową historię klubową
         public async Task CreateClubHistory(ClubHistory clubHistory)
         {
             await _dbContext.ClubHistories.AddAsync(clubHistory);
             await _dbContext.SaveChangesAsync();
         }
 
+        // Zaktualizuj konkretną historię klubową
         public async Task UpdateClubHistory(ClubHistory clubHistory)
         {
             _dbContext.ClubHistories.Update(clubHistory);
             await _dbContext.SaveChangesAsync();
         }
 
+        // Usuń konkrentą historię klubową
         public async Task DeleteClubHistory(int clubHistoryId)
         {
             var clubHistory = await _dbContext.ClubHistories.FindAsync(clubHistoryId);

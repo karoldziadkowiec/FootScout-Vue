@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Models.DTOs
 {
+    // Model DTO dla tworzenia ogłoszenia piłkarskiego
     public class PlayerAdvertisementCreateDTO
     {
         public int PlayerPositionId { get; set; }

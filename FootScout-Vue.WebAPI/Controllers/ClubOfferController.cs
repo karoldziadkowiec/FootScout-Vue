@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla ofert klubowych
     [Route("api/club-offers")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -21,7 +22,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/club-offers/:clubOfferId
+        // GET: api/club-offers/:clubOfferId  ->  zwróć oferte klubową dla konkretnego id
         [HttpGet("{clubOfferId}")]
         public async Task<ActionResult<ClubOffer>> GetClubOffer(int clubOfferId)
         {
@@ -32,7 +33,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(clubOffer);
         }
 
-        // GET: api/club-offers
+        // GET: api/club-offers  ->  zwróć wszystkie oferty klubowe
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClubOffer>>> GetClubOffers()
         {
@@ -40,7 +41,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(clubOffers);
         }
 
-        // GET: api/club-offers/active
+        // GET: api/club-offers/active  ->  zwróć wszystkie aktywne oferty klubowe
         [HttpGet("active")]
         public async Task<ActionResult<IEnumerable<ClubOffer>>> GetActiveClubOffers()
         {
@@ -48,7 +49,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(activeClubOffers);
         }
 
-        // GET: api/club-offers/active/count
+        // GET: api/club-offers/active/counte  ->  zwróć liczbę wszystkiych aktywne ofert klubowych
         [HttpGet("active/count")]
         public async Task<IActionResult> GetActiveClubOfferCount()
         {
@@ -56,7 +57,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // GET: api/club-offers/inactive
+        // GET: api/club-offers/inactive  ->  zwróć wszystkie nieaktywne oferty klubowe
         [HttpGet("inactive")]
         public async Task<ActionResult<IEnumerable<ClubOffer>>> GetInactiveClubOffers()
         {
@@ -64,7 +65,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(inactiveClubOffers);
         }
 
-        // POST: api/club-offers
+        // POST: api/club-offers  ->  utwórz nową historię klubową
         [HttpPost]
         public async Task<ActionResult> CreateClubOffer([FromBody] ClubOfferCreateDTO dto)
         {
@@ -77,7 +78,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(clubOffer);
         }
 
-        // PUT: api/club-offers/:clubOfferId
+        // PUT: api/club-offers/:clubOfferId  ->  zaktualizuj konkretną ofertę klubową
         [HttpPut("{clubOfferId}")]
         public async Task<ActionResult> UpdateClubOffer(int clubOfferId, [FromBody] ClubOffer clubOffer)
         {
@@ -91,7 +92,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/club-offers/:clubOfferId
+        // DELETE: api/club-offers/:clubOfferId  ->  usuń konkretną ofertę klubową
         [HttpDelete("{clubOfferId}")]
         public async Task<IActionResult> DeleteClubOffer(int clubOfferId)
         {
@@ -109,7 +110,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // PUT: api/club-offers/accept/:clubOfferId
+        // PUT: api/club-offers/accept/:clubOfferId  ->  zaakceptuj konkretną ofertę klubową
         [HttpPut("accept/{clubOfferId}")]
         public async Task<ActionResult> AcceptClubOffer(int clubOfferId, [FromBody] ClubOffer clubOffer)
         {
@@ -123,7 +124,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // PUT: api/club-offers/reject/:clubOfferId
+        // PUT: api/club-offers/reject/:clubOfferId  ->  odrzuć konkretną ofertę klubową
         [HttpPut("reject/{clubOfferId}")]
         public async Task<ActionResult> RejectClubOffer(int clubOfferId, [FromBody] ClubOffer clubOffer)
         {
@@ -137,7 +138,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // GET: api/club-offers/status/:playerAdvertisementId/:userId
+        // GET: api/club-offers/status/:playerAdvertisementId/:userId  ->  zwróć id konkretnego statusu oferty dla ogłoszenia piłkarza
         [HttpGet("status/{playerAdvertisementId}/{userId}")]
         public async Task<IActionResult> GetClubOfferStatusId(int playerAdvertisementId, string userId)
         {
@@ -145,7 +146,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(clubOfferStatusId);
         }
 
-        // GET: api/club-offers/export
+        // GET: api/club-offers/export  ->  eksportowanie ofert klubowych do pliku .csv
         [HttpGet("export")]
         public async Task<IActionResult> ExportClubOffersToCsv()
         {

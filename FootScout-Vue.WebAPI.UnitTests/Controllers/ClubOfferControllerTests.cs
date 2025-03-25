@@ -9,6 +9,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z ofertami klubowymi
     public class ClubOfferControllerTests
     {
         private readonly Mock<IClubOfferRepository> _mockClubOfferRepository;

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FootScout_Vue.WebAPI.Entities
 {
+    // Model (encja) oferty klubowej
     public class ClubOffer
     {
         [Key]

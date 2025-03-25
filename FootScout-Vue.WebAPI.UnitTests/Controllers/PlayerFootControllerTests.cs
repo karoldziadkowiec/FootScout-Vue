@@ -6,6 +6,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z nogami piłkarzy
     public class PlayerFootControllerTests
     {
         private readonly Mock<IPlayerFootRepository> _mockPlayerFootRepository;

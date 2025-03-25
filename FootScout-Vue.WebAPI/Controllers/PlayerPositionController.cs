@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla pozycji piłkarskich
     [Route("api/player-positions")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -17,7 +18,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _playerPositionRepository = playerPositionRepository;
         }
 
-        // GET: api/player-positions
+        // GET: api/player-positions  ->  zwróć wszystkie pozycje piłkarskie
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlayerPosition>>> GetPlayerPositions()
         {
@@ -25,7 +26,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(playerPositions);
         }
 
-        // GET: api/player-positions/count
+        // GET: api/player-positions/count  ->  zwróć liczbę wszystkich pozycji piłkarskich
         [HttpGet("count")]
         public async Task<IActionResult> GetPlayerPositionCount()
         {
@@ -33,7 +34,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // GET: api/player-positions/:positionId
+        // GET: api/player-positions/:positionId  ->  zwróć nazwę dla konkretnego id pozycji piłkarskiej
         [HttpGet("{positionId}")]
         public async Task<IActionResult> GetPlayerPositionName(int positionId)
         {
@@ -44,7 +45,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(positionName);
         }
 
-        // GET: api/player-positions/check/name/:positionName
+        // GET: api/player-positions/check/name/:positionName  ->  sprawdź czy pozycja piłkarska istnieje bazując na nazwie - jeżeli tak to zwróć jego id, jeżeli nie to zwróć 0
         [HttpGet("check/name/{positionName}")]
         public async Task<IActionResult> CheckPlayerPositionExists(string positionName)
         {
@@ -52,7 +53,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(isExists);
         }
 
-        // POST: api/player-positions
+        // POST: api/player-positions  ->  utwórz nową pozycję piłarską
         [HttpPost]
         public async Task<ActionResult> CreatePlayerPosition([FromBody] PlayerPosition playerPosition)
         {

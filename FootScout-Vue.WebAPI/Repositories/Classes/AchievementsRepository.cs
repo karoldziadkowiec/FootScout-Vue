@@ -4,6 +4,7 @@ using FootScout_Vue.WebAPI.Repositories.Interfaces;
 
 namespace FootScout_Vue.WebAPI.Repositories.Classes
 {
+    // Repozytorium z zaimplementowanymi metodami związanymi z osgiągnięciami dla historii klubowej
     public class AchievementsRepository : IAchievementsRepository
     {
         private readonly AppDbContext _dbContext;
@@ -13,6 +14,7 @@ namespace FootScout_Vue.WebAPI.Repositories.Classes
             _dbContext = dbContext;
         }
 
+        // Tworzenie nowego osiągnięcia klubowego dla historii klubowej
         public async Task CreateAchievements(Achievements achievements)
         {
             await _dbContext.Achievements.AddAsync(achievements);

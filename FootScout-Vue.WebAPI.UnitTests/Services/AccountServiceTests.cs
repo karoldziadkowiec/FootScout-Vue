@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Services
 {
+    // Testy jednostkowe dla metod serwisów związanych z kontami użytkowników
     public class AccountServiceTests : TestBase
     {
         [Fact]

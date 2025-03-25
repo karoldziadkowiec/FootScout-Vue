@@ -1,5 +1,6 @@
 ﻿namespace FootScout_Vue.WebAPI.Models.DTOs
 {
+    // Model DTO dla achievmentsów w club history
     public class AchievementsDTO
     {
         public int NumberOfMatches { get; set; }

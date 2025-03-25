@@ -2,6 +2,7 @@
 
 namespace FootScout_Vue.WebAPI.Repositories.Interfaces
 {
+    // Interfejs deklarujący operacje związane z pozycjami piłkarskimi
     public interface IPlayerPositionRepository
     {
         Task<IEnumerable<PlayerPosition>> GetPlayerPositions();

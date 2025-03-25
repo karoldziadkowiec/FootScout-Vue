@@ -9,6 +9,7 @@ using System.Text;
 
 namespace FootScout_Vue.WebAPI.UnitTests.Controllers
 {
+    // Testy jednostkowe dla metod kontrolerów związanych z problemami aplikacji
     public class ProblemControllerTests
     {
         private readonly Mock<IProblemRepository> _mockProblemRepository;

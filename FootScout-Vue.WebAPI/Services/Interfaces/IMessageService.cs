@@ -3,6 +3,7 @@ using FootScout_Vue.WebAPI.Models.DTOs;
 
 namespace FootScout_Vue.WebAPI.Services.Interfaces
 {
+    // Interfejs deklarujący operacje związane z wiadomościami
     public interface IMessageService
     {
         Task<IEnumerable<Message>> GetAllMessages();

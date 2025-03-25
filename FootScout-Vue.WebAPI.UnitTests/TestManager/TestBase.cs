@@ -10,6 +10,7 @@ using Moq;
 
 namespace FootScout_Vue.WebAPI.UnitTests.TestManager
 {
+    // Klasa abstrakcyjna testowej bazy w pamięci, zawierająca gotowe dane wspomagające testowanie jednostkowe
     public abstract class TestBase
     {
         protected DbContextOptions<AppDbContext> GetDbContextOptions(string dbName)
@@ -19,6 +20,7 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
                 .Options;
         }
 
+        // Utwórz i zwróć Mapper
         protected IMapper CreateMapper()
         {
             var configuration = new MapperConfiguration(cfg =>
@@ -28,17 +30,20 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             return configuration.CreateMapper();
         }
 
+        // Utwórz i zwróć UserManager
         protected UserManager<User> CreateUserManager()
         {
             var store = new Mock<IUserStore<User>>();
             return new UserManager<User>(store.Object, null, new PasswordHasher<User>(), null, null, null, null, null, null);
         }
 
+        // Utwórz i zwróć PasswordHasher
         protected IPasswordHasher<User> CreatePasswordHasher()
         {
             return new PasswordHasher<User>();
         }
 
+        // Utwórz i zwróć konfigurację
         protected IConfiguration CreateConfiguration()
         {
             var inMemorySettings = new Dictionary<string, string>
@@ -56,8 +61,8 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             return configuration;
         }
 
-        // Scenario
-
+        // SCENARIUSZE TESTOWE
+        // Tworzenie testowych ról aplikacji
         protected async Task SeedRoleTestBase(AppDbContext dbContext)
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbContext), null, new UpperInvariantLookupNormalizer(), new IdentityErrorDescriber(), null);
@@ -71,12 +76,13 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych użytkowników oraz ich ról
         protected async Task SeedUserTestBase(AppDbContext dbContext, UserManager<User> userManager)
         {
-            // roles
+            // role
             await SeedRoleTestBase(dbContext);
 
-            // users
+            // użytkownicy
             dbContext.Users.AddRange(new List<User>
             {
                 new User { Id = "admin0", Email = "admin@admin.com", UserName = "admin@admin.com", PasswordHash = "Admin1!", FirstName = "Admin F.", LastName = "Admin L.", Location = "Admin Loc.", PhoneNumber = "000000000", CreationDate = DateTime.Now },
@@ -86,7 +92,7 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             });
             await dbContext.SaveChangesAsync();
 
-            // user roles
+            // role użytkowników
             dbContext.UserRoles.AddRange(new List<IdentityUserRole<string>>
             {
                 new IdentityUserRole<string> { UserId = "admin0", RoleId = dbContext.Roles.First(r => r.Name == Role.Admin).Id },
@@ -97,6 +103,7 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych statusów ofert
         protected async Task SeedOfferStatusTestBase(AppDbContext dbContext)
         {
             var statuses = new List<string> { OfferStatusName.Offered, OfferStatusName.Accepted, OfferStatusName.Rejected };
@@ -115,6 +122,7 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych pozycji piłkarskich
         protected async Task SeedPlayerPositionTestBase(AppDbContext dbContext)
         {
             var positions = new List<string> { Position.Goalkeeper, Position.RightBack, Position.CenterBack, Position.LeftBack, Position.RightWingBack, Position.LeftWingBack, Position.CentralDefensiveMidfield, Position.CentralMidfield, Position.CentralAttackingMidfield, Position.RightMidfield, Position.RightWing, Position.LeftMidfield, Position.LeftWing, Position.CentreForward, Position.Striker };
@@ -133,6 +141,7 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych nóg piłkarzy
         protected async Task SeedPlayerFootTestBase(AppDbContext dbContext)
         {
             var feet = new List<string> { Foot.Left, Foot.Right, Foot.TwoFooted };
@@ -151,9 +160,9 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych klubowych historii oraz osiągnięć
         protected async Task SeedClubHistoryTestBase(AppDbContext dbContext)
         {
-            // club history
             dbContext.ClubHistories.AddRange(new List<ClubHistory>
             {
                 new ClubHistory { Id = 1, PlayerPositionId = 15, ClubName = "FC Barcelona", League = "La Liga", Region = "Spain", StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(150), AchievementsId = 1, PlayerId = "leomessi"},
@@ -161,7 +170,6 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             });
             await dbContext.SaveChangesAsync();
 
-            // achievements
             dbContext.Achievements.AddRange(new List<Achievements>
             {
                 new Achievements { Id = 1, NumberOfMatches = 750, Goals = 678, Assists = 544, AdditionalAchievements = "LM" },
@@ -170,6 +178,7 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych problemów aplikacji
         protected async Task SeedProblemTestBase(AppDbContext dbContext)
         {
             // club history
@@ -181,9 +190,9 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych czatów
         protected async Task SeedChatTestBase(AppDbContext dbContext)
         {
-            // chat
             dbContext.Chats.AddRange(new List<Chat>
             {
                 new Chat { Id = 1, User1Id = "leomessi", User2Id = "pepguardiola" },
@@ -192,9 +201,9 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych wiadomości
         protected async Task SeedMessageTestBase(AppDbContext dbContext)
         {
-            // messages
             dbContext.Messages.AddRange(new List<Message>
             {
                 new Message { Id = 1, ChatId = 1, Content = "Hey", SenderId = "pepguardiola", ReceiverId = "leomessi" , Timestamp = DateTime.Now },
@@ -204,9 +213,10 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych ogłoszeń
         protected async Task SeedPlayerAdvertisementTestBase(AppDbContext dbContext)
         { 
-            // salary range
+            // widełki płacowe
             dbContext.SalaryRanges.AddRange(new List<SalaryRange>
             {
                 new SalaryRange { Id = 1, Min = 150, Max = 200 },
@@ -214,7 +224,7 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             });
             await dbContext.SaveChangesAsync();
 
-            // player advertisement
+            // ogłoszenia
             dbContext.PlayerAdvertisements.AddRange(new List<PlayerAdvertisement>
             {
                 new PlayerAdvertisement { Id = 1, PlayerPositionId = 15, League = "Premier League", Region = "England", Age = 37, Height = 167, PlayerFootId = 3, SalaryRangeId = 1, CreationDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), PlayerId = "leomessi" },
@@ -222,7 +232,7 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             });
             await dbContext.SaveChangesAsync();
 
-            // favorite player advertisement
+            // ulubione ogłoszenia
             dbContext.FavoritePlayerAdvertisements.AddRange(new List<FavoritePlayerAdvertisement>
             {
                 new FavoritePlayerAdvertisement { Id = 1, PlayerAdvertisementId = 1, UserId = "pepguardiola" },
@@ -231,10 +241,9 @@ namespace FootScout_Vue.WebAPI.UnitTests.TestManager
             await dbContext.SaveChangesAsync();
         }
 
+        // Tworzenie testowych ofert klubowych
         protected async Task SeedClubOfferTestBase(AppDbContext dbContext)
         {
-
-            // club offer
             dbContext.ClubOffers.AddRange(new List<ClubOffer>
             {
                 new ClubOffer { Id = 1, PlayerAdvertisementId = 1, OfferStatusId = 1, PlayerPositionId = 15, ClubName = "Manchester City", League = "Premier League", Region = "England", Salary = 160, AdditionalInformation = "no info", CreationDate = DateTime.Now, ClubMemberId = "pepguardiola" },

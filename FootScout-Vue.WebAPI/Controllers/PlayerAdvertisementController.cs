@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout_Vue.WebAPI.Controllers
 {
+    // Kontroler API dla ogłoszenia piłkarza
     [Route("api/player-advertisements")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
@@ -23,7 +24,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/player-advertisements/:playerAdvertisementId
+        // GET: api/player-advertisements/:playerAdvertisementId  ->  zwróć ogłoszenie dla konkretnego id
         [HttpGet("{playerAdvertisementId}")]
         public async Task<ActionResult<PlayerAdvertisement>> GetPlayerAdvertisement(int playerAdvertisementId)
         {
@@ -34,7 +35,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(playerAdvertisement);
         }
 
-        // GET: api/player-advertisements
+        // GET: api/player-advertisements  ->  zwróć wszystkie ogłoszenia
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetAllPlayerAdvertisements()
         {
@@ -42,7 +43,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(playerAdvertisements);
         }
 
-        // GET: api/player-advertisements/active
+        // GET: api/player-advertisements/active  ->  zwróć aktywne ogłoszenia
         [HttpGet("active")]
         public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetActivePlayerAdvertisements()
         {
@@ -50,7 +51,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(activePlayerAdvertisements);
         }
 
-        // GET: api/player-advertisements/active/count
+        // GET: api/player-advertisements/active/count  ->  zwróć liczbę aktywnych ogłoszeń
         [HttpGet("active/count")]
         public async Task<IActionResult> GetActivePlayerAdvertisementCount()
         {
@@ -58,7 +59,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(count);
         }
 
-        // GET: api/player-advertisements/inactive
+        // GET: api/player-advertisements/inactive  ->  zwróć nieaktywne ogłoszenia
         [HttpGet("inactive")]
         public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetInactivePlayerAdvertisements()
         {
@@ -66,7 +67,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(inactivePlayerAdvertisements);
         }
 
-        // POST: api/player-advertisements
+        // POST: api/player-advertisements  ->  utwórz nowe ogłoszenie
         [HttpPost]
         public async Task<ActionResult> CreatePlayerAdvertisement([FromBody] PlayerAdvertisementCreateDTO dto)
         {
@@ -83,7 +84,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return Ok(playerAdvertisement);
         }
 
-        // PUT: api/player-advertisements/:playerAdvertisementId
+        // PUT: api/player-advertisements/:playerAdvertisementId  ->  zaktualizuj konkretne ogłoszenie
         [HttpPut("{playerAdvertisementId}")]
         public async Task<ActionResult> UpdatePlayerAdvertisement(int playerAdvertisementId, [FromBody] PlayerAdvertisement playerAdvertisement)
         {
@@ -97,7 +98,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/player-advertisements/:playerAdvertisementId
+        // DELETE: api/player-advertisements/:playerAdvertisementId  ->  usuń konkretne ogłoszenie
         [HttpDelete("{playerAdvertisementId}")]
         public async Task<ActionResult> DeletePlayerAdvertisement(int playerAdvertisementId)
         {
@@ -109,7 +110,7 @@ namespace FootScout_Vue.WebAPI.Controllers
             return NoContent();
         }
 
-        // GET: api/player-advertisements/export
+        // GET: api/player-advertisements/export  ->  eksportuj ogłoszenia do pliku .csv
         [HttpGet("export")]
         public async Task<IActionResult> ExportPlayerAdvertisementsToCsv()
         {
