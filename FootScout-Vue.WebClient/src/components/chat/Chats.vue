@@ -11,25 +11,32 @@
   import type { Chat } from '../../models/interfaces/Chat';
   import '../../styles/chat/Chats.css';
   
-  const router = useRouter();
-  const route = useRoute();
-  const toast = useToast();
+  // Chats.vue - Komponent zarządzający listą czatów użytkownika
+
+  const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+  const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+  const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+  // Definicja zmiennych reaktywnych
+  const userId = ref<string | null>(null);    // Przechowywanie ID użytkownika
+  const userChats = ref<Chat[]>([]);          // Lista czatów użytkownika
+  const lastMessageDates = ref(new Map<number, string>());    // Mapowanie ID czatu na datę ostatniej wiadomości
+  const deleteChatRoomId = ref<number | null>(null);      // ID czatu do usunięcia
   
-  const userId = ref<string | null>(null);
-  const userChats = ref<Chat[]>([]);
-  const lastMessageDates = ref(new Map<number, string>());
-  const deleteChatRoomId = ref<number | null>(null);
-  
+  // Pobranie listy czatów użytkownika po zamontowaniu komponentu
   onMounted(async () => {
     if (route.query.toastMessage) {
       toast.success(route.query.toastMessage as string);
     }
   
     try {
-      userId.value = await AccountService.getId();
+      // Pobranie ID zalogowanego użytkownika
+      userId.value = await AccountService.getId();    
       if (userId.value) {
+        // Pobranie czatów użytkownika
         const chats = await UserService.getUserChats(userId.value);
         userChats.value = chats;
+        // Pobranie dat ostatnich wiadomości
         await fetchLastMessageDates(chats);
       }
     } catch (error) {
@@ -38,6 +45,7 @@
     }
   });
   
+  // Pobiera daty ostatnich wiadomości dla każdego czatu
   const fetchLastMessageDates = async (chats: Chat[]) => {
     const dates = new Map<number, string>();
     for (const chat of chats) {
@@ -51,14 +59,17 @@
     lastMessageDates.value = dates;
   };
   
+  // Przenosi użytkownika do konkretnego czatu
   const moveToSpecificChatPage = (chatId: number) => {
     router.push(`/chat/${chatId}`);
     };
   
+  // Ustawia ID czatu do usunięcia i wyświetla modal
   const handleShowDeleteChatRoomModal = (chatRoomId: number) => {
     deleteChatRoomId.value = chatRoomId;
   };
   
+  // Usuwa wybrany czat, odświeża listę czatów i zamyka modal
   const handleDeleteChatRoom = async () => {
     if (!userId.value || !deleteChatRoomId.value)
         return;
@@ -67,7 +78,7 @@
       await ChatService.deleteChat(deleteChatRoomId.value);
       toast.success("Your chat room has been deleted successfully.");
   
-      // Odśwież dane
+      // Ponowne pobranie listy czatów po usunięciu
       const chats = await UserService.getUserChats(userId.value);
       userChats.value = chats;
       await fetchLastMessageDates(chats);
@@ -79,8 +90,9 @@
       toast.error("Failed to delete chat room.");
     }
   };
-</script>
 
+</script>
+<!-- Struktura strony: lista czatów użytkownika i szczegóły -->
 <template>
     <div class="Chats mt-4">
         <h1><i class="bi bi-chat-fill"></i> Chat Rooms</h1>

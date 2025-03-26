@@ -13,24 +13,29 @@ import type { ClubOffer } from '../../models/interfaces/ClubOffer';
 import type { ChatCreateDTO } from '../../models/dtos/ChatCreateDTO';
 import '../../styles/admin/AdminClubOffers.css';
 
-const toast = useToast();
-const router = useRouter();
+// AdminClubOffers.vue - Komponent zarządzający ofertami klubów, umożliwiający ich przeglądanie, filtrowanie, sortowanie oraz usuwanie
 
-const userId = ref<string | null>(null);
-const positions = ref<PlayerPosition[]>([]);
-const clubOffers = ref<ClubOffer[]>([]);
-const selectedOffer = ref<ClubOffer | null>(null);
-const deleteOfferId = ref<number | null>(null);
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
 
-// Wyszukiwanie i sortowanie
+// Zmienne używane w komponencie
+const userId = ref<string | null>(null);            // Id użytkownika (może być null, jeśli nie uda się pobrać)
+const positions = ref<PlayerPosition[]>([]);        // Lista pozycji zawodników
+const clubOffers = ref<ClubOffer[]>([]);            // Lista ofert klubów
+const selectedOffer = ref<ClubOffer | null>(null);  // Wybrana oferta
+const deleteOfferId = ref<number | null>(null);     // Id oferty do usunięcia
+
+// Zmienne do wyszukiwania, filtrowania i sortowania
 const searchTerm = ref<string>('');
 const selectedStatus = ref<string>('all');
 const selectedPosition = ref<string>('');
 const sortCriteria = ref<string>('creationDateDesc');
-// Paginacja
+
+// Zmienne do paginacji
 const currentPage = ref<number>(1);
 const itemsPerPage = 20;
 
+// Załadowanie danych po zamontowaniu komponentu
 onMounted(async () => {
     try {
         userId.value = await AccountService.getId();
@@ -43,29 +48,34 @@ onMounted(async () => {
     }
 });
 
+// Funkcja obsługująca zmianę strony
 const handlePageChange = (pageNumber: number) => {
   currentPage.value = pageNumber;
 };
 
+// Funkcja przenosząca do strony ogłoszenia zawodnika
 const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
     router.push({ path: `/player-advertisement/${playerAdvertisementId}`, state: { playerAdvertisementId } });
 };
 
+// Funkcja wyświetlająca szczegóły oferty
 const handleShowOfferDetails = (clubOffer: ClubOffer) => {
     selectedOffer.value = clubOffer;
 };
 
+// Funkcja wyświetlająca modal do potwierdzenia usunięcia oferty
 const handleShowDeleteModal = (offerId: number) => {
     deleteOfferId.value = offerId;
 };
 
+// Funkcja do usunięcia oferty
 const deleteOffer = async () => {
     if (!deleteOfferId.value)
         return;
     try {
         await ClubOfferService.deleteClubOffer(deleteOfferId.value);
         toast.success("Offer deleted successfully.");
-        clubOffers.value = await ClubOfferService.getClubOffers();
+        clubOffers.value = await ClubOfferService.getClubOffers();  // Odświeżenie listy ofert
         closeModal('deleteOfferModal');
     }
     catch (error) {
@@ -74,18 +84,19 @@ const deleteOffer = async () => {
     }
 };
 
+// Funkcja otwierająca czat z klubem
 const handleOpenChat = async (receiverId: string) => {
     if (!receiverId || !userId.value)
         return;
 
     try {
-        let chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);
+        let chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);  // Sprawdzenie, czy czat istnieje
         if (chatId === 0) {
             const chatCreateDTO: ChatCreateDTO = { user1Id: userId.value, user2Id: receiverId };
-            await ChatService.createChat(chatCreateDTO);
-            chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);
+            await ChatService.createChat(chatCreateDTO);  // Utworzenie nowego czatu
+            chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);  // Pobranie id czatu
         }
-        router.push({ path: `/chat/${chatId}`, state: { chatId } });
+        router.push({ path: `/chat/${chatId}`, state: { chatId } });   // Przeniesienie do strony czatu
     }
     catch (error) {
         console.error('Failed to open chat:', error);
@@ -93,9 +104,10 @@ const handleOpenChat = async (receiverId: string) => {
     }
 };
 
+// Funkcja filtrująca oferty na podstawie wyszukiwania
 const searchedOffers = computed(() =>
     clubOffers.value.filter(offer => {
-        if (!searchTerm.value) return true;
+        if (!searchTerm.value) return true;     // Jeśli brak wyszukiwania, wszystkie oferty są dopuszczalne
         const lowerCaseSearch = searchTerm.value.toLowerCase();
         return (
             `${offer.clubMember.firstName} ${offer.clubMember.lastName}`.toLowerCase().includes(lowerCaseSearch) ||
@@ -107,6 +119,7 @@ const searchedOffers = computed(() =>
     })
 );
 
+// Funkcja filtrująca oferty po statusie
 const filteredOffersByStatus = computed(() =>
     searchedOffers.value.filter(offer => {
         if (selectedStatus.value === 'all') return true;
@@ -115,12 +128,14 @@ const filteredOffersByStatus = computed(() =>
     })
 );
 
+// Funkcja filtrująca oferty po pozycji
 const filteredOffersByPosition = computed(() =>
     selectedPosition.value
         ? filteredOffersByStatus.value.filter(offer => offer.playerPosition.id === parseInt(selectedPosition.value, 10))
         : filteredOffersByStatus.value
 );
 
+// Funkcja sortująca oferty na podstawie wybranego kryterium
 const sortedOffers = computed(() =>
     [...filteredOffersByPosition.value].sort((a, b) => {
         switch (sortCriteria.value) {
@@ -141,14 +156,17 @@ const sortedOffers = computed(() =>
     })
 );
 
+// Funkcja obliczająca oferty na bieżącej stronie
 const currentClubOfferItems = computed(() => {
     const startIndex = (currentPage.value - 1) * itemsPerPage;
     return sortedOffers.value.slice(startIndex, startIndex + itemsPerPage);
 });
 
+// Funkcja obliczająca całkowitą liczbę stron w paginacji
 const totalPages = computed(() => Math.ceil(sortedOffers.value.length / itemsPerPage));
-</script>
 
+</script>
+<!-- Struktura strony admina: lista ofert klubowych, wyszukiwanie, filtrowanie, sortowanie i paginacja -->
 <template>
     <div class="AdminClubOffers">
             <h1><i class="bi bi-briefcase-fill"></i> Club Offers</h1>

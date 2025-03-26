@@ -10,16 +10,20 @@ import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementSe
 import ClubOfferService from '../../services/api/ClubOfferService';
 import '../../styles/admin/AdminDashboard.css';
 
-const router = useRouter();
-const route = useRoute();
-const toast = useToast();
+// AdminDashboard.vue - Komponent zarządzający głównym dashboardem administratora
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Deklaracja zmiennych reaktywnych do przechowywania liczb z różnych sekcji dashboardu
 const userCount = ref<number>(0);
 const chatCount = ref<number>(0);
 const unsolvedReportedProblemCount = ref<number>(0);
 const playerAdvertisementCount = ref<number>(0);
 const clubOfferCount = ref<number>(0);
 
+// Funkcja pobierająca dane z API, aby zaktualizować liczniki na dashboardzie
 const fetchCountData = async () => {
   try {
     userCount.value = await UserService.getUserCount();
@@ -33,18 +37,22 @@ const fetchCountData = async () => {
   }
 };
 
+// Funkcja wykonywana po zamontowaniu komponentu (po załadowaniu strony)
 onMounted(() => {
+  // Jeśli w URL znajdują się dane o powiadomieniach, wyświetl je
   if (route.query.toastMessage) {
     toast.success(route.query.toastMessage as string);
   }
-  fetchCountData();
+  fetchCountData();  // Pobierz najnowsze dane i zaktualizuj dashboard
 });
 
+// Funkcja obsługująca kliknięcia w karty, przekierowuje użytkownika do odpowiedniej trasy
 const handleCardClick = (route: string) => {
   router.push(route);
 };
-</script>
 
+</script>
+<!-- Struktura strony admina: główny dashboard z widokiem ogólnych statystyk i linkami do szczegółowych sekcji -->
 <template>
   <div class="AdminDashboard">
     <h1><i class="bi bi-grid"></i> Dashboard</h1>

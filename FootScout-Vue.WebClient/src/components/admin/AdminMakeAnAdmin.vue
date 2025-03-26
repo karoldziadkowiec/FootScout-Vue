@@ -11,14 +11,23 @@ import type { UserDTO } from '../../models/dtos/UserDTO';
 import type { ChatCreateDTO } from '../../models/dtos/ChatCreateDTO';
 import '../../styles/admin/AdminMakeAnAdmin.css';
 
-const toast = useToast();
-const router = useRouter();
+// AdminMakeAnAdmin.vue - Komponent do zarządzania uprawnieniami administratorów (przydzielanie i odbieranie praw admina)
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Zmienna do przechowywania ID bieżącego użytkownika
 const userId = ref<string | null>(null);
+
+// Zmienna do przechowywania listy użytkowników i administratorów
 const onlyUsers = ref<UserDTO[]>([]);
 const onlyAdmins = ref<UserDTO[]>([]);
+
+// Zmienna do przechowywania ID użytkownika, któremu chcemy przyznać/administrować uprawnienia
 const userIdToMakeAdmin = ref<string | null>(null);
 const userIdToMakeUser = ref<string | null>(null);
+
+// Zmienna do obsługi wyszukiwania użytkowników
 const searchTerm = ref<string>("");
 const currentPage = ref<number>(1);
 const itemsPerPage = 20;
@@ -26,14 +35,16 @@ const indexOfLastItem = computed(() => currentPage.value * itemsPerPage);
 const indexOfFirstItem = computed(() => indexOfLastItem.value - itemsPerPage);
 const activeTab = ref("users");
 
+// Funkcja wykonująca się po załadowaniu komponentu, pobierająca dane użytkownika i listę użytkowników
 onMounted(async () => {
-  await fetchUserData();
-  await fetchUsers();
+  await fetchUserData();       // Pobiera dane użytkownika
+  await fetchUsers();          // Pobiera użytkowników
 });
 
+// Funkcja do pobierania danych użytkownika
 const fetchUserData = async () => {
   try {
-    userId.value = await AccountService.getId();
+    userId.value = await AccountService.getId();    // Pobiera ID użytkownika
   }
   catch (error) {
     console.error("Failed to fetch user's data:", error);
@@ -41,10 +52,11 @@ const fetchUserData = async () => {
   }
 };
 
+// Funkcja do pobierania listy użytkowników i administratorów
 const fetchUsers = async () => {
   try {
-    onlyUsers.value = await UserService.getOnlyUsers();
-    onlyAdmins.value = await UserService.getOnlyAdmins();
+    onlyUsers.value = await UserService.getOnlyUsers();     // Pobiera użytkowników
+    onlyAdmins.value = await UserService.getOnlyAdmins();   // Pobiera administratorów
   }
   catch (error) {
     console.error("Failed to fetch users:", error);
@@ -52,22 +64,25 @@ const fetchUsers = async () => {
   }
 };
 
+// Funkcja do zmiany strony w paginacji
 const handlePageChange = (page: number) => {
   currentPage.value = page;
 };
 
+// Funkcja otwierająca modal dla przyznania uprawnień administratora
 const handleShowMakeAnAdminModal = (id: string) => {
-  userIdToMakeAdmin.value = id;
+  userIdToMakeAdmin.value = id;     // Przechowuje ID użytkownika, któremu chcemy przyznać uprawnienia
 };
 
+// Funkcja przyznająca uprawnienia administratora użytkownikowi
 const makeAnAdmin = async () => {
-  if (!userIdToMakeAdmin.value)
+  if (!userIdToMakeAdmin.value)     // Sprawdza, czy ID użytkownika zostało ustawione
     return;
 
   try {
-    await AccountService.makeAnAdmin(userIdToMakeAdmin.value);
-    toast.success("Admin permissions granted.");
-    await fetchUsers();
+    await AccountService.makeAnAdmin(userIdToMakeAdmin.value);      // Wywołuje usługę przyznania uprawnień
+    toast.success("Admin permissions granted.");    
+    await fetchUsers();     // Ponownie pobiera użytkowników
     closeModal('makeAnAdminModal');
   }
   catch (error) {
@@ -76,10 +91,12 @@ const makeAnAdmin = async () => {
   }
 };
 
+// Funkcja otwierająca modal do odebrania uprawnień administratora
 const handleShowMakeAnUserModal = (id: string) => {
-  userIdToMakeUser.value = id;
+  userIdToMakeUser.value = id;      // Przechowuje ID administratora, któremu chcemy odebrać uprawnienia
 };
 
+// Funkcja odbierająca uprawnienia administratora
 const makeAnUser = async () => {
   if (!userIdToMakeUser.value) return;
 
@@ -95,12 +112,13 @@ const makeAnUser = async () => {
   }
 };
 
+// Funkcja do otwierania czatu z użytkownikiem
 const handleOpenChat = async (receiverId: string) => {
   if (!receiverId || !userId.value)
-    return;
+    return;         // Sprawdza, czy ID użytkownika i odbiorcy są dostępne
 
   try {
-    let chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);
+    let chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);     // Sprawdza, czy istnieje czat
 
     if (chatId === 0) {
       const chatCreateDTO: ChatCreateDTO = {
@@ -108,9 +126,9 @@ const handleOpenChat = async (receiverId: string) => {
         user2Id: receiverId,
       };
       await ChatService.createChat(chatCreateDTO);
-      chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);
+      chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);       // Pobiera ID czatu
     }
-    router.push(`/chat/${chatId}`);
+    router.push(`/chat/${chatId}`);     // Nawiguje do czatu
   }
   catch (error) {
     console.error("Failed to open chat:", error);
@@ -118,22 +136,29 @@ const handleOpenChat = async (receiverId: string) => {
   }
 };
 
+// Funkcja do filtrowania użytkowników na podstawie wyszukiwanego terminu
 const searchUsers = (users: UserDTO[]) => {
     if (!searchTerm.value) {
-        return users;
+        return users;        // Zwraca wszystkich użytkowników, jeśli nie ma terminu wyszukiwania
     }
-    const lowerCaseSearchTerm = searchTerm.value.toLowerCase();
+    const lowerCaseSearchTerm = searchTerm.value.toLowerCase();     // Konwertuje termin wyszukiwania na małe litery
     return users.filter(user =>
-        (user.firstName + ' ' + user.lastName).toLowerCase().includes(lowerCaseSearchTerm) ||
-        user.email.toLowerCase().includes(lowerCaseSearchTerm)
+        (user.firstName + ' ' + user.lastName).toLowerCase().includes(lowerCaseSearchTerm) ||       // Dopasowanie po imieniu i nazwisku
+        user.email.toLowerCase().includes(lowerCaseSearchTerm)          // Dopasowanie po e-mailu
     );
 };
 
+// Zmienna obliczająca przefiltrowanych użytkowników
 const searchedUsers = computed(() => searchUsers(onlyUsers.value));
-const currentUserItems = computed(() => searchedUsers.value.slice(indexOfFirstItem.value, indexOfLastItem.value));
-const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPerPage));
-</script>
 
+// Zmienna obliczająca aktualnie wyświetlane elementy w tabeli
+const currentUserItems = computed(() => searchedUsers.value.slice(indexOfFirstItem.value, indexOfLastItem.value));
+
+// Zmienna obliczająca liczbę stron w paginacji
+const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPerPage));
+
+</script>
+<!-- Struktura strony admina: zakładki, tabela użytkowników, tabela adminów, modale do przydzielania i odbierania uprawnień -->
 <template>
     <div class="AdminMakeAnAdmin">
         <h1><i class="bi bi-universal-access-circle"></i> Make an Admin</h1>

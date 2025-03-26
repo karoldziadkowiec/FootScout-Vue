@@ -6,20 +6,27 @@
   import type { PlayerPosition } from '../../models/interfaces/PlayerPosition';
   import '../../styles/admin/AdminPlayerPositions.css';
 
-  const toast = useToast();
-  const positions = ref<PlayerPosition[]>([]);
-  const positionCount = ref<number>(0);
-  const createPositionForm = ref({
+ // AdminPlayerPositions.vue - Komponent zarządzający listą pozycji graczy i tworzeniem nowych pozycji 
+
+  const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+  
+  // Tworzenie reaktywnych zmiennych
+  const positions = ref<PlayerPosition[]>([]);  // Reaktywna zmienna przechowująca listę pozycji graczy
+  const positionCount = ref<number>(0);         // Reaktywna zmienna przechowująca liczbę pozycji graczy
+  const createPositionForm = ref({              // Reaktywna zmienna przechowująca dane formularza dla nowej pozycji
     id: 0,
     positionName: "",
   });
   
+  // Ładowanie danych po załadowaniu komponentu (onMounted)
   onMounted(async () => {
-    await fetchPositionsData();
+    await fetchPositionsData();   // Pobranie danych pozycji graczy z serwera
   });
   
+  // Funkcja do pobierania danych pozycji z API
   const fetchPositionsData = async () => {
     try {
+      // Pobranie pozycji graczy oraz liczby pozycji z serwisu
       positions.value = await PlayerPositionService.getPlayerPositions();
       positionCount.value = await PlayerPositionService.getPlayerPositionCount();
     }
@@ -29,6 +36,7 @@
     }
   };
   
+  // Funkcja do tworzenia nowej pozycji
   const createPosition = async () => {
     if (!createPositionForm.value.positionName) {
       toast.error("Position Name field is required!");
@@ -36,15 +44,17 @@
     }
   
     try {
+      // Sprawdzenie, czy pozycja już istnieje
       const isExists = await PlayerPositionService.checkPlayerPositionExists(createPositionForm.value.positionName);
       if (isExists) {
         toast.error("Position Name already exists.");
         return;
       }
   
+      // Tworzenie nowej pozycji
       await PlayerPositionService.createPlayerPosition(createPositionForm.value);
       toast.success("Position created successfully!");
-      await fetchPositionsData();
+      await fetchPositionsData();     // Ponowne załadowanie listy pozycji
       closeModal('createPositionModal')
     }
     catch (error) {
@@ -52,8 +62,9 @@
       toast.error("Failed to create new position.");
     }
   };
-</script>
 
+</script>
+<!-- Struktura strony admina: wyświetlanie listy pozycji i formularz do tworzenia nowych pozycji -->
 <template>
     <div class="AdminPlayerPositions">
       <h1><i class="bi bi-person-standing"></i> Player Positions</h1>

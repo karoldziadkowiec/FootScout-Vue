@@ -11,10 +11,13 @@ import type { Message } from '../../models/interfaces/Message';
 import type { UserDTO } from '../../models/dtos/UserDTO';
 import '../../styles/admin/AdminChat.css';
 
-const toast = useToast();
-const route = useRoute();
-const router = useRouter();
+// AdminChat.vue - Komponent zarządzający czatem administratora
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Ref do przechowywania danych chatów i wiadomości
 const id = ref<number | null>(route.params.id ? Number(route.params.id) : null);
 const chatData = ref<Chat | null>(null);
 const user1 = ref<UserDTO | null>(null);
@@ -24,19 +27,24 @@ const messagesCount = ref<number>(0);
 const messagesEndRef = ref<HTMLElement | null>(null);
 const deleteMessageId = ref<number | null>(null);
 
+// Funkcja fetchChatData odpowiedzialna za pobranie danych o czacie i wiadomościach
 const fetchChatData = async () => {
   if (!id.value)
     return;
   try {
+    // Pobieranie danych czatu
     const _chatData = await ChatService.getChatById(id.value);
     chatData.value = _chatData;
     user1.value = _chatData.user1;
     user2.value = _chatData.user2;
 
+    // Pobieranie wiadomości
     const _messages = await MessageService.getMessagesForChat(id.value);
     messages.value = _messages;
 
+    // Liczba wiadomości
     messagesCount.value = await MessageService.getMessagesForChatCount(id.value);
+     // Automatyczne przewijanie do ostatniej wiadomości
     scrollToBottom();
   }
   catch (error) {
@@ -45,13 +53,13 @@ const fetchChatData = async () => {
   }
 };
 
-// Automatyczne przewijanie do dołu
+// Funkcja odpowiedzialna za automatyczne przewijanie do dołu
 const scrollToBottom = async () => {
   await nextTick();
   messagesEndRef.value?.scrollIntoView({ behavior: 'smooth' });
 };
 
-// Odświeżanie wiadomości
+// Funkcja odświeżająca dane (nowe wiadomości)
 const refreshData = async () => {
   if (!id.value)
     return;
@@ -60,6 +68,7 @@ const refreshData = async () => {
   scrollToBottom();
 };
 
+// Funkcja usuwająca chat
 const deleteChatRoom = async () => {
   if (!chatData.value) return;
   try {
@@ -73,10 +82,12 @@ const deleteChatRoom = async () => {
   }
 };
 
+// Funkcja obsługująca otwieranie modala do usuwania wiadomości
 const handleDeleteMessageModal = (messageId: number) => {
     deleteMessageId.value = messageId;
 };
 
+// Funkcja usuwająca wiadomość
 const deleteMessage = async () => {
   if (!deleteMessageId.value)
     return;
@@ -93,17 +104,19 @@ const deleteMessage = async () => {
   }
 };
 
-// Pobierz dane przy montowaniu
+// Pobranie danych po załadowaniu komponentu
 onMounted(() => {
   if (id.value)
     fetchChatData();
 });
 
+// Obserwator, który przewija ekran na dół po zmianie wiadomości
 watch(messages, () => {
   scrollToBottom();
 });
-</script>
 
+</script>
+<!-- Struktura strony: zarządzanie szczegółami wybranego czatu administratora-->
 <template>
   <div class="AdminChat">
     <h1><i class="bi bi-chat-dots"></i> Manage Chat</h1>

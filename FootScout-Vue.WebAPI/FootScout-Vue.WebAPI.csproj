@@ -29,6 +29,7 @@
     <Folder Include="Controllers\" />
     <Folder Include="Entities\" />
     <Folder Include="HubManager\" />
+    <Folder Include="Migrations\" />
     <Folder Include="Models\Constants\" />
     <Folder Include="Models\DTOs\" />
     <Folder Include="Repositories\Classes\" />

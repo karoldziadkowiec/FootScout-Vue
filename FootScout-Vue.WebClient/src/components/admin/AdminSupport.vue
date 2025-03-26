@@ -11,9 +11,12 @@ import type { Problem } from "../../models/interfaces/Problem";
 import type { ChatCreateDTO } from "../../models/dtos/ChatCreateDTO";
 import '../../styles/admin/AdminSupport.css';
 
-const toast = useToast();
-const router = useRouter();
+// AdminSupports.vue - Komponent zarządzający zgłoszonymi problemami użytkowników
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Zmienne reaktywne przechowujące dane o użytkowniku i problemach
 const userId = ref<string | null>(null);
 const unsolvedProblems = ref<Problem[]>([]);
 const unsolvedProblemCount = ref<number>(0);
@@ -21,8 +24,9 @@ const solvedProblems = ref<Problem[]>([]);
 const solvedProblemCount = ref<number>(0);
 const selectedProblem = ref<Problem | null>(null);
 const problemToCheckSolved = ref<Problem | null>(null);
-const activeTab = ref("unsolved");
+const activeTab = ref("unsolved");    // Aktualnie aktywna zakładka (niesolved/solved)
 
+// Pobieranie danych użytkownika i problemów po załadowaniu komponentu
 onMounted(async () => {
   try {
     const id = await AccountService.getId();
@@ -36,6 +40,7 @@ onMounted(async () => {
   }
 
   try {
+    // Pobranie listy nierozwiązanych i rozwiązanych problemów oraz ich liczby
     unsolvedProblems.value = await ProblemService.getUnsolvedProblems();
     unsolvedProblemCount.value = await ProblemService.getUnsolvedProblemCount();
     solvedProblems.value = await ProblemService.getSolvedProblems();
@@ -47,14 +52,17 @@ onMounted(async () => {
   }
 });
 
+// Obsługa kliknięcia problemu, aby wyświetlić jego szczegóły
 const handleShowProblemDetails = (problem: Problem) => {
   selectedProblem.value = problem;
 };
 
+// Obsługa kliknięcia przycisku "Solved", otwierającego modal potwierdzenia rozwiązania problemu
 const handleShowCheckProblemSolvedModal = (problem: Problem) => {
   problemToCheckSolved.value = problem;
 };
 
+// Zmiana statusu problemu na rozwiązany
 const checkProblemSolved = async () => {
   if (!problemToCheckSolved.value || !userId.value)
   return;
@@ -65,7 +73,7 @@ const checkProblemSolved = async () => {
     });
     toast.success("Reported problem has been set to solved.");
 
-    // Odświeżanie danych
+    // Odświeżenie listy problemów po zmianie statusu
     unsolvedProblems.value = await ProblemService.getUnsolvedProblems();
     unsolvedProblemCount.value = await ProblemService.getUnsolvedProblemCount();
     solvedProblems.value = await ProblemService.getSolvedProblems();
@@ -79,6 +87,7 @@ const checkProblemSolved = async () => {
   }
 };
 
+// Otwieranie czatu z użytkownikiem, który zgłosił problem
 const handleOpenChat = async (receiverId: string) => {
   if (!receiverId || !userId.value)
     return;
@@ -104,6 +113,7 @@ const handleOpenChat = async (receiverId: string) => {
   }
 };
 
+// Pobiera nazwę statusu problemu
 const getStatusName = (isSolved: boolean): string => {
     if (isSolved === true) {
         return 'Solved';
@@ -113,11 +123,13 @@ const getStatusName = (isSolved: boolean): string => {
     }
 };
 
+// Eksportowanie danych o problemach do pliku CSV
 const exportDataToCSV = async () => {
     await ProblemService.exportProblemsToCsv();
 };
-</script>
 
+</script>
+<!-- Struktura strony admina: lista zgłoszonych problemów (rozwiązane i nierozwiązane) oraz szczegóły zgłoszenia -->
 <template>
     <div class="AdminSupport">
       <h1><i class="bi bi-cone-striped"></i> Reported Problems</h1>

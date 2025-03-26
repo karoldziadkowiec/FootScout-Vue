@@ -9,24 +9,28 @@ import MessageService from '../../services/api/MessageService';
 import type { Chat } from '../../models/interfaces/Chat';
 import '../../styles/admin/AdminChats.css';
 
-const toast = useToast();
-const router = useRouter();
+// AdminChats.vue - Komponent zarządzający listą czatów administratora
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Zmienne do przechowywania chatów oraz dat ostatnich wiadomości i liczby wiadomości
 const chatRooms = ref<Chat[]>([]);
 const lastMessageDates = ref<Map<number, string>>(new Map());
 const messagesCounters = ref<Map<number, number>>(new Map());
 const deleteChatRoomId = ref<number | null>(null);
 
-// Wyszukiwanie i sortowanie
+// Zmienne do wyszukiwania chatów oraz do sortowania
 const searchTerm = ref<string>('');
 const sortCriteria = ref<string>('lastMessageDesc');
 
-// Paginacja
+// Zmienne do paginacji
 const currentPage = ref<number>(1);
 const itemsPerPage = 20;
 const indexOfLastItem = computed(() => currentPage.value * itemsPerPage);
 const indexOfFirstItem = computed(() => indexOfLastItem.value - itemsPerPage);
 
+// Funkcja pobierająca czaty
 const fetchChats = async () => {
   try {
     chatRooms.value = await ChatService.getChats();
@@ -38,6 +42,7 @@ const fetchChats = async () => {
   }
 };
 
+// Funkcja pobierająca dodatkowe dane dla każdego czatu (daty ostatnich wiadomości i liczba wiadomości)
 const fetchDataForSpecificChatRoom = async (chats: Chat[]) => {
   const dates = new Map<number, string>();
   const counters = new Map<number, number>();
@@ -58,19 +63,22 @@ const fetchDataForSpecificChatRoom = async (chats: Chat[]) => {
   messagesCounters.value = counters;
 };
 
+// Funkcja zmieniająca stronę
 const handlePageChange = (pageNumber: number) => {
   currentPage.value = pageNumber;
 };
 
+// Funkcja przechodząca do konkretnego czatu
 const moveToSpecificChatPage = (chatId: number) => {
   router.push({ path: `/admin/chat/${chatId}`, state: { chatId } });
 };
 
+// Funkcja otwierająca modal do usuwania chat roomu
 const handleShowDeleteChatRoomModal = (chatRoomId: number) => {
   deleteChatRoomId.value = chatRoomId;
 };
 
-// Usuwanie czatu
+// Funkcja usuwająca chat room
 const deleteChatRoom = async () => {
   if (!deleteChatRoomId.value)
     return;
@@ -88,6 +96,7 @@ const deleteChatRoom = async () => {
   }
 };
 
+// Funkcja do filtrowania czatów na podstawie wyszukiwanego terminu
 const searchChats = (chats: Chat[]): Chat[] => {
     if (!searchTerm) {
         return chats;
@@ -101,12 +110,14 @@ const searchChats = (chats: Chat[]): Chat[] => {
     );
 };
 
+// Funkcja do parsowania daty
 const parseDate = (dateString: string | undefined) => {
     if (!dateString) return new Date('1970-01-01').getTime(); // Domyślna wartość dla pustych dat
     const parsedDate = new Date(dateString);
     return isNaN(parsedDate.getTime()) ? new Date('1970-01-01').getTime() : parsedDate.getTime();
 };
 
+// Funkcja do sortowania czatów na podstawie wybranego kryterium
 const sortChats = (chats: Chat[], lastMessageDates: Map<number, string>, messagesCounters: Map<number, number>) => {
     return [...chats].sort((a, b) => {
         const lastMessageDateA = parseDate(lastMessageDates.get(a.id));
@@ -116,12 +127,16 @@ const sortChats = (chats: Chat[], lastMessageDates: Map<number, string>, message
         const messagesCounterB = messagesCounters.get(b.id) || 0;
 
         switch (sortCriteria.value) {
+          // Sortowanie po dacie ostatniej wiadomości rosnąco
             case 'lastMessageAsc': 
                 return lastMessageDateA - lastMessageDateB;
+          // Sortowanie po dacie ostatniej wiadomości malejąco
             case 'lastMessageDesc': 
                 return lastMessageDateB - lastMessageDateA;
+          // Sortowanie po liczbie wiadomości rosnąco
             case 'messagesCounterAsc': 
                 return messagesCounterA - messagesCounterB;
+          // Sortowanie po liczbie wiadomości malejąco
             case 'messagesCounterDesc': 
                 return messagesCounterB - messagesCounterA;
             default:
@@ -130,17 +145,23 @@ const sortChats = (chats: Chat[], lastMessageDates: Map<number, string>, message
     });
 };
 
+// Pobieranie danych przy montowaniu komponentu
 onMounted(async () => {
   await fetchChats();
 });
 
 // Paginacja
+// Paginacja: przefiltrowane czaty na podstawie wyszukiwania
 const searchedChats = computed(() => searchChats(chatRooms.value));
+// Paginacja: posortowane czaty na podstawie wybranego kryterium
 const sortedChats = computed(() => sortChats(searchedChats.value, lastMessageDates.value, messagesCounters.value));
+// Paginacja: elementy czatów, które mają być wyświetlane na bieżącej stronie
 const currentChatItems = computed(() => sortedChats.value.slice(indexOfFirstItem.value, indexOfLastItem.value));
+// Paginacja: obliczanie liczby stron
 const totalPages = computed(() => Math.ceil(sortedChats.value.length / itemsPerPage));
-</script>
 
+</script>
+<!-- Struktura strony admina: lista czatów i szczegóły -->
 <template>
   <div class="AdminChats">
     <h1><i class="bi bi-chat-text-fill"></i> Chat Rooms</h1>

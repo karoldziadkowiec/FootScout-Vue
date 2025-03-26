@@ -6,13 +6,17 @@ import axios from 'axios';
 import { AccountService } from '../../services/api/AccountService';
 import '../../styles/account/Login.css';
 
-const router = useRouter();
-const route = useRoute();
-const toast = useToast();
+// Login.vue - Komponent odpowiedzialny za obsługę logowania użytkownika
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Zmienne przechowujące dane logowania
 const email = ref<string>('');
 const password = ref<string>('');
 
+// Wylogowanie użytkownika przy wejściu na stronę logowania
 onMounted(async () => {
   // wyczyść AuthToken w cookies na wejściu
   await AccountService.logout();
@@ -23,9 +27,11 @@ onMounted(async () => {
 
 const handleLogin = async () => {
   try {
+    // Tworzy obiekt z danymi logowania i wysyła go do serwisu
     const loginDTO = { email: email.value, password: password.value };
     await AccountService.login(loginDTO);
 
+    // Przekierowanie w zależności od roli użytkownika
     if (await AccountService.isRoleAdmin()) {
       router.push('/admin/dashboard');
     } 
@@ -33,6 +39,8 @@ const handleLogin = async () => {
       router.push('/home');
     }
   } 
+
+  // Obsługa różnych błędów zwróconych przez API
   catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       switch (error.response.status) {
@@ -52,11 +60,14 @@ const handleLogin = async () => {
   }
 };
 
+// Przekierowanie użytkownika na stronę rejestracji
 const moveToRegistrationPage = () => {
   router.push('/registration');
 };
-</script>
 
+
+</script>
+<!-- Struktura strony logowania użytkownika -->
 <template>
   <div class="Login">
     <div class="logo-container">

@@ -14,20 +14,25 @@ import type { UserDTO } from '../../models/dtos/UserDTO';
 import type { MessageSendDTO } from '../../models/dtos/MessageSendDTO';
 import '../../styles/chat/Chat.css';
 
-const route = useRoute();
-const router = useRouter();
-const toast = useToast();
+// Chat.vue - Komponent obsługujący funkcjonalność chatu między użytkownikami
+
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Inicjalizacja zmiennych przechowujących dane
 const chatId = ref<number | null>(route.params.id ? Number(route.params.id) : null);
 const userId = ref<string | null>(null);
 const chatData = ref<Chat | null>(null);
 const user = ref<UserDTO | null>(null);
 const receiver = ref<UserDTO | null>(null);
-const messages = ref<Message[]>([]);
-const chatHub = ref<ChatHub | null>(null);
-const newMessage = ref<string>('');
-const messagesEndRef = ref<HTMLElement | null>(null);
-const deleteMessageId = ref<number | null>(null);
+const messages = ref<Message[]>([]);          // Lista wiadomości
+const chatHub = ref<ChatHub | null>(null);    // ChatHub do obsługi połączenia WebSocket
+const newMessage = ref<string>('');     // Nowa wiadomość
+const messagesEndRef = ref<HTMLElement | null>(null);   // Referencja do końca listy wiadomości (do scrollowania)
+const deleteMessageId = ref<number | null>(null);   // ID wiadomości do usunięcia
 
+// Ładowanie danych użytkownika po załadowaniu komponentu
 onMounted(async () => {
   await fetchUserData();
   if (chatId.value) {
@@ -35,12 +40,14 @@ onMounted(async () => {
   }
 });
 
+// Obserwacja zmian w ID czatu
 watch(chatId, async (newChatId) => {
   if (newChatId) {
     await fetchChatData(newChatId);
   }
 });
 
+// Zamykanie połączenia z ChatHub przy unmountowaniu komponentu
 onUnmounted(() => {
   if (chatHub.value) {
     chatHub.value.leaveChat().catch((error) => {
@@ -49,8 +56,10 @@ onUnmounted(() => {
   }
 });
 
+// Funkcja do pobierania danych użytkownika
 async function fetchUserData() {
   try {
+    // Pobranie ID użytkownika
     userId.value = await AccountService.getId();
   }
   catch (error) {
@@ -59,11 +68,13 @@ async function fetchUserData() {
   }
 }
 
+// Funkcja do pobierania danych czatu
 async function fetchChatData(id: number) {
   try {
     const _chatData = await ChatService.getChatById(id);
     chatData.value = _chatData;
 
+    // Określenie, kto jest nadawcą i odbiorcą wiadomości
     if (_chatData.user1Id === userId.value) {
       user.value = _chatData.user1;
       receiver.value = _chatData.user2;
@@ -73,6 +84,7 @@ async function fetchChatData(id: number) {
       receiver.value = _chatData.user1;
     }
 
+    // Pobranie wiadomości dla czatu
     messages.value = await MessageService.getMessagesForChat(id);
     startChatService(id);
   }
@@ -82,14 +94,17 @@ async function fetchChatData(id: number) {
   }
 }
 
+// Funkcja do inicjalizacji połączenia z ChatHub
 function startChatService(id: number) {
   if (!userId.value) return;
 
+  // Inicjalizacja ChatHub do obsługi wiadomości w czasie rzeczywistym
   const _chatHub = new ChatHub((message) => {
-    messages.value.push(message);
-    nextTick(scrollToBottom);
+    messages.value.push(message);   // Dodanie nowej wiadomości
+    nextTick(scrollToBottom);       // Scrollowanie do dołu po dodaniu wiadomości
   });
 
+  // Połączenie z ChatHub
   _chatHub
     .startConnection(id)
     .then(() => {
@@ -101,12 +116,14 @@ function startChatService(id: number) {
     });
 }
 
+// Funkcja do scrollowania do ostatniej wiadomości
 function scrollToBottom() {
   nextTick(() => {
     messagesEndRef.value?.scrollIntoView({ behavior: 'smooth' });
   });
 }
 
+// Funkcja do wysyłania wiadomości
 async function handleSendMessage() {
   if (!chatHub.value || newMessage.value.trim() === '' || !chatData.value || !user.value || !receiver.value) {
     toast.error('Unable to send message. Missing required data.');
@@ -121,10 +138,11 @@ async function handleSendMessage() {
       content: newMessage.value
     };
 
-    await chatHub.value.sendMessage(messageSendDTO);
-    newMessage.value = '';
+    await chatHub.value.sendMessage(messageSendDTO);    // Wysłanie wiadomości przez ChatHub
+    newMessage.value = '';    // Wyczyść pole tekstowe
     scrollToBottom();
 
+    // Pobranie zaktualizowanych wiadomości
     messages.value = await MessageService.getMessagesForChat(chatData.value.id);
   }
   catch (error) {
@@ -133,6 +151,7 @@ async function handleSendMessage() {
   }
 }
 
+// Funkcja do usuwania całego czatu
 async function handleDeleteChatRoom() {
   if (!chatData.value)
     return;
@@ -141,7 +160,7 @@ async function handleDeleteChatRoom() {
     await ChatService.deleteChat(chatData.value.id);
     closeModal('deleteChatRoomModal');
     toast.success('Your chat room has been deleted successfully.');
-    router.push('/chats');
+    router.push('/chats');    // Przekierowanie do listy czatów
   }
   catch (error) {
     console.error('Failed to delete chat room:', error);
@@ -149,10 +168,12 @@ async function handleDeleteChatRoom() {
   }
 }
 
+// Funkcja do ustawienia ID wiadomości do usunięcia
 const handleDeleteMessage = (messageId: number) => {
   deleteMessageId.value = messageId;
 };
 
+// Funkcja do usuwania wiadomości
 async function deleteMessage() {
   if (!deleteMessageId.value)
     return;
@@ -161,6 +182,7 @@ async function deleteMessage() {
     await MessageService.deleteMessage(deleteMessageId.value);
     toast.success('Message has been deleted successfully.');
 
+    // Zaktualizowanie listy wiadomości
     deleteMessageId.value = null;
     messages.value = await MessageService.getMessagesForChat(chatData.value?.id ?? 0);
     closeModal('deleteMessageModal');
@@ -170,8 +192,9 @@ async function deleteMessage() {
     toast.error('Failed to delete message.');
   }
 }
-</script>
 
+</script>
+<!-- Struktura chatu: lista wiadomości, formularz wysyłania i modale usuwania -->
 <template>
   <div class="Chat">
     <h1><i class="bi bi-chat-dots-fill"></i> Chat</h1>

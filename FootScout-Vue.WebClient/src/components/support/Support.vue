@@ -6,16 +6,24 @@ import ProblemService from '../../services/api/ProblemService';
 import type { ProblemCreateDTO } from '../../models/dtos/ProblemCreateDTO';
 import '../../styles/support/Support.css';
 
-const toast = useToast();
+// Support.vue - Komponent umożliwiający zgłaszanie problemów przez użytkowników
 
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Przechowywanie identyfikatora użytkownika
 const userId = ref<string | null>(null);
+
+// Obiekt przechowujący dane dotyczące zgłaszanego problemu
 const problemCreateDTO = ref<ProblemCreateDTO>({
     title: '',
     description: '',
     requesterId: ''
 });
+
+// Flaga wskazująca, czy zgłoszenie zostało wysłane
 const isSubmitted = ref(false);
 
+// Pobranie identyfikatora użytkownika po zamontowaniu komponentu
 onMounted(async () => {
   try {
     userId.value = await AccountService.getId();
@@ -26,6 +34,7 @@ onMounted(async () => {
   }
 });
 
+// Walidacja formularza przed wysłaniem zgłoszenia
 const validateForm = (formData: ProblemCreateDTO) => {
   if (!formData.title || !formData.description) {
     return 'All fields are required.';
@@ -33,10 +42,12 @@ const validateForm = (formData: ProblemCreateDTO) => {
   return null;
 };
 
+// Obsługa zgłaszania problemu
 const handleReportProblem = async () => {
   if (!userId.value)
     return;
 
+  // Sprawdzenie poprawności formularza
   const validationError = validateForm(problemCreateDTO.value);
   if (validationError) {
     toast.error(validationError);
@@ -44,20 +55,22 @@ const handleReportProblem = async () => {
   }
 
   try {
+    // Wysłanie danych problemu do API
     await ProblemService.createProblem({
       ...problemCreateDTO.value,
       requesterId: userId.value,
     });
 
-    isSubmitted.value = true;
+    isSubmitted.value = true;     // Oznaczenie zgłoszenia jako wysłane
   }
   catch (error) {
     console.error('Failed to report problem:', error);
     toast.error('Failed to report problem.');
   }
 };
-</script>
 
+</script>
+<!-- Struktura strony wsparcia: formularz zgłoszeniowy i komunikat sukcesu -->
 <template>
   <div class="Support">
     <h1><i class="bi bi-wrench-adjustable"></i> Support</h1>

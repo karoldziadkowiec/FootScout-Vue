@@ -15,9 +15,12 @@ import type { RegisterDTO } from '../../models/dtos/RegisterDTO';
 import type { ChatCreateDTO } from '../../models/dtos/ChatCreateDTO';
 import '../../styles/admin/AdminUsers.css';
 
-const toast = useToast();
-const router = useRouter();
+// AdminUsers.vue - Komponent zarządzający użytkownikami, ich rolami oraz operacjami administracyjnymi
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Reaktywne zmienne przechowujące dane użytkowników i ich role
 const userId = ref<string | null>(null);
 const roles = ref<string[]>([]);
 const users = ref<UserDTO[]>([]);
@@ -27,6 +30,8 @@ const userRoles = ref<Record<string, string>>({});
 const selectedClubHistory = ref<ClubHistoryModel[]>([]);
 const editedUserId = ref<string | null>(null);
 const deleteUserId = ref<string | null>(null);
+
+// Obiekt do przechowywania danych nowego użytkownika
 const createDTO = reactive<RegisterDTO>({
   email: "",
   password: "",
@@ -37,6 +42,7 @@ const createDTO = reactive<RegisterDTO>({
   location: "",
 });
 
+// Obiekt do przechowywania danych edytowanego użytkownika
 const updateFormData = ref<UserUpdateDTO>({
   firstName: "",
   lastName: "",
@@ -44,16 +50,18 @@ const updateFormData = ref<UserUpdateDTO>({
   location: "",
 });
 
-// Wyszukiwanie i sortowanie
+// Zmienne do obsługi wyszukiwania i sortowania użytkowników
 const searchTerm = ref<string>("");
 const selectedRole = ref<string>("All Roles");
 const sortCriteria = ref<string>("creationDateDesc");
-// Paginacja
+
+// Paginacja użytkowników
 const currentPage = ref<number>(1);
 const itemsPerPage = 20;
 const indexOfLastItem = computed(() => currentPage.value * itemsPerPage);
 const indexOfFirstItem = computed(() => indexOfLastItem.value - itemsPerPage);
 
+// Pobieranie danych użytkowników i ról po zamontowaniu komponentu
 onMounted(async () => {
   try {
     userId.value = await AccountService.getId();
@@ -66,12 +74,14 @@ onMounted(async () => {
   }
 });
 
+// Pobieranie listy użytkowników i ich ról
 const fetchUsers = async () => {
   try {
     users.value = await UserService.getUsers();
     onlyUsers.value = await UserService.getOnlyUsers();
     onlyAdmins.value = await UserService.getOnlyAdmins();
 
+    // Mapowanie ID użytkownika do jego roli
     const userRoleMap: Record<string, string> = {};
     const userRolesData = await Promise.all(
       users.value.map(async (user) => ({
@@ -92,10 +102,12 @@ const fetchUsers = async () => {
   }
 };
 
+// Obsługa zmiany strony w paginacji
 const handlePageChange = (pageNumber: number) => {
   currentPage.value = pageNumber;
 };
 
+// Rejestracja nowego użytkownika po walidacji formularza
 const register = async () => {
   const validationError = validateForm();
   if (validationError) {
@@ -114,6 +126,7 @@ const register = async () => {
   }
 };
 
+// Funkcja walidująca formularz rejestracji nowego użytkownika
 const validateForm = () => {
     const { email, password, confirmPassword, firstName, lastName, phoneNumber, location } = createDTO;
 
@@ -146,6 +159,7 @@ const validateForm = () => {
     return null;
 };
 
+// Funkcja walidująca format e-maila
 const emailValidator = (email: string): string | null => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email))
@@ -154,6 +168,7 @@ const emailValidator = (email: string): string | null => {
     return null;
 };
 
+// Funkcja walidująca hasło (minimalna długość, duże litery, cyfry, znaki specjalne)
 const passwordValidator = (password: string): string | null => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
     if (!passwordRegex.test(password))
@@ -162,11 +177,13 @@ const passwordValidator = (password: string): string | null => {
     return null;
 };
 
+// Funkcja otwierająca modal edycji użytkownika, ładuje dane użytkownika do formularza
 const handleShowEditModal = async (userId: string) => {
     editedUserId.value = userId;
     updateFormData.value = await UserService.getUser(userId);
 };
 
+// Obsługa edycji profilu użytkownika
 const editProfile = async () => {
   if (!editedUserId.value)
     return;
@@ -189,6 +206,7 @@ const editProfile = async () => {
   }
 };
 
+// Funkcja walidująca formularz edycji profilu użytkownika
 const validateEditForm = () => {
     const { firstName, lastName, phoneNumber, location } = updateFormData.value;
 
@@ -207,10 +225,12 @@ const validateEditForm = () => {
     return null;
 };
 
+// Funkcja wywołująca modal usuwania użytkownika
 const handleShowDeleteModal = (userId: string) => {
     deleteUserId.value = userId;
 };
 
+// Obsługa usuwania użytkownika
 const deleteProfile = async () => {
   if (!deleteUserId.value)
     return;
@@ -227,10 +247,12 @@ const deleteProfile = async () => {
   }
 };
 
+// Funkcja pobierająca historię klubów użytkownika
 const handleShowClubHistoryDetails = async (userId: string) => {
     selectedClubHistory.value = await UserService.getUserClubHistory(userId);
 };
 
+// Otwieranie czatu między użytkownikami
 const handleOpenChat = async (receiverId: string) => {
   if (!receiverId || !userId.value)
   return;
@@ -250,6 +272,7 @@ const handleOpenChat = async (receiverId: string) => {
   }
 };
 
+// Funkcja filtrująca użytkowników na podstawie wprowadzonego terminu wyszukiwania
 const searchUsers = (users: UserDTO[]) => {
     if (!searchTerm) {
         return users;
@@ -263,6 +286,7 @@ const searchUsers = (users: UserDTO[]) => {
     );
 };
 
+// Funkcja filtrująca użytkowników na podstawie wybranej roli (np. admini, użytkownicy)
 const filterUsersByRole = (users: UserDTO[]): UserDTO[]  => {
     if (selectedRole.value === "All Roles") {
         return users;
@@ -275,6 +299,7 @@ const filterUsersByRole = (users: UserDTO[]): UserDTO[]  => {
     }
 };
 
+// Funkcja sortująca użytkowników według różnych kryteriów (np. data utworzenia, nazwisko, e-mail)
 const sortUsers = (users: UserDTO[]) => {
     switch (sortCriteria.value) {
         case 'creationDateAsc':
@@ -306,6 +331,7 @@ const sortUsers = (users: UserDTO[]) => {
     }
 };
 
+// Filtrowanie i sortowanie użytkowników
 const filteredUsers = computed(() => filterUsersByRole(users.value));
 const searchedUsers = computed(() => searchUsers(filteredUsers.value));
 const sortedUsers = computed(() => sortUsers(searchedUsers.value));
@@ -313,7 +339,7 @@ const currentUserItems = computed(() => sortedUsers.value.slice(indexOfFirstItem
 const totalPages = computed(() => Math.ceil(searchedUsers.value.length / itemsPerPage));
 
 </script>
-
+<!-- Struktura strony administratora: formularze do rejestracji, edycji, usuwania użytkowników i wyświetlanie listy użytkowników -->
 <template>
     <div class="AdminUsers">
       <h1><i class="bi bi-people-fill"></i> Users</h1>

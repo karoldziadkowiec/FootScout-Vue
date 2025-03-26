@@ -6,9 +6,12 @@ import { AccountService } from '../../services/api/AccountService';
 import type { RegisterDTO } from '../../models/dtos/RegisterDTO';
 import '../../styles/account/Registration.css';
 
-const router = useRouter();
-const toast = useToast();
+//Registration.vue - Komponent obsługujący rejestrację nowego użytkownika 
 
+const router = useRouter();  // Router do nawigacji między stronami
+const toast = useToast();    // Obsługa powiadomień
+
+// Obiekt rejestracyjny przechowujący dane użytkownika
 const registerDTO = ref<RegisterDTO>({
   email: '',
   password: '',
@@ -19,11 +22,13 @@ const registerDTO = ref<RegisterDTO>({
   location: ''
 });
 
+// Wylogowanie użytkownika na wejściu
 onMounted(async () => {
     // wyczyść AuthToken w cookies na wejściu
     await AccountService.logout();
 });
 
+// Walidacja formularza przed wysłaniem
 const handleRegister = async () => {
   const validationError = validateForm();
   if (validationError) {
@@ -31,6 +36,7 @@ const handleRegister = async () => {
     return;
   }
 
+  // Rejestracja nowego użytkownika w serwisie  
   try {
     await AccountService.registerUser(registerDTO.value);
     toast.success('Your account has been successfully registered!');
@@ -41,38 +47,40 @@ const handleRegister = async () => {
   }
 };
 
+// Funkcja sprawdzająca poprawność danych w formularzu
 const validateForm = () => {
     const { email, password, confirmPassword, firstName, lastName, phoneNumber, location } = registerDTO.value;
 
-    // sprawdź puste pola
+    // Sprawdzenie, czy wszystkie pola są wypełnione
     if (!email || !password || !confirmPassword || !firstName || !lastName || !phoneNumber || !location)
         return 'All fields are required.';
 
-    // walidacja E-mail
+    // Walidacja E-mail
     const emailError = emailValidator(email);
     if (emailError)
         return emailError;
 
-    // walidacja hasła
+    // Walidacja hasła
     const passwordError = passwordValidator(password);
     if (passwordError)
         return passwordError;
 
-    // Passwords matcher
+    // Sprawdzenie zgodności haseł
     if (password !== confirmPassword)
         return 'Passwords do not match.';
 
-    // walidacja typu numeru telefonu
+    // Walidacja typu numeru telefonu
     if (isNaN(Number(phoneNumber)))
         return 'Phone number must be a number.';
 
-    // walidacja długości numeru telefonu
+    // Sprawdzenie poprawności długości numeru telefonu
     if (phoneNumber.length !== 9)
         return 'Phone number must contain exactly 9 digits.';
 
     return null;
 };
 
+// Funkcja sprawdzająca poprawność e-maila
 const emailValidator = (email: string): string | null => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email))
@@ -81,6 +89,7 @@ const emailValidator = (email: string): string | null => {
     return null;
 };
 
+// Funkcja sprawdzająca poprawność hasła
 const passwordValidator = (password: string): string | null => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
     if (!passwordRegex.test(password))
@@ -88,8 +97,9 @@ const passwordValidator = (password: string): string | null => {
 
     return null;
 };
-</script>
 
+</script>
+<!-- Struktura strony rejestracji użytkownika -->
 <template>
   <div class="Registration">
     <div class="logo-container">

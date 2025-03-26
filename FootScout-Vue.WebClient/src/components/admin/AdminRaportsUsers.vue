@@ -7,21 +7,28 @@ import { TimeService } from '../../services/time/TimeService';
 import BarChartComponent from '../layout/BarChartComponent.vue';
 import '../../styles/admin/AdminRaportsUsers.css';
 
-const toast = useToast();
-const router = useRouter();
+// AdminRaportsUsers.vue - Komponent odpowiedzialny za wyświetlanie raportów użytkowników i statystyk
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Reaktywne zmienne do przechowywania liczby użytkowników oraz danych o ich tworzeniu
 const userCount = ref<number>(0);
 const userCreationData = ref<{ date: string; count: number }[]>([]);
-const currentMonth = ref<Date>(new Date());
+const currentMonth = ref<Date>(new Date());   // Aktualnie wybrany miesiąc
 
+// Pobieranie danych po zamontowaniu komponentu
 onMounted(async () => {
   try {
+    // Pobranie listy użytkowników z API
     const _users = await UserService.getUsers();
 
     if (_users.length > 0) {
+      // Znalezienie daty pierwszego użytkownika i ustawienie zakresu dat
       const firstUserDate = new Date(Math.min(..._users.map(user => new Date(user.creationDate).getTime()))).toISOString().split('T')[0];
       const todayDate = new Date().toISOString().split('T')[0];
 
+      // Zliczanie liczby użytkowników utworzonych w poszczególnych dniach
       const dateRange = TimeService.generateDateRange(firstUserDate, todayDate);
       const creationCounts: Record<string, number> = {};
       _users.forEach(user => {
@@ -29,11 +36,13 @@ onMounted(async () => {
         creationCounts[creationDate] = (creationCounts[creationDate] || 0) + 1;
       });
 
+      // Tworzenie danych dla wykresu w odpowiednim formacie
       userCreationData.value = dateRange.map(date => ({
         date,
         count: creationCounts[date] || 0,
       })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
+      // Ustawienie łącznej liczby użytkowników
       userCount.value = _users.length;
     }
   }
@@ -43,15 +52,17 @@ onMounted(async () => {
   }
 });
 
+// Funkcja do zmiany aktualnie wybranego miesiąca w raportach
 const changeMonth = (direction: number) => {
   currentMonth.value = new Date(currentMonth.value.getFullYear(), currentMonth.value.getMonth() + direction, 1);
 };
 
-
+// Filtrowanie danych, aby wyświetlać tylko użytkowników utworzonych w wybranym miesiącu
 const usersFilteredData = computed(() => {
   return userCreationData.value.filter(item => item.date.startsWith(TimeService.formatDateToMonth(currentMonth.value)));
 });
 
+// Przygotowanie danych do wykresu słupkowego
 const chartData = computed(() => ({
   labels: usersFilteredData.value.map(item => item.date),
   datasets: [
@@ -63,15 +74,18 @@ const chartData = computed(() => ({
   ],
 }));
 
+// Eksportowanie danych użytkowników do pliku CSV
 const exportDataToCSV = async () => {
   await UserService.exportUsersToCsv();
 };
 
+// Nawigacja do strony zarządzania użytkownikami
 const navigateToUsers = () => {
   router.push('/admin/users');
 };
-</script>
 
+</script>
+<!-- Struktura strony admina: raporty dotyczące użytkowników i statystyki -->
 <template>
   <div class="AdminRaportsUsers">
     <h1><i class="bi bi-people-fill"></i> Users - Reports & Stats</h1>

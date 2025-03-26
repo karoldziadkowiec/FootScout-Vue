@@ -13,13 +13,22 @@ import type { UserDTO } from '../../models/dtos/UserDTO';
 import type { ClubHistoryCreateDTO } from '../../models/dtos/ClubHistoryCreateDTO';
 import '../../styles/user/ClubHistory.css';
 
-const toast = useToast();
-const user = ref<UserDTO | null>(null);
+// ClubHistory.vue - Komponent zarządzający historią klubową użytkownika, umożliwiający tworzenie, edytowanie i usuwanie historii.
+
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Deklaracje zmiennych reaktywnych, które przechowują dane
+const user = ref<UserDTO | null>(null);  // Reaktywny obiekt użytkownika
+// Reaktywny array z historiami klubowymi użytkownika
 const userClubHistories = ref<ClubHistoryModel[]>([]);
+// Reaktywny array z dostępnymi pozycjami gracza
 const positions = ref<PlayerPosition[]>([]);
+// Reaktywny obiekt do przechowywania wybranej historii klubowej
 const selectedClubHistory = ref<ClubHistoryModel | null>(null);
+// Reaktywny ID historii, którą chcemy usunąć
 const deleteHistoryId = ref<number | null>(null);
 
+// Tworzenie danych dla formularza tworzenia nowej historii klubowej
 const createFormData = reactive<ClubHistoryCreateDTO>({
   playerPositionId: 0,
   clubName: '',
@@ -36,8 +45,10 @@ const createFormData = reactive<ClubHistoryCreateDTO>({
   playerId: ''
 });
 
+// Zmienna do edytowania danych istniejącej historii klubowej
 const editFormData = ref<ClubHistoryModel | null>(null);
 
+// Funkcja uruchamiana po załadowaniu komponentu, pobiera dane użytkownika, jego historię klubową oraz pozycje gracza
 onMounted(async () => {
   try {
     const userId = await AccountService.getId();
@@ -53,44 +64,47 @@ onMounted(async () => {
   }
 });
 
+// Funkcja walidująca dane formularza (sprawdzanie, czy wszystkie wymagane pola są wypełnione)
 const validateForm = (formData: ClubHistoryCreateDTO | ClubHistoryModel) => {
     const { playerPositionId, clubName, league, region, startDate, endDate, achievements } = formData;
     const { numberOfMatches, goals, assists } = achievements;
 
     if (!playerPositionId || !clubName || !league || !region || !startDate || !endDate)
-        return 'All fields are required.';
+        return 'All fields are required.';    // Sprawdzanie, czy pola są wypełnione
 
     if (isNaN(Number(numberOfMatches)) || isNaN(Number(goals)) || isNaN(Number(assists)))
-        return 'Matches, goals, and assists must be numbers.';
+        return 'Matches, goals, and assists must be numbers.';    // Sprawdzanie, czy liczby są poprawne
 
     if (Number(numberOfMatches) < 0 || Number(goals) < 0 || Number(assists) < 0)
-        return 'Matches, goals and assists must be greater than or equal to 0.';
+        return 'Matches, goals and assists must be greater than or equal to 0.';    // Sprawdzanie, czy liczby są nieujemne
 
     const start = new Date(startDate);
     const end = new Date(endDate);
     if (end <= start) {
-        return 'End date must be later than start date.';
+        return 'End date must be later than start date.';   // Sprawdzanie, czy data zakończenia jest późniejsza niż data rozpoczęcia
     }
 
     return null;
 };
 
+// Funkcja obsługująca tworzenie historii klubowej
 const handleCreateClubHistory = async () => {
   if (!user.value)
-    return;
+    return;   // Sprawdzanie, czy użytkownik jest zalogowany
 
-  const validationError = validateForm(createFormData);
+  // Walidacja danych
+  const validationError = validateForm(createFormData);   
   if (validationError) {
     toast.error(validationError);
     return;
   }
 
   try {
-    createFormData.playerId = user.value.id;
-    await ClubHistoryService.createClubHistory(createFormData);
+    createFormData.playerId = user.value.id;    // Przypisanie ID użytkownika do formularza
+    await ClubHistoryService.createClubHistory(createFormData);   // Wywołanie serwisu do utworzenia historii klubowej
     toast.success('Club history created successfully!');
-    userClubHistories.value = await UserService.getUserClubHistory(user.value.id);
-    closeModal('createClubHistoryModal');
+    userClubHistories.value = await UserService.getUserClubHistory(user.value.id);    // Aktualizacja listy historii klubowych użytkownika
+    closeModal('createClubHistoryModal'); 
   }
   catch (error) {
     console.error('Failed to create club history:', error);
@@ -98,26 +112,29 @@ const handleCreateClubHistory = async () => {
   }
 };
 
+// Funkcja obsługująca wyświetlanie szczegółów historii klubowej
 const handleShowDetails = (clubHistory: ClubHistoryModel) => {
   selectedClubHistory.value = clubHistory;
 };
 
+// Funkcja obsługująca wyświetlanie formularza edycji historii klubowej
 const handleShowEditModal = (clubHistory: ClubHistoryModel) => {
   editFormData.value = { ...clubHistory };
 };
 
+// Funkcja obsługująca edycję historii klubowej
 const handleEditClubHistory = async () => {
   if (!user.value || !editFormData.value)
     return;
 
-  const validationError = validateForm(editFormData.value);
+  const validationError = validateForm(editFormData.value);   // Walidacja danych edytowanej historii
   if (validationError) {
     toast.error(validationError);
     return;
   }
 
   try {
-    await ClubHistoryService.updateClubHistory(editFormData.value.id, editFormData.value);
+    await ClubHistoryService.updateClubHistory(editFormData.value.id, editFormData.value);    // Wywołanie serwisu do aktualizacji historii
     toast.success('Club history updated successfully!');
     userClubHistories.value = await UserService.getUserClubHistory(user.value.id);
     closeModal('editClubHistoryModal');
@@ -128,16 +145,18 @@ const handleEditClubHistory = async () => {
   }
 };
 
+// Funkcja obsługująca wyświetlanie modala usuwania historii klubowej
 const handleShowDeleteModal = (clubHistoryId: number) => {
   deleteHistoryId.value = clubHistoryId;
 };
 
+// Funkcja obsługująca usuwanie historii klubowej
 const handleDeleteClubHistory = async () => {
   if (!user.value || !deleteHistoryId.value)
     return;
 
   try {
-    await ClubHistoryService.deleteClubHistory(deleteHistoryId.value);
+    await ClubHistoryService.deleteClubHistory(deleteHistoryId.value);    // Wywołanie serwisu do usunięcia historii
     toast.success('Your club history has been deleted successfully.');
     deleteHistoryId.value = null;
     userClubHistories.value = await UserService.getUserClubHistory(user.value.id);
@@ -148,8 +167,9 @@ const handleDeleteClubHistory = async () => {
     toast.error('Failed to delete club history.');
   }
 };
-</script>
 
+</script>
+<!-- Struktura strony historii klubowej: formularze tworzenia/edycji, lista historii i szczegóły wybranej historii -->
 <template>
   <div class="ClubHistory">
     <h1><i class="bi bi-clock-history"></i> Club History</h1>

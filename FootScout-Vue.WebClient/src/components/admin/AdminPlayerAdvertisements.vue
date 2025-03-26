@@ -13,26 +13,32 @@ import type { PlayerAdvertisement } from '../../models/interfaces/PlayerAdvertis
 import type { ChatCreateDTO } from '../../models/dtos/ChatCreateDTO';
 import '../../styles/admin/AdminPlayerAdvertisements.css';
 
-const toast = useToast();
-const router = useRouter();
-const route = useRoute();
+// AdminPlayerAdvertisments.vue - Komponent zarządzający ogłoszeniami piłkarskimi w panelu admina
 
-const userId = ref<string | null>(null);
-const positions = ref<PlayerPosition[]>([]);
-const playerAdvertisements = ref<PlayerAdvertisement[]>([]);
-const finishAdvertisementId = ref<number | null>(null);
-const deleteAdvertisementId = ref<number | null>(null);
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
 
-// Wyszukiwanie i sortowanie
+// Zmienne reagujące na dane
+const userId = ref<string | null>(null);        // Id użytkownika (admina)
+const positions = ref<PlayerPosition[]>([]);        // Lista pozycji piłkarskich
+const playerAdvertisements = ref<PlayerAdvertisement[]>([]);    // Lista ogłoszeń piłkarskich
+const finishAdvertisementId = ref<number | null>(null);     // Id ogłoszenia do zakończenia
+const deleteAdvertisementId = ref<number | null>(null);     // Id ogłoszenia do usunięcia
+
+// Zmienne do wyszukiwania, filtrowania i sortowania ogłoszeń
 const searchTerm = ref<string>('');
 const selectedStatus = ref<'all' | 'active' | 'inactive'>('all');
 const selectedPosition = ref<string | ''>('');
 const sortCriteria = ref<string>('creationDateDesc');
-// Paginacja
+
+// Zmienna do paginacji
 const currentPage = ref<number>(1);
 const itemsPerPage = 20;
 
+// Ładowanie danych po załadowaniu komponentu (onMounted)
 onMounted(async () => {
+    // Pobieranie danych użytkownika (admina), pozycji piłkarskich oraz ogłoszeń
     try {
         userId.value = await AccountService.getId();
         positions.value = await PlayerPositionService.getPlayerPositions();
@@ -44,6 +50,7 @@ onMounted(async () => {
     }
 });
 
+// Uaktualnianie ogłoszeń, gdy zmienia się pełna ścieżka w routingu
 watchEffect(async () => {
     if (route.fullPath) {
         try {
@@ -56,18 +63,22 @@ watchEffect(async () => {
     }
 });
 
+// Funkcja obsługująca zmianę strony w paginacji
 const handlePageChange = (pageNumber: number) => {
     currentPage.value = pageNumber;
 };
 
+// Funkcja przekierowująca do szczegółów ogłoszenia
 const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
     router.push({ path: `/player-advertisement/${playerAdvertisementId}`, state: { playerAdvertisementId } });
 };
 
+// Pokazanie modalu do zakończenia ogłoszenia
 const handleShowFinishModal = (advertisementId: number) => {
     finishAdvertisementId.value = advertisementId;
 };
 
+// Zakończenie ogłoszenia piłkarskiego
 const finishPlayerAdvertisement = async () => {
     if (!finishAdvertisementId.value)
         return;
@@ -81,9 +92,11 @@ const finishPlayerAdvertisement = async () => {
             endDate: currentDate
         };
 
+        // Aktualizacja ogłoszenia z datą zakończenia
         await PlayerAdvertisementService.updatePlayerAdvertisement(finishAdvertisementId.value, finishFormData);
         toast.success('Advertisement has been finished successfully.');
 
+        // Odświeżenie listy ogłoszeń po zakończeniu
         playerAdvertisements.value = await PlayerAdvertisementService.getAllPlayerAdvertisements();
         closeModal('finishAdvertisementModal');
     }
@@ -93,10 +106,12 @@ const finishPlayerAdvertisement = async () => {
     }
 };
 
+// Pokazanie modalu do usunięcia ogłoszenia
 const handleShowDeleteModal = (advertisementId: number) => {
     deleteAdvertisementId.value = advertisementId;
 };
 
+// Usunięcie ogłoszenia
 const deleteAdvertisement = async () => {
     if (!deleteAdvertisementId.value)
         return;
@@ -114,6 +129,7 @@ const deleteAdvertisement = async () => {
     }
 };
 
+// Funkcja otwierająca chat z użytkownikiem
 const handleOpenChat = async (receiverId: string) => {
     if (!receiverId || !userId.value)
         return;
@@ -138,6 +154,7 @@ const handleOpenChat = async (receiverId: string) => {
     }
 };
 
+// Filtracja ogłoszeń na podstawie wyszukiwania, statusu, pozycji i sortowania
 const filteredAdvertisements = computed(() => {
     let ads = playerAdvertisements.value;
 
@@ -180,14 +197,17 @@ const filteredAdvertisements = computed(() => {
     });
 });
 
+// Paginacja ogłoszeń: wyświetlanie tylko odpowiednich ogłoszeń na danej stronie
 const currentPlayerAdvertisementItems = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
     return filteredAdvertisements.value.slice(start, start + itemsPerPage);
 });
 
+// Obliczanie całkowitej liczby stron
 const totalPages = computed(() => Math.ceil(filteredAdvertisements.value.length / itemsPerPage));
-</script>
 
+</script>
+<!-- Struktura strony admina: lista ogłoszeń piłkarskich, filtry, sortowanie oraz modale do zakończenia i usunięcia ogłoszeń -->
 <template>
     <div className="AdminPlayerAdvertisements">
         <h1><i class="bi bi-list-nested"></i> Player Advertisements</h1>

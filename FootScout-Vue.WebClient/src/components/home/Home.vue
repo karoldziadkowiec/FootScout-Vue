@@ -5,16 +5,22 @@ import { useToast } from 'vue-toast-notification';
 import VueScrollTo from 'vue-scrollto';
 import '../../styles/home/Home.css';
 
-const router = useRouter();
-const route = useRoute();
-const toast = useToast();
+// Home.vue - Komponent głównej strony aplikacji z nawigacją i przewijaniem
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Ładowanie danych po załadowaniu komponentu (onMounted)
+// Sprawdza, czy w parametrach URL znajduje się wiadomość toast
+// Jeśli tak, wyświetla powiadomienie użytkownikowi
 onMounted(() => {
   if (route.query.toastMessage) {
     toast.success(route.query.toastMessage as string);
   }
 });
 
+// Funkcja do przewijania strony do wybranej sekcji na podstawie jej ID
 const scrollToSection = (id: string) => {
   VueScrollTo.scrollTo(`#${id}`, {
     duration: 600,
@@ -22,11 +28,13 @@ const scrollToSection = (id: string) => {
   });
 };
 
+// Funkcja do nawigacji do innej podstrony w aplikacji
 const moveToPage = (page: string) => {
   router.push(`/${page}`);
 };
-</script>
 
+</script>
+<!-- Struktura strony głównej: sekcje dla zawodników i klubów -->
 <template>
   <div class="Home">
     <section id="home" class="startSection">
