@@ -1,5 +1,8 @@
 import type { SalaryRangeCreateDTO } from "./SalaryRangeCreateDTO";
 
+// Modeluje ogłoszenie zawodnika, uwzględniając dane o pozycji, lidze, wieku, wzroście, 
+// preferowanej nodze i przedziale wynagrodzenia.
+
 export interface PlayerAdvertisementCreateDTO {
     playerPositionId: number;
     league: string;

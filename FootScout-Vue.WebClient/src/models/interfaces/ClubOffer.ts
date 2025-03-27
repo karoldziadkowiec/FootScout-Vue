@@ -3,6 +3,9 @@ import type { OfferStatus } from './OfferStatus';
 import type { PlayerPosition } from './PlayerPosition';
 import type { UserDTO } from '../dtos/UserDTO';
 
+// Przedstawia ofertę klubu dla zawodnika, zawierając informacje o ogłoszeniu, statusie oferty, pozycji, 
+// wynagrodzeniu i nadawcy oferty.
+
 export interface ClubOffer {
     id: number;
     playerAdvertisementId: number;

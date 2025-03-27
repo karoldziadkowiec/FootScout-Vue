@@ -3,6 +3,9 @@ import type { PlayerFoot } from './PlayerFoot';
 import type { SalaryRange } from "./SalaryRange";
 import type { UserDTO } from '../dtos/UserDTO';
 
+// Reprezentuje ogłoszenie piłkarza, zawierając jego pozycję, wiek, wzrost, preferowaną stopę, 
+// zakres wynagrodzenia i daty ważności ogłoszenia.
+
 export interface PlayerAdvertisement {
     id: number;
     playerPositionId: number;
