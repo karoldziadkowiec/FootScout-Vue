@@ -1,3 +1,5 @@
+/* Główny plik konfiguracyjny TypeScript, wskazujący na osobne konfiguracje dla aplikacji i Vite. */
+
 {
   "files": [],
   "references": [

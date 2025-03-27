@@ -1,3 +1,5 @@
+// Konfiguracja Vite, określająca użycie Vue jako frameworka (plugins: [vue()]).
+
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 

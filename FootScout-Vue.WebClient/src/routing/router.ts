@@ -1,3 +1,7 @@
+// Definiuje ścieżki nawigacyjne aplikacji Vue, przypisuje im odpowiednie komponenty i role 
+// użytkowników oraz obsługuje autoryzację przed zmianą trasy (czy użytkownik jest zalogowany, 
+// czy ma ważny token sesji, czy posiada odpowiednią rolę)
+
 import { createRouter, createWebHistory } from 'vue-router';
 import { AccountService } from '../services/api/AccountService';
 import { Role } from '../models/enums/Role';

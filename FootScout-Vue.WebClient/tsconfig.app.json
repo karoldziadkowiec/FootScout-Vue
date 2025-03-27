@@ -1,3 +1,5 @@
+/* Konfiguracja TypeScript dla aplikacji Vue, włączająca ścisłą kontrolę kodu (strict, noUnusedLocals itp.). */
+
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
