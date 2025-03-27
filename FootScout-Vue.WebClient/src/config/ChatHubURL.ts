@@ -1,3 +1,5 @@
+// Konfiguruje adres WebSocket dla SignalR, dodając do hosta nazwę huba czatu
+
 const ApiPORT: number = 7236; // ustaw numer portu serwera
 const HubName: string = 'chathub'; // ustaw nazwę huba w WebSocket od SignalR
 
