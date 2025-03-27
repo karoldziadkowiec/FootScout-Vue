@@ -6,31 +6,40 @@ import { Role } from '../../models/enums/Role';
 import NavbarComponent from '../../components/layout/Navbar.vue';
 import AdminNavbarComponent from '../../components/layout/AdminNavbar.vue';
 
-const role = ref<Role | null>(null);
-const route = useRoute(); // Pobierz aktualną trasę
+// DynamicNavbar.vue - Komponent dynamicznie wybierający odpowiedni navbar w zależności od roli użytkownika
 
+// Zmienna przechowująca rolę użytkownika (może być Admin, User lub null, jeśli nie pobrano)
+const role = ref<Role | null>(null);
+
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+
+// Funkcja asynchroniczna pobierająca rolę użytkownika z API
 const fetchRole = async () => {
   role.value = await AccountService.getRole(); // pobierz rolę
 };
 
-// Pobierz rolę przy zamontowaniu komponentu
+// Pobranie roli użytkownika przy pierwszym załadowaniu komponentu
 onMounted(fetchRole);
 
-// Aktualizuj rolę przy każdej zmianie trasy
+// Nasłuchiwanie zmiany trasy i ponowne pobranie roli użytkownika w razie potrzeby
 watch(() => route.path, fetchRole);
 
-// Sprawdź, czy jesteś na stronie logowania lub rejestracji
+// Obliczona wartość sprawdzająca, czy użytkownik jest na stronie logowania lub rejestracji
 const isAuthPage = computed(() => route.path === '/' || route.path === '/registration');
-</script>
 
+</script>
+<!-- Struktura nawigacji dynamicznie dostosowującej się do użytkownika -->
 <template>
   <div>
     <!-- Ukryj navbar, jeśli użytkownik jest na stronie logowania lub rejestracji -->
     <template v-if="!isAuthPage">
+      <!-- Jeśli użytkownik ma rolę administratora, wyświetl AdminNavbarComponent -->
       <AdminNavbarComponent v-if="role === Role.Admin" />
+      <!-- Jeśli użytkownik jest zwykłym użytkownikiem, wyświetl standardowy NavbarComponent -->
       <NavbarComponent v-else-if="role === Role.User" />
     </template>
 
-    <slot></slot> <!-- Renderowanie stron wewnątrz layoutu -->
+    <!-- Slot umożliwiający osadzenie innych komponentów w tym layoucie -->
+    <slot></slot>
   </div>
 </template>

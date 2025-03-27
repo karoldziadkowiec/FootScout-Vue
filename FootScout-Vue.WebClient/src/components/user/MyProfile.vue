@@ -11,13 +11,17 @@ import type { UserUpdateDTO } from '../../models/dtos/UserUpdateDTO';
 import type { UserResetPasswordDTO } from '../../models/dtos/UserResetPasswordDTO';
 import '../../styles/user/MyProfile.css';
 
-const router = useRouter();
-const toast = useToast();
+// MyProfile.vue - Komponent do zarządzania profilem użytkownika, umożliwiający edycję danych, resetowanie hasła i usunięcie konta
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Używamy ref, by przechowywać dane użytkownika, rolę administratora i stan ładowania
 const user = ref<UserDTO | null>(null);
 const isAdminRole = ref<boolean | null>(null);
 const loading = ref<boolean>(true);
 
+// Dane do aktualizacji profilu
 const updateFormData = ref<UserUpdateDTO>({
   firstName: '',
   lastName: '',
@@ -25,16 +29,20 @@ const updateFormData = ref<UserUpdateDTO>({
   location: '',
 });
 
+// Dane do resetowania hasła
 const resetPasswordFormData = ref<UserResetPasswordDTO>({
   passwordHash: '',
   confirmPasswordHash: '',
 });
 
+// Pobiera dane po zamontowaniu komponentu
 onMounted(async () => {
   try {
+    // Pobieramy ID użytkownika oraz sprawdzamy, czy jest administratorem
     const userId = await AccountService.getId();
     isAdminRole.value = await AccountService.isRoleAdmin();
 
+    // Jeśli ID użytkownika jest dostępne, ładujemy dane użytkownika
     if (userId) {
       user.value = await UserService.getUser(userId);
       updateFormData.value = { ...user.value };
@@ -45,14 +53,16 @@ onMounted(async () => {
     toast.error('Failed to load user data.');
   }
   finally {
-    loading.value = false;
+    loading.value = false;    // Zmieniamy stan ładowania po zakończeniu
   }
 });
 
+// Funkcja obsługująca edytowanie profilu użytkownika
 const handleEditProfile = async () => {
   if (!user.value)
     return;
 
+  // Sprawdzamy poprawność danych w formularzu
   const validationError = validateEditForm();
   if (validationError) {
       toast.error(validationError);
@@ -60,6 +70,7 @@ const handleEditProfile = async () => {
   }
 
   try {
+    // Aktualizujemy dane użytkownika
     await UserService.updateUser(user.value.id, updateFormData.value);
     toast.success('Profile updated successfully!');
     user.value = await UserService.getUser(user.value.id);
@@ -71,6 +82,7 @@ const handleEditProfile = async () => {
   }
 };
 
+// Funkcja walidująca dane w formularzu edycji profilu
 const validateEditForm = () => {
     const { firstName, lastName, phoneNumber, location } = updateFormData.value;
 
@@ -89,10 +101,12 @@ const validateEditForm = () => {
     return null;
 };
 
+// Funkcja do resetowania hasła
 const handleResetPassword = async () => {
   if (!user.value)
     return;
 
+  // Walidujemy formularz resetowania hasła
   const validationError = validateResetPasswordForm();
   if (validationError) {
       toast.error(validationError);
@@ -100,6 +114,7 @@ const handleResetPassword = async () => {
   }
 
   try {
+    // Resetujemy hasło użytkownika
     await UserService.resetUserPassword(user.value.id, resetPasswordFormData.value);
     toast.success('Password updated successfully! Try to log in with new password.');
     router.push('/');
@@ -111,6 +126,7 @@ const handleResetPassword = async () => {
   }
 };
 
+// Funkcja walidująca formularz resetowania hasła
 const validateResetPasswordForm = () => {
     const { passwordHash, confirmPasswordHash } = resetPasswordFormData.value;
 
@@ -134,6 +150,7 @@ const validateResetPasswordForm = () => {
     return null;
 };
 
+// Funkcja do walidacji hasła
 const passwordValidator = (password: string): string | null => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
     if (!passwordRegex.test(password))
@@ -142,14 +159,16 @@ const passwordValidator = (password: string): string | null => {
     return null;
 };
 
+// Funkcja do usuwania profilu użytkownika
 const handleDeleteProfile = async () => {
   if (!user.value)
     return;
 
   try {
+    // Usuwamy konto użytkownika
     await UserService.deleteUser(user.value.id);
     toast.success('Your account has been deleted successfully.');
-    router.push('/');
+    router.push('/');   // Przekierowanie na stronę główną
     closeModal('deleteProfileModal');
   }
   catch (error) {
@@ -157,8 +176,9 @@ const handleDeleteProfile = async () => {
     toast.error('Failed to delete user.');
   }
 };
-</script>
 
+</script>
+<!-- Struktura strony profilu użytkownika: formularz edycji danych, zmiany hasła i usunięcia konta -->
 <template>
   <div class="MyProfile">
     <h1><i class="bi bi-person-fill"></i> My Profile</h1>

@@ -8,17 +8,23 @@ import { TimeService } from "../../services/time/TimeService";
 import type { PlayerAdvertisement } from '../../models/interfaces/PlayerAdvertisement';
 import '../../styles/user/MyPlayerAdvertisements.css';
 
-const router = useRouter();
-const toast = useToast();
-const activeTab = ref("active");
+// MyPlayerAdvertisments.vue - Komponent zarządzający ogłoszeniami piłkarskimi użytkownika
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+const activeTab = ref("active");    // Tworzenie reaktywnej zmiennej do przechowywania aktywnej zakładki (np. aktywne ogłoszenia)
+
+// Reaktywna zmienna przechowująca aktywne ogłoszenia piłkarskie użytkownika
 const userActivePlayerAdvertisements = ref<PlayerAdvertisement[]>([]);
+// Reaktywna zmienna przechowująca nieaktywne ogłoszenia piłkarskie użytkownika
 const userInactivePlayerAdvertisements = ref<PlayerAdvertisement[]>([]);
 
+// Funkcja asynchroniczna do pobierania ogłoszeń użytkownika
 const fetchUserPlayerAdvertisements = async () => {
   try {
     const userId = await AccountService.getId();
     if (userId) {
+      // Pobieranie aktywnych i nieaktywnych ogłoszeń użytkownika z serwisu.
       userActivePlayerAdvertisements.value = await UserService.getUserActivePlayerAdvertisements(userId);
       userInactivePlayerAdvertisements.value = await UserService.getUserInactivePlayerAdvertisements(userId);
     }
@@ -29,20 +35,24 @@ const fetchUserPlayerAdvertisements = async () => {
   }
 };
 
+// Funkcja do przejścia do strony szczegółów ogłoszenia
 const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
   router.push({
     path: `/player-advertisement/${playerAdvertisementId}`,
-    state: { playerAdvertisementId },
+    state: { playerAdvertisementId },   // Przekazywanie ID ogłoszenia jako stan
   });
 };
 
+// Pobranie danych po zamontowaniu komponentu
 onMounted(() => {
   fetchUserPlayerAdvertisements();
 });
 
+// Funkcja do nawigacji po aplikacji przy użyciu routera
 const navigate = (path: string) => router.push(path);
-</script>
 
+</script>
+<!-- Struktura strony ogłoszeń: wyświetlanie aktywnych i nieaktywnych ogłoszeń piłkarskich użytkownika -->
 <template>
     <div class="MyPlayerAdvertisements">
       <h1><i class="bi bi-person-bounding-box"></i> My Player Advertisements</h1>

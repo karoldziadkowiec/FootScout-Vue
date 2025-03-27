@@ -5,25 +5,31 @@ import { useToast } from 'vue-toast-notification';
 import '../../style.css';
 import '../../styles/layout/AdminNavbar.css';
 
-const route = useRoute();
-const router = useRouter();
-const toast = useToast();
+// AdminNavbar.vue - Komponent paska nawigacyjnego dla administratora
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Funkcja obsługująca wylogowanie użytkownika
 const logout = async () => {
   await AccountService.logout();
-  router.push('/');
+  router.push('/');     // Przekierowanie na stronę główną
   toast.success('Logged out successfully.');
 };
 
 // Funkcja sprawdzająca, czy dany link powinien być podświetlony
 const isActive = (path: string) => route.path.startsWith(path);
-</script>
 
+</script>
+<!-- Struktura paska nawigacyjnego dla administratora -->
 <template>
   <nav class="navbar navbar-expand-lg navbar-primary bg-primary sticky-top">
     <div class="container">
       <img src="../../img/logo.png" alt="logo" class="logo" />
       <router-link to="/admin/dashboard" class="navbar-brand">FootScout</router-link>
+      
+      <!-- Przycisk rozwijający menu dla urządzeń mobilnych -->
       <button
         class="navbar-toggler"
         type="button"
@@ -37,7 +43,7 @@ const isActive = (path: string) => route.path.startsWith(path);
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <!-- Lewa strona -->
+        <!-- Lewa strona nawigacji (linki do panelu admina) -->
         <ul class="navbar-nav me-auto blue-links">
           <li class="nav-item">
             <router-link to="/admin/dashboard" class="nav-link" :class="{ active: isActive('/admin/dashboard') }">
@@ -65,7 +71,7 @@ const isActive = (path: string) => route.path.startsWith(path);
             </router-link>
           </li>
 
-          <!-- Dropdown Reports & Stats -->
+          <!-- Dropdown dla raportów i statystyk -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
               <i class="bi bi-bar-chart-fill"></i> Reports & Stats
@@ -147,7 +153,7 @@ const isActive = (path: string) => route.path.startsWith(path);
           </li>
         </ul>
 
-        <!-- Prawa strona -->
+        <!-- Prawa strona nawigacji (chat, profil, wylogowanie) -->
         <ul class="navbar-nav ms-auto blue-links">
           <li class="nav-item">
             <router-link to="/chats" class="nav-link" :class="{ active: isActive('/chats') }">
@@ -155,7 +161,7 @@ const isActive = (path: string) => route.path.startsWith(path);
             </router-link>
           </li>
 
-          <!-- Dropdown My Profile -->
+          <!-- Dropdown dla profilu użytkownika -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
               <i class="bi bi-person-circle"></i> My Profile

@@ -24,11 +24,16 @@ import type { PlayerFoot } from "../../models/interfaces/PlayerFoot";
 import type { OfferStatus } from "../../models/interfaces/OfferStatus";
 import '../../styles/playerAdvertisement/PlayerAdvertisement.css';
 
-const toast = useToast();
-const route = useRoute();
-const router = useRouter();
+// PlayerAdvertisement.vue - Komponent obsługujący operacje na ogłoszeniach piłkarskich
+
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Pobranie ID ogłoszenia z adresu URL
 const id = Number(route.params.id);
 
+// Definicja zmiennych przechowujących dane dotyczące użytkownika i ogłoszenia
 const userId = ref<string | null>(null);
 const playerAdvertisement = ref<PlayerAdvertisement | null>(null);
 const player = ref<UserDTO | null>(null);
@@ -41,6 +46,7 @@ const feet = ref<PlayerFoot[]>([]);
 const offerStatuses = ref<OfferStatus[]>([]);
 const isAdminRole = ref<boolean | null>(null);
 
+// Zmienne do edycji i składania ofert
 const selectedClubHistory = ref<ClubHistoryModel | null>(null);
 const editFormData = ref<PlayerAdvertisement | null>(null);
 const createFormData = ref<ClubOfferCreateDTO>({
@@ -54,28 +60,35 @@ const createFormData = ref<ClubOfferCreateDTO>({
   clubMemberId: "",
 });
 
+// Obiekt przechowujący dane dotyczące ulubionego ogłoszenia piłkarskiego
 const favoritePlayerAdvertisementDTO = ref<FavoritePlayerAdvertisementCreateDTO>({
     playerAdvertisementId: 0,
     userId: ''
 });
 
+// Przechowuje ID ogłoszenia do usunięcia z ulubionych
 const deleteFavoriteId = ref<number | null>(null);
 
+// Pobranie danych po zamontowaniu komponentu
 onMounted(async () => {
   try {
+    // Pobranie informacji o zalogowanym użytkowniku
     userId.value = await AccountService.getId();
     isAdminRole.value = await AccountService.isRoleAdmin();
     
+    // Pobranie danych ogłoszenia i jego właściciela
     const data = await PlayerAdvertisementService.getPlayerAdvertisement(id);
     playerAdvertisement.value = data;
     player.value = await UserService.getUser(data.playerId);
     playerClubHistories.value = await UserService.getUserClubHistory(data.playerId);
     playerAdvertisementStatus.value = new Date(data.endDate) >= new Date();
 
+    // Pobranie pozycji, nóg i statusów ofert
     positions.value = await PlayerPositionService.getPlayerPositions();
     feet.value = await PlayerFootService.getPlayerFeet();
     offerStatuses.value = await OfferStatusService.getOfferStatuses();
 
+    // Pobranie dodatkowych informacji, jeśli użytkownik nie jest administratorem
     if (userId.value && !isAdminRole.value) {
       favoriteId.value = await FavoritePlayerAdvertisementService.checkPlayerAdvertisementIsFavorite(id, userId.value);
       offerStatusId.value = await ClubOfferService.getClubOfferStatusId(id, userId.value);
@@ -87,31 +100,37 @@ onMounted(async () => {
   }
 });
 
+// Funkcja do uzyskania nazwy statusu oferty na podstawie ID
 const getOfferStatusNameById = (id: number) => {
     const offerStatus = offerStatuses.value.find(os => os.id === id);
     return offerStatus ? offerStatus.statusName : "Unknown";
 };
 
+// Obsługa usunięcia ogłoszenia
 const handleShowClubHistoryDetails = (clubHistory: ClubHistoryModel) => {
     selectedClubHistory.value = clubHistory;
 };
 
+// Pokazuje modal edycji i wypełnia formularz danymi wybranego ogłoszenia
 const handleShowEditModal = (playerAdvertisement: PlayerAdvertisement) => {
     editFormData.value = playerAdvertisement;
 };
 
+// Obsługuje edycję ogłoszenia piłkarskiego
 const handleEditPlayerAdvertisement = async () => {
     if (!editFormData.value) {
         toast.error("Form data is missing.");
         return;
     }
 
+    // Walidacja danych ogłoszenia
     const validationError = validateAdvertisementForm(editFormData.value);
     if (validationError) {
         toast.error(validationError);
         return;
     }
 
+    // Sprawdzenie poprawności pozycji i nogi piłkarza
     const position = positions.value.find(pos => pos.id === editFormData.value!.playerPositionId);
     if (!position) {
         toast.error("Invalid player position.");
@@ -152,6 +171,7 @@ const handleEditPlayerAdvertisement = async () => {
     }
 };
 
+// Funkcja walidująca dane ogłoszenia
 const validateAdvertisementForm = (formData: PlayerAdvertisement) => {
     const { playerPositionId, league, region, age, height, playerFootId, salaryRange } = formData;
     const { min, max } = salaryRange;
@@ -172,6 +192,7 @@ const validateAdvertisementForm = (formData: PlayerAdvertisement) => {
     return null;
 };
 
+// Obsługuje usunięcie ogłoszenia piłkarskiego
 const handleDeletePlayerAdvertisement = async () => {
     if (!playerAdvertisement.value)
         return;
@@ -197,6 +218,7 @@ const handleDeletePlayerAdvertisement = async () => {
     }
 };
 
+// Funkcja do oznaczania ogłoszenia jako zakończone
 const handleFinishPlayerAdvertisement = async () => {
     if (!playerAdvertisement.value) return;
 
@@ -213,8 +235,10 @@ const handleFinishPlayerAdvertisement = async () => {
     }
 
     try {
+        // Ustalenie aktualnej daty jako daty zakończenia
         const currentDate = new Date().toISOString();
 
+        // Przygotowanie zaktualizowanych danych ogłoszenia
         const updatedFormData = {
             ...playerAdvertisement.value,
             playerPosition: position,
@@ -222,6 +246,7 @@ const handleFinishPlayerAdvertisement = async () => {
             endDate: currentDate
         };
 
+        // Aktualizacja ogłoszenia w serwisie
         await PlayerAdvertisementService.updatePlayerAdvertisement(playerAdvertisement.value.id, updatedFormData);
         closeModal('finishPlayerAdvertisementModal');
 
@@ -239,6 +264,7 @@ const handleFinishPlayerAdvertisement = async () => {
     }
 };
 
+// Obsługuje dodanie ogłoszenia do ulubionych
 const handleAddToFavorite = async () => {
   if (!playerAdvertisement.value || !userId.value)
     return;
@@ -257,10 +283,12 @@ const handleAddToFavorite = async () => {
   }
 };
 
+// Funkcja do otwierania okna modalnego potwierdzającego usunięcie ogłoszenia z ulubionych
 const handleShowDeleteFavoriteModal = (favoriteAdvertisementId: number) => {
     deleteFavoriteId.value = favoriteAdvertisementId;
 };
 
+// Funkcja do usunięcia ogłoszenia z ulubionych
 const handleDeleteFromFavorites = async () => {
   if (!userId.value || !deleteFavoriteId.value)
     return;
@@ -278,16 +306,19 @@ const handleDeleteFromFavorites = async () => {
   }
 };
 
+// Funkcja do składania oferty przez klub
 const handleSubmitClubOffer = async () => {
     if (!userId.value)
         return;
 
+    // Walidacja formularza oferty klubu
     const validationError = validateOfferForm(createFormData.value);
     if (validationError) {
         toast.error(validationError);
         return;
     }
 
+    // Przygotowanie danych nowej oferty
     try {
         const newFormData: ClubOfferCreateDTO = {
             ...createFormData.value,
@@ -306,6 +337,7 @@ const handleSubmitClubOffer = async () => {
     }
 };
 
+// Funkcja do walidacji danych w formularzu oferty klubu
 const validateOfferForm = (formData: ClubOfferCreateDTO) => {
     const { playerPositionId, league, region, salary } = formData;
 
@@ -321,6 +353,7 @@ const validateOfferForm = (formData: ClubOfferCreateDTO) => {
     return null;
 };
 
+// Obsługa rozpoczęcia czatu
 const handleOpenChat = async () => {
   if (!playerAdvertisement.value || !userId.value)
     return;
@@ -343,8 +376,9 @@ const handleOpenChat = async () => {
     toast.error("Failed to open chat.");
   }
 };
-</script>
 
+</script>
+<!-- Struktura strony zarządzania ogłoszeniami: obsługa edycji, usuwania, ulubionych i ofert klubowych -->
 <template>
     <div class="PlayerAdvertisement" v-if="playerAdvertisement">
         <h1><i class="bi bi-person-bounding-box"></i> Player Advertisement</h1>

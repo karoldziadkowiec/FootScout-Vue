@@ -15,31 +15,36 @@ import type { FavoritePlayerAdvertisement } from '../..//models/interfaces/Favor
 import type { FavoritePlayerAdvertisementCreateDTO } from '../..//models/dtos/FavoritePlayerAdvertisementCreateDTO';
 import '../../styles/playerAdvertisement/PlayerAdvertisements.css';
 
-const toast = useToast();
-const router = useRouter();
+// PlayerAdvertisments.vue - Komponent zarządzający wyświetlaniem ogłoszeń piłkarskich i ulubionych ogłoszeń użytkownika
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Zmienne do przechowywania danych w komponentach
 const userId = ref<string | null>(null);
-const isAdminRole = ref<boolean | null>(null);
+const isAdminRole = ref<boolean | null>(null);    // Flaga sprawdzająca, czy użytkownik ma rolę administratora
 const positions = ref<PlayerPosition[]>([]);
 const playerAdvertisements = ref<PlayerAdvertisement[]>([]);
 const favoritePlayerAdvertisements = ref<FavoritePlayerAdvertisement[]>([]);
 const favoritePlayerAdvertisementIds = ref<number[]>([]);
-const deleteFavoriteId = ref<number | null>(null);
+const deleteFavoriteId = ref<number | null>(null);      // ID ogłoszenia do usunięcia z ulubionych
 
+// Obiekt do przechowywania danych potrzebnych do dodania ogłoszenia do ulubionych
 const favoritePlayerAdvertisementDTO = ref<FavoritePlayerAdvertisementCreateDTO>({
   playerAdvertisementId: 0,
   userId: ''
 });
 
-// Wyszukiwanie i filtrowanie
-const searchTerm = ref<string>('');
-const selectedPosition = ref<string | ''>('');
-const sortCriteria = ref('creationDateDesc');
+// Zmienne do obsługi wyszukiwania i filtrowania
+const searchTerm = ref<string>('');               // Termin wyszukiwania
+const selectedPosition = ref<string | ''>('');    // Wybrana pozycja gracza do filtrowania
+const sortCriteria = ref('creationDateDesc');     // Kryterium sortowania ogłoszeń
 
-// Paginacja
+// Zmienne do obsługi paginacji
 const currentPage = ref<number>(1);
 const itemsPerPage = 20;
 
+// Funkcja wywoływana po zamontowaniu komponentu, pobierająca dane użytkownika, pozycje oraz ogłoszenia piłkarskie
 onMounted(async () => {
   await fetchUserData();
   await fetchPositions();
@@ -49,12 +54,14 @@ onMounted(async () => {
   }
 });
 
+// Obserwator na zmiany userId, który powoduje pobranie ulubionych ogłoszeń po zalogowaniu użytkownika
 watch(userId, async (newUserId) => {
   if (newUserId) {
     await fetchFavoritePlayerAdvertisements();
   }
 });
 
+// Funkcja do pobierania danych użytkownika (ID i rola administratora)
 const fetchUserData = async () => {
   try {
     const id = await AccountService.getId();
@@ -69,6 +76,7 @@ const fetchUserData = async () => {
   }
 }
 
+// Funkcja do pobierania dostępnych pozycji graczy
 const fetchPositions = async () => {
   try {
     positions.value = await PlayerPositionService.getPlayerPositions();
@@ -79,6 +87,7 @@ const fetchPositions = async () => {
   }
 }
 
+// Funkcja do pobierania aktywnych ogłoszeń piłkarskich
 const fetchPlayerAdvertisements = async () => {
   try {
     playerAdvertisements.value = await PlayerAdvertisementService.getActivePlayerAdvertisements();
@@ -89,6 +98,7 @@ const fetchPlayerAdvertisements = async () => {
   }
 }
 
+// Funkcja do pobierania ulubionych ogłoszeń użytkownika
 const fetchFavoritePlayerAdvertisements = async () => {
   if (!userId.value)
     return;
@@ -104,23 +114,28 @@ const fetchFavoritePlayerAdvertisements = async () => {
   }
 }
 
+// Funkcja zmieniająca stronę w paginacji
 const handlePageChange = (pageNumber: number) => {
     currentPage.value = pageNumber;
 };
 
+// Funkcja do przejścia na stronę szczegółów ogłoszenia piłkarskiego
 const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
   router.push({ path: `player-advertisement/${playerAdvertisementId}`, state: { id: playerAdvertisementId } });
 }
 
+// Funkcja do wyświetlenia modalu potwierdzenia usunięcia ulubionego ogłoszenia
 const handleShowDeleteFavoriteModal = (favoriteAdvertisementId: number) => {
   deleteFavoriteId.value = favoriteAdvertisementId;
 }
 
+// Funkcja do pobrania ID ulubionego ogłoszenia
 const getFavoriteId = (advertisementId: number): number | null => {
   const favorite = favoritePlayerAdvertisements.value.find(fav => fav.playerAdvertisementId === advertisementId);
   return favorite ? favorite.id : null;
 }
 
+// Funkcja do usuwania ogłoszenia z ulubionych
 const deleteFromFavorites = async () => {
   if (!userId.value || !deleteFavoriteId.value)
     return;
@@ -139,6 +154,7 @@ const deleteFromFavorites = async () => {
   }
 }
 
+// Funkcja do dodawania ogłoszenia do ulubionych
 const handleAddToFavorite = async (playerAdvertisement: PlayerAdvertisement) => {
   if (!playerAdvertisement || !userId.value)
     return;
@@ -156,7 +172,7 @@ const handleAddToFavorite = async (playerAdvertisement: PlayerAdvertisement) => 
   }
 }
 
-// funkcje filtrujące na computed properties
+// Funkcja filtrująca ogłoszenia na podstawie wyszukiwanego terminu (computed properties)
 const searchAdvertisements = computed(() => {
   if (!searchTerm.value)
     return playerAdvertisements.value;
@@ -169,6 +185,7 @@ const searchAdvertisements = computed(() => {
   );
 });
 
+// Funkcja filtrująca ogłoszenia na podstawie wybranej pozycji
 const filterAdvertisementsByPosition = computed(() => {
   if (!selectedPosition.value)
     return searchAdvertisements.value;
@@ -176,6 +193,7 @@ const filterAdvertisementsByPosition = computed(() => {
   return searchAdvertisements.value.filter(ad => ad.playerPosition.id === parseInt(selectedPosition.value, 10));
 });
 
+// Funkcja sortująca ogłoszenia według wybranego kryterium
 const sortedAdvertisements = computed(() => {
   return [...filterAdvertisementsByPosition.value].sort((a, b) => {
     switch (sortCriteria.value) {
@@ -205,15 +223,18 @@ const sortedAdvertisements = computed(() => {
   });
 });
 
-// Paginacja
+// Funkcja do obliczania liczby stron w paginacji
 const totalPages = computed(() => Math.ceil(sortedAdvertisements.value.length / itemsPerPage));
+
+// Funkcja do pobierania ogłoszeń do wyświetlenia na bieżącej stronie
 const currentPlayerAdvertisementItems = computed(() => {
   const indexOfLastItem = currentPage.value * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   return sortedAdvertisements.value.slice(indexOfFirstItem, indexOfLastItem);
 });
-</script>
 
+</script>
+<!-- Struktura strony z ogłoszeniami piłkarskimi: wyszukiwanie, filtrowanie, paginacja i interakcje z ulubionymi ogłoszeniami -->
 <template>
     <div class="PlayerAdvertisements">
       <h1><i class="bi bi-list-nested"></i> Player Advertisements</h1>

@@ -12,22 +12,31 @@ import type { FavoritePlayerAdvertisement } from '../../models/interfaces/Favori
 import type { ChatCreateDTO } from '../../models/dtos/ChatCreateDTO';
 import '../../styles/user/MyFavoritePlayerAdvertisements.css';
 
-const toast = useToast();
-const router = useRouter();
-const route = useRoute();
+// MyFavoritePlayerAdvertisements.vue - Komponent zarządzający ulubionymi ogłoszeniami piłkarskimi użytkownika
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Zmienna do przechowywania ID użytkownika, początkowo null
 const userId = ref<string | null>(null);
+// Przechowywanie aktywnych ogłoszeń użytkownika
 const userActiveFavoritePlayerAdvertisements = ref<FavoritePlayerAdvertisement[]>([]);
+// Przechowywanie nieaktywnych ogłoszeń użytkownika
 const userInactiveFavoritePlayerAdvertisements = ref<FavoritePlayerAdvertisement[]>([]);
+// Przechowywanie ID ogłoszenia do usunięcia z ulubionych
 const deleteFavoriteId = ref<number | null>(null);
 
+// Pobranie danych użytkownika po załadowaniu komponentu
 onMounted(async () => {
     if (route.query.toastMessage) {
+        // Jeśli w URL jest zapytanie toastMessage, wyświetl powiadomienie
         toast.success(route.query.toastMessage as string);
     }
     await fetchUserData();
 });
 
+// Funkcja pobierająca dane użytkownika i jego ulubione ogłoszenia
 const fetchUserData = async () => {
     try {
         const id = await AccountService.getId();
@@ -43,14 +52,17 @@ const fetchUserData = async () => {
     }
 };
 
+// Funkcja do przejścia do strony ogłoszenia piłkarskiego
 const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
     router.push({ path: `/player-advertisement/${playerAdvertisementId}`, state: { playerAdvertisementId }, });
 };
 
+// Funkcja do wyświetlenia modala z potwierdzeniem usunięcia ogłoszenia z ulubionych
 const handleShowDeleteModal = (favoriteAdvertisementId: number) => {
     deleteFavoriteId.value = favoriteAdvertisementId;
 };
 
+// Funkcja do usunięcia ogłoszenia z ulubionych
 const handleDeleteFromFavorites = async () => {
     if (!userId.value || !deleteFavoriteId.value) return;
 
@@ -67,14 +79,17 @@ const handleDeleteFromFavorites = async () => {
     }
 };
 
+// Funkcja do otwarcia czatu z innym użytkownikiem
 const handleOpenChat = async (receiverId: string) => {
     if (!receiverId || !userId.value)
         return;
 
     try {
+        // Sprawdza, czy istnieje już czat między użytkownikami.
         let chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);
 
         if (chatId === 0) {
+            // Tworzy nowy czat
             const chatCreateDTO: ChatCreateDTO = {
                 user1Id: userId.value,
                 user2Id: receiverId
@@ -90,8 +105,9 @@ const handleOpenChat = async (receiverId: string) => {
         toast.error("Failed to open chat.");
     }
 };
-</script>
 
+</script>
+<!-- Struktura strony użytkownika: lista ulubionych ogłoszeń i możliwość interakcji z ogłoszeniami -->
 <template>
     <div class="MyFavoritePlayerAdvertisements">
         <h1><i class="bi bi-chat-square-heart"></i> My Favorite Player Advertisements</h1>

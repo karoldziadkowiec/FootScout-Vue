@@ -13,27 +13,33 @@ import type { ClubOffer } from '../../models/interfaces/ClubOffer';
 import type { ChatCreateDTO } from '../../models/dtos/ChatCreateDTO';
 import '../../styles/user/MyOffersAsPlayer.css';
 
-const toast = useToast();
-const router = useRouter();
-const route = useRoute();
+// MyOffersAsPlayer.vue - Komponent zarządzający ofertami klubów piłkarskich dla gracza
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Deklaracja zmiennych reaktywnych dla danych użytkownika i ofert klubów
 const userId = ref<string | null>(null);
 const receivedClubOffers = ref<ClubOffer[]>([]);
 
+// Zmienna przechowująca wybraną ofertę klubu oraz oferty do akceptacji i odrzucenia
 const selectedReceivedClubOffer = ref<ClubOffer | null>(null);
 const receivedClubOfferToAccept = ref<ClubOffer | null>(null);
 const receivedClubOfferToReject = ref<ClubOffer | null>(null);
 
+// Funkcja wywoływana po załadowaniu komponentu, ładująca dane użytkownika i oferty klubów
 onMounted(async () => {
     if (route.query.toastMessage) {
         toast.success(route.query.toastMessage as string);
     }
 
     try {
+        // Próba pobrania identyfikatora użytkownika i ofert klubów
         const id = await AccountService.getId();
         if (id) {
             userId.value = id;
-            receivedClubOffers.value = await UserService.getReceivedClubOffers(id);
+            receivedClubOffers.value = await UserService.getReceivedClubOffers(id);     // Pobranie ofert klubów
         }
     }
     catch (error) {
@@ -42,21 +48,26 @@ onMounted(async () => {
     }
 });
 
+// Funkcja obsługująca wyświetlanie szczegółów wybranej oferty klubu
 const handleShowReceivedClubOfferDetails = (clubOffer: ClubOffer) => {
     selectedReceivedClubOffer.value = clubOffer;
 };
 
+// Funkcja wyświetlająca modal do akceptacji oferty
 const handleShowAcceptReceivedClubOfferModal = (clubOffer: ClubOffer) => {
     receivedClubOfferToAccept.value = clubOffer;
 };
 
+// Funkcja akceptująca ofertę klubu
 const acceptReceivedClubOffer = async () => {
-    if (!receivedClubOfferToAccept.value || !userId.value)
+    if (!receivedClubOfferToAccept.value || !userId.value)      // Sprawdzenie, czy istnieje oferta i użytkownik
         return;
 
     try {
+        // Wywołanie usługi do akceptacji oferty
         await ClubOfferService.acceptClubOffer(receivedClubOfferToAccept.value.id, receivedClubOfferToAccept.value);
         toast.success('Received club offer has been accepted successfully.');
+        // Odświeżenie listy ofert po akceptacji
         receivedClubOffers.value = await UserService.getReceivedClubOffers(userId.value);
         closeModal('acceptOfferModal');
     }
@@ -66,10 +77,12 @@ const acceptReceivedClubOffer = async () => {
     }
 };
 
+// Funkcja wyświetlająca modal do odrzucenia oferty
 const handleShowRejectReceivedClubOfferModal = (clubOffer: ClubOffer) => {
     receivedClubOfferToReject.value = clubOffer;
 };
 
+// Funkcja odrzucająca ofertę klubu
 const rejectReceivedClubOffer = async () => {
     if (!receivedClubOfferToReject.value || !userId.value)
         return;
@@ -77,6 +90,7 @@ const rejectReceivedClubOffer = async () => {
     try {
         await ClubOfferService.rejectClubOffer(receivedClubOfferToReject.value.id, receivedClubOfferToReject.value);
         toast.success('Received club offer has been rejected successfully.');
+        // Odświeżenie listy ofert po odrzuceniu
         receivedClubOffers.value = await UserService.getReceivedClubOffers(userId.value);
         closeModal('rejectOfferModal');
     }
@@ -86,17 +100,21 @@ const rejectReceivedClubOffer = async () => {
     }
 };
 
+// Funkcja przechodząca do strony ogłoszenia piłkarza
 const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
     router.push({ path: `/player-advertisement/${playerAdvertisementId}`, state: { playerAdvertisementId } });
 };
 
+// Funkcja otwierająca czat z innym użytkownikiem
 const handleOpenChat = async (receiverId: string) => {
     if (!receiverId || !userId.value)
-        return;
+        return;                 // Sprawdzenie, czy istnieją obydwa identyfikatory
 
     try {
+        // Próba pobrania identyfikatora czatu pomiędzy użytkownikami
         let chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);
 
+        // Jeśli czat nie istnieje, tworzony jest nowy
         if (chatId === 0) {
             const chatCreateDTO: ChatCreateDTO = {
                 user1Id: userId.value,
@@ -106,15 +124,16 @@ const handleOpenChat = async (receiverId: string) => {
             await ChatService.createChat(chatCreateDTO);
             chatId = await ChatService.getChatIdBetweenUsers(userId.value, receiverId);
         }
-        router.push({ path: `/chat/${chatId}`, state: { chatId } });
+        router.push({ path: `/chat/${chatId}`, state: { chatId } });        // Przejście do strony czatu
     }
     catch (error) {
         console.error('Failed to open chat:', error);
         toast.error('Failed to open chat.');
     }
 };
-</script>
 
+</script>
+<!-- Struktura strony gracza: lista ofert klubów oraz opcje akceptacji/odrzucenia -->
 <template>
     <div class="MyOffersAsPlayer">
         <h1><i class="bi bi-briefcase"></i> My Offers as a Player</h1>

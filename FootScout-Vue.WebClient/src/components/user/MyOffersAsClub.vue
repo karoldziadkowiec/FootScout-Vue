@@ -12,15 +12,22 @@ import type { ClubOffer } from '../../models/interfaces/ClubOffer';
 import type { ChatCreateDTO } from '../../models/dtos/ChatCreateDTO';
 import '../../styles/user/MyOffersAsClub.css';
 
-const toast = useToast();
-const router = useRouter();
-const route = useRoute();
+// MyOffersAsClub.vue - Komponent wyświetlający oferty wysłane przez klub oraz umożliwiający interakcję z nimi
 
+const router = useRouter(); // Pobranie instancji routera, umożliwia nawigację między stronami
+const route = useRoute();   // Pobranie informacji o aktualnej trasie (np. parametry w URL)
+const toast = useToast();   // Pobranie instancji systemu powiadomień (do wyświetlania komunikatów użytkownikowi)
+
+// Zmienna przechowująca identyfikator użytkownika
 const userId = ref<string | null>(null);
+// Zmienna przechowująca listę ofert klubu wysłanych przez użytkownika
 const sentClubOffers = ref<ClubOffer[]>([]);
+// Zmienna przechowująca szczegóły wybranej oferty klubu
 const selectedClubOffer = ref<ClubOffer | null>(null);
+// Zmienna przechowująca identyfikator oferty, którą użytkownik chce usunąć
 const deleteClubOfferId = ref<number | null>(null);
 
+// Funkcja wykonywana po załadowaniu komponentu (mounted)
 onMounted(async () => {
   if (route.query.toastMessage) {
     toast.success(route.query.toastMessage as string);
@@ -39,21 +46,24 @@ onMounted(async () => {
   }
 });
 
+// Funkcja do wyświetlania szczegółów oferty klubu oraz przygotowania ID oferty do usunięcia
 const handleShowClubOfferDetails = (clubOffer: ClubOffer) => {
     selectedClubOffer.value = clubOffer;
     deleteClubOfferId.value = clubOffer.id;
 };
 
+// Funkcja nawigująca użytkownika na stronę ogłoszenia gracza
 const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
   router.push({ path: `/player-advertisement/${playerAdvertisementId}` });
 };
 
+// Funkcja do usuwania oferty klubu
 const handleDeleteClubOffer = async () => {
   if (!deleteClubOfferId.value)
     return;
 
   try {
-    await ClubOfferService.deleteClubOffer(deleteClubOfferId.value);
+    await ClubOfferService.deleteClubOffer(deleteClubOfferId.value);    // Wywołanie serwisu w celu usunięcia oferty
     toast.success('Your sent club offer has been deleted successfully.');
     deleteClubOfferId.value = null;
 
@@ -69,6 +79,7 @@ const handleDeleteClubOffer = async () => {
   }
 };
 
+// Funkcja do otwierania czatu z innym użytkownikiem
 const handleOpenChat = async (receiverId: string) => {
   if (!receiverId || !userId.value)
     return;
@@ -92,8 +103,9 @@ const handleOpenChat = async (receiverId: string) => {
     toast.error('Failed to open chat.');
   }
 };
-</script>
 
+</script>
+<!-- Struktura strony: lista ofert wysłanych przez klub, opcje przeglądania szczegółów i usuwania ofert -->
 <template>
   <div class="MyOffersAsClub">
     <h1><i class="bi bi-briefcase-fill"></i> My Offers as a Club member</h1>
