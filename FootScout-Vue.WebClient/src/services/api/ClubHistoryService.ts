@@ -5,28 +5,33 @@ import type { ClubHistoryModel } from '../../models/interfaces/ClubHistory';
 import type { ClubHistoryCreateDTO } from '../../models/dtos/ClubHistoryCreateDTO';
 
 // Serwis do zarządzania historiami klubowymi użytkowników, wykorzystujący axios do komunikacji z API
+// Umożliwia wykonywanie operacji CRUD na zasobach historii klubowych
+
 const ClubHistoryService = {
+    // Pobiera historię klubową na podstawie ID
     async getClubHistory(clubHistoryId: number): Promise<ClubHistoryModel> {
         try {
-            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const authorizationHeader = await AccountService.getAuthorizationHeader();      // Pobranie nagłówka autoryzacji
             const response = await axios.get<ClubHistoryModel>(`${ApiURL}/club-history/${clubHistoryId}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
             });
-            return response.data;
+            return response.data;       // Zwrócenie pobranej historii
         }
         catch (error) {
+            // Obsługa błędów - logowanie błędu w konsoli
             if (axios.isAxiosError(error)) {
                 console.error('Error fetching club history, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
             }
-            throw error;
+            throw error;        // Przekazanie błędu dalej
         }
     },
 
+    // Pobiera wszystkie historie klubowe
     async getAllClubHistory(): Promise<ClubHistoryModel[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -48,6 +53,7 @@ const ClubHistoryService = {
         }
     },
 
+    // Pobiera liczbę dostępnych historii klubowych
     async getClubHistoryCount(): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -69,6 +75,7 @@ const ClubHistoryService = {
         }
     },
 
+    // Tworzy nową historię klubową
     async createClubHistory(clubHistory: ClubHistoryCreateDTO): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -89,6 +96,7 @@ const ClubHistoryService = {
         }
     },
 
+    // Aktualizuje istniejącą historię klubową
     async updateClubHistory(clubHistoryId: number, clubHistory: ClubHistoryModel): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -109,6 +117,7 @@ const ClubHistoryService = {
         }
     },
 
+    // Usuwa historię klubową na podstawie ID
     async deleteClubHistory(clubHistoryId: number): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -130,4 +139,5 @@ const ClubHistoryService = {
     }
 };
 
+// Eksportuje serwis historii klubu, umożliwiając jego użycie w innych plikach aplikacji.
 export default ClubHistoryService;

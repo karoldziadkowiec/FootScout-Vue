@@ -1,8 +1,8 @@
-.blue-links .nav-link {
+.blue-links .nav-link {       /* Stylowanie linków w nawigacji (białe litery) */
   color: rgb(255, 255, 255);
   font-weight: 400;
 }
 
-.blue-links .dropdown-item.active {
+.blue-links .dropdown-item.active {       /* Aktywne elementy dropdown w nawigacji z niebieskim tłem */
   background: rgb(80, 156, 255) !important;
 }

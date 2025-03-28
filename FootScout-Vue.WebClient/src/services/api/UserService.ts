@@ -10,11 +10,13 @@ import type { FavoritePlayerAdvertisement } from '../../models/interfaces/Favori
 import type { ClubOffer } from '../../models/interfaces/ClubOffer';
 import type { Chat } from '../../models/interfaces/Chat';
 
-// Serwis do zarządzania użytkownikami, wykorzystujący axios do komunikacji z API
+// Serwis do zarządzania użytkownikami, wykorzystujący axios do komunikacji z backendowym API
 const UserService = {
+  // Pobieranie danych o użytkowniku na podstawie jego ID
   async getUser(userId: string): Promise<UserDTO> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
+      // Wysłanie zapytania GET do API z odpowiednim nagłówkiem autoryzacji
       const response = await axios.get<UserDTO>(`${ApiURL}/users/${userId}`, {
         headers: {
           'Authorization': authorizationHeader
@@ -33,6 +35,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie wszystkich użytkowników
   async getUsers(): Promise<UserDTO[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -54,6 +57,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie tylko użytkowników, którzy mają rolę "user"
   async getOnlyUsers(): Promise<UserDTO[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -75,6 +79,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie tylko użytkowników, którzy mają rolę "admin"
   async getOnlyAdmins(): Promise<UserDTO[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -96,6 +101,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie roli użytkownika na podstawie jego ID
   async getUserRole(userId: string): Promise<string> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -117,6 +123,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie liczby wszystkich użytkowników
   async getUserCount(): Promise<number> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -138,6 +145,7 @@ const UserService = {
     }
   },
 
+  // Aktualizacja danych użytkownika
   async updateUser(userId: string, dto: UserUpdateDTO): Promise<void> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -158,6 +166,7 @@ const UserService = {
     }
   },
 
+  // Resetowanie hasła użytkownika
   async resetUserPassword(userId: string, dto: UserResetPasswordDTO): Promise<void> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -178,6 +187,7 @@ const UserService = {
     }
   },
 
+  // Usuwanie użytkownika na podstawie jego ID
   async deleteUser(userId: string): Promise<void> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -198,6 +208,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie historii klubów użytkownika
   async getUserClubHistory(userId: string): Promise<ClubHistoryModel[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -219,6 +230,7 @@ const UserService = {
     }
   },
 
+  // Inne funkcje do pobierania reklam graczy, ofert klubów podobne w strukturze do powyższych funkcji.
   async getUserPlayerAdvertisements(userId: string): Promise<PlayerAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -240,6 +252,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie aktywnych ogłoszeń zawodników użytkownika.
   async getUserActivePlayerAdvertisements(userId: string): Promise<PlayerAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -261,6 +274,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie nieaktywnych ogłoszeń zawodników użytkownika.
   async getUserInactivePlayerAdvertisements(userId: string): Promise<PlayerAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -282,6 +296,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie ulubionych ogłoszeń zawodników użytkownika.
   async getUserPlayerAdvertisementFavorites(userId: string): Promise<FavoritePlayerAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -303,6 +318,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie aktywnych ulubionych ogłoszeń zawodników użytkownika.
   async getUserActivePlayerAdvertisementFavorites(userId: string): Promise<FavoritePlayerAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -324,6 +340,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie nieaktywnych ulubionych ogłoszeń zawodników użytkownika.
   async getUserInactivePlayerAdvertisementFavorites(userId: string): Promise<FavoritePlayerAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -345,6 +362,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie otrzymanych ofert klubów dla użytkownika.
   async getReceivedClubOffers(userId: string): Promise<ClubOffer[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -366,6 +384,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie wysłanych ofert klubów przez użytkownika.
   async getSentClubOffers(userId: string): Promise<ClubOffer[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -387,6 +406,7 @@ const UserService = {
     }
   },
 
+  // Pobieranie czatów przypisanych do użytkownika.
   async getUserChats(userId: string): Promise<Chat[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -408,22 +428,25 @@ const UserService = {
     }
   },
 
+  // Eksportowanie użytkowników do pliku CSV
   async exportUsersToCsv(): Promise<void> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
-
+      // Wysłanie zapytania do API w celu pobrania danych użytkowników w formacie CSV
       const response = await axios.get(`${ApiURL}/users/export`, {
         headers: {
           'Authorization': authorizationHeader
         },
-        responseType: 'blob'
+        responseType: 'blob'  // Ustawienie typu odpowiedzi na 'blob', aby pobrać plik
       });
 
+      // Tworzenie linku do pobrania pliku
       const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'users.csv');
+      link.setAttribute('download', 'users.csv');   // Ustalenie nazwy pliku do pobrania
 
+      // Automatyczne kliknięcie w link, aby uruchomić pobieranie
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -440,4 +463,5 @@ const UserService = {
   }
 };
 
+// Eksportowanie serwisu, aby można było go używać w innych częściach aplikacji
 export default UserService;

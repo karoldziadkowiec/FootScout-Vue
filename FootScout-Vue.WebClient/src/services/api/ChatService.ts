@@ -4,8 +4,10 @@ import { AccountService } from './AccountService';
 import type { Chat } from '../../models/interfaces/Chat';
 import type { ChatCreateDTO } from '../../models/dtos/ChatCreateDTO';
 
-// Serwis do zarządzania czatami, wykorzystujący axios do komunikacji z API
+// ChatService.ts - Serwis do zarządzania czatami, obsługujący komunikację z API za pomocą axios.
+
 const ChatService = {
+    // Pobiera pojedynczy czat na podstawie jego ID
     async getChatById(chatId: number): Promise<Chat> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -27,6 +29,7 @@ const ChatService = {
         }
     },
 
+    // Pobiera listę wszystkich czatów
     async getChats(): Promise<Chat[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -48,6 +51,7 @@ const ChatService = {
         }
     },
 
+    // Pobiera liczbę dostępnych czatów
     async getChatCount(): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -69,6 +73,7 @@ const ChatService = {
         }
     },
 
+    // Pobiera ID czatu między dwoma użytkownikami
     async getChatIdBetweenUsers(user1Id: string, user2Id: string): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -90,6 +95,7 @@ const ChatService = {
         }
     },
 
+    // Tworzy nowy czat na podstawie przekazanych danych DTO
     async createChat(dto: ChatCreateDTO): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -110,6 +116,7 @@ const ChatService = {
         }
     },
 
+    // Usuwa czat na podstawie jego ID
     async deleteChat(chatId: number): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -130,6 +137,7 @@ const ChatService = {
         }
     },
 
+    // Eksportuje wszystkie czaty do pliku CSV i pobiera go na urządzenie użytkownika
     async exportChatsToCsv(): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -138,17 +146,18 @@ const ChatService = {
                 headers: {
                     'Authorization': authorizationHeader
                 },
-                responseType: 'blob'
+                responseType: 'blob'        // Pobieranie danych w postaci pliku binarnego
             });
 
+            // Tworzy URL dla pobranego pliku i inicjalizuje pobieranie
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'chats.csv');
 
             document.body.appendChild(link);
-            link.click();
-            link.remove();
+            link.click();       // Kliknięcie linku, aby rozpocząć pobieranie
+            link.remove();      // Usunięcie elementu po pobraniu
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
@@ -162,4 +171,5 @@ const ChatService = {
     }
 };
 
+// Eksportuje serwis czatu, umożliwiając jego użycie w innych modułach.
 export default ChatService;

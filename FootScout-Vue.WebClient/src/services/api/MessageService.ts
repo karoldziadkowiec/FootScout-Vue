@@ -4,10 +4,13 @@ import { AccountService } from './AccountService';
 import type { Message } from '../../models/interfaces/Message';
 
 // Serwis do zarządzania wiadomomściami czatów, wykorzystujący axios do komunikacji z API
+
 const MessageService = {
+    // Funkcja do pobrania wszystkich wiadomości
     async getAllMessages(): Promise<Message[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wykonywanie zapytania GET do API, by pobrać wszystkie wiadomości
             const response = await axios.get<Message[]>(`${ApiURL}/messages`, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -22,10 +25,11 @@ const MessageService = {
             else {
                 console.error('Unexpected error:', error);
             }
-            throw error;
+            throw error;        // Rzucanie błędem, by inne części aplikacji mogły go obsłużyć
         }
     },
 
+    // Funkcja do pobrania liczby wszystkich wiadomości
     async getAllMessagesCount(): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -47,6 +51,7 @@ const MessageService = {
         }
     },
 
+    // Funkcja do pobrania wiadomości dla konkretnego czatu (na podstawie chatId)
     async getMessagesForChat(chatId: number): Promise<Message[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -68,6 +73,7 @@ const MessageService = {
         }
     },
 
+    // Funkcja do pobrania liczby wiadomości dla konkretnego czatu
     async getMessagesForChatCount(chatId: number): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -89,6 +95,7 @@ const MessageService = {
         }
     },
 
+    // Funkcja do pobrania daty ostatniej wiadomości dla konkretnego czatu
     async getLastMessageDateForChat(chatId: number): Promise<string> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -110,6 +117,7 @@ const MessageService = {
         }
     },
 
+    // Funkcja do usunięcia wiadomości na podstawie jej identyfikatora
     async deleteMessage(messageId: number): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -131,4 +139,5 @@ const MessageService = {
     }
 };
 
+// Eksportowanie serwisu, by móc używać go w innych częściach aplikacji
 export default MessageService;

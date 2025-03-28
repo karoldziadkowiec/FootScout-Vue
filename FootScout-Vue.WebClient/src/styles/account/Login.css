@@ -1,35 +1,35 @@
-.Login {
-    background-color: rgb(26, 76, 44);
-    background-size: cover;
+.Login {          /* Główna klasa logowania, ustawia tło i centrowanie formularza */
+    background-color: rgb(26, 76, 44);  /* Ciemna zieleń jako tło */
+    background-size: cover;  /* Tło rozciągnięte na całą powierzchnię */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: center;  /* Elementy centrowane w pionie i poziomie */
+    height: 100vh;  /* Wysokość na całą wysokość ekranu */
 }
 
-.logo-container {
+.logo-container {           /* Kontener na logo, wyśrodkowane z odpowiednią czcionką */
     color: white;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;  /* Czcionka typu "gruba" */
     font-size: 40px;
     margin-bottom: 10px;
 }
 
-.Login h2{
+.Login h2{          /* Nagłówek w formularzu logowania z zielonym kolorem */
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgb(108, 212, 102);
+    color: rgb(108, 212, 102);      /* Jasna zieleń */
     padding-bottom: 10px;
 }
 
-.login-container {
-    background-color: rgba(0, 0, 0, 0.7);
+.login-container {              /* Kontener na formularz logowania */
+    background-color: rgba(0, 0, 0, 0.7);       /* Przezroczyste czarne tło */
     width: 45%;
     padding: 2% 4% 3% ;
-    border-radius: 30px;
+    border-radius: 30px;        /* Zaokrąglone rogi */
 }
 
-.white-label {
+.white-label {      /* Stylowanie etykiet w formularzu (białe litery) */
     color: white;
 }

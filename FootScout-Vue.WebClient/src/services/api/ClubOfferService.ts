@@ -5,18 +5,23 @@ import type { ClubOffer } from '../../models/interfaces/ClubOffer';
 import type { ClubOfferCreateDTO } from '../../models/dtos/ClubOfferCreateDTO';
 
 // Serwis do zarządzania ofertami klubów, wykorzystujący axios do komunikacji z API
+
 const ClubOfferService = {
+    // Pobiera ofertę klubu na podstawie ID oferty
     async getClubOffer(clubOfferId: number): Promise<ClubOffer> {
         try {
+            // Uzyskanie nagłówka autoryzacji
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wysyłanie zapytania GET do API
             const response = await axios.get<ClubOffer>(`${ApiURL}/club-offers/${clubOfferId}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
             });
-            return response.data;
+            return response.data;       // Zwracanie danych odpowiedzi
         }
         catch (error) {
+            // Obsługa błędów, zarówno specyficznych dla axios, jak i innych
             if (axios.isAxiosError(error)) {
                 console.error('Error fetching club offer, details:', error.response?.data || error.message);
             }
@@ -27,6 +32,7 @@ const ClubOfferService = {
         }
     },
 
+    // Pobiera wszystkie oferty klubów
     async getClubOffers(): Promise<ClubOffer[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -35,7 +41,7 @@ const ClubOfferService = {
                     'Authorization': authorizationHeader
                 }
             });
-            return response.data;
+            return response.data;       // Zwracanie wszystkich ofert
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
@@ -48,6 +54,7 @@ const ClubOfferService = {
         }
     },
 
+    // Pobiera tylko aktywne oferty klubów
     async getActiveClubOffers(): Promise<ClubOffer[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -69,6 +76,7 @@ const ClubOfferService = {
         }
     },
 
+    // Pobiera liczbę aktywnych ofert klubów
     async getActiveClubOfferCount(): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -90,6 +98,7 @@ const ClubOfferService = {
         }
     },
 
+    // Pobiera oferty klubów, które są nieaktywne
     async getInactiveClubOffers(): Promise<ClubOffer[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -111,9 +120,11 @@ const ClubOfferService = {
         }
     },
 
+    // Tworzy nową ofertę klubu
     async createClubOffer(dto: ClubOfferCreateDTO): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wysyłanie zapytania POST do API, by utworzyć nową ofertę
             await axios.post(`${ApiURL}/club-offers`, dto, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -131,9 +142,11 @@ const ClubOfferService = {
         }
     },
 
+    // Aktualizuje ofertę klubu
     async updateClubOffer(clubOfferId: number, clubOffer: ClubOffer): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wysyłanie zapytania PUT do API w celu aktualizacji oferty
             await axios.put(`${ApiURL}/club-offers/${clubOfferId}`, clubOffer, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -151,9 +164,11 @@ const ClubOfferService = {
         }
     },
 
+    // Usuwa ofertę klubu
     async deleteClubOffer(clubOfferId: number): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wysyłanie zapytania DELETE do API, by usunąć ofertę
             await axios.delete(`${ApiURL}/club-offers/${clubOfferId}`, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -171,9 +186,11 @@ const ClubOfferService = {
         }
     },
 
+    // Akceptuje ofertę klubu
     async acceptClubOffer(clubOfferId: number, clubOffer: ClubOffer): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wysyłanie zapytania PUT do API w celu zaakceptowania oferty
             await axios.put(`${ApiURL}/club-offers/accept/${clubOfferId}`, clubOffer, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -191,9 +208,11 @@ const ClubOfferService = {
         }
     },
 
+    // Odrzuca ofertę klubu
     async rejectClubOffer(clubOfferId: number, clubOffer: ClubOffer): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wysyłanie zapytania PUT do API w celu odrzucenia oferty
             await axios.put(`${ApiURL}/club-offers/reject/${clubOfferId}`, clubOffer, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -211,6 +230,7 @@ const ClubOfferService = {
         }
     },
 
+    // Pobiera status oferty na podstawie ID ogłoszenia gracza i ID użytkownika
     async getClubOfferStatusId(playerAdvertisementId: number, userId: string): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -232,17 +252,20 @@ const ClubOfferService = {
         }
     },
 
+    // Eksportuje wszystkie oferty klubów do pliku CSV
     async exportClubOffersToCsv(): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
 
+            // Wysyłanie zapytania GET do API w celu pobrania danych w formacie CSV
             const response = await axios.get(`${ApiURL}/club-offers/export`, {
                 headers: {
                     'Authorization': authorizationHeader
                 },
-                responseType: 'blob'
+                responseType: 'blob'    // Oczekiwanie pliku
             });
 
+            // Tworzenie linku do pobrania pliku CSV
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
             const link = document.createElement('a');
             link.href = url;
@@ -264,4 +287,6 @@ const ClubOfferService = {
     }
 };
 
+// Eksportuje serwis ofert klubu, który zawiera metody do zarządzania ofertami klubów,
+// umożliwiając jego użycie w innych plikach aplikacji.
 export default ClubOfferService;

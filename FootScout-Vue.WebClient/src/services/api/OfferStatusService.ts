@@ -5,9 +5,11 @@ import type { OfferStatus } from '../../models/interfaces/OfferStatus';
 
 // Serwis do zarządzania statusami ofert, wykorzystujący axios do komunikacji z API
 const OfferStatusService = {
+    // Funkcja pobierająca wszystkie statusy ofert
     async getOfferStatuses(): Promise<OfferStatus[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wykonywanie zapytania GET do API, aby pobrać wszystkie statusy ofert
             const response = await axios.get<OfferStatus[]>(`${ApiURL}/offer-statuses`, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -26,6 +28,7 @@ const OfferStatusService = {
         }
     },
 
+    // Funkcja pobierająca pojedynczy status oferty na podstawie jego identyfikatora
     async getOfferStatus(statusId: number): Promise<OfferStatus> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -47,6 +50,7 @@ const OfferStatusService = {
         }
     },
 
+    // Funkcja pobierająca nazwę statusu oferty na podstawie identyfikatora statusu
     async getOfferStatusName(statusId: number): Promise<string> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -68,6 +72,7 @@ const OfferStatusService = {
         }
     },
 
+    // Funkcja pobierająca identyfikator statusu oferty na podstawie jego nazwy
     async getOfferStatusId(statusName: string): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -90,4 +95,5 @@ const OfferStatusService = {
     }
 };
 
+// Eksportowanie serwisu, aby mógł być używany w innych częściach aplikacji
 export default OfferStatusService;

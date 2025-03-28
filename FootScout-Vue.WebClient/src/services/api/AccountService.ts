@@ -6,8 +6,12 @@ import type { RegisterDTO } from '../../models/dtos/RegisterDTO';
 import { jwtDecode } from 'jwt-decode'
 import { Role } from '../../models/enums/Role';
 
-// Serwis do zarządzania użytkownikami, autoryzacją, tokanami itd... wykorzystujący axios do komunikacji z API
+// AccountService.ts - Serwis zarządzający autoryzacją użytkowników, tokenami JWT (JSON Web Token) oraz rolami w aplikacji.
+
+// Używa axios do komunikacji z backendem (API) oraz Cookies do przechowywania tokenów autoryzacyjnych.
+
 export const AccountService = {
+  // Rejestracja użytkownika - wysyła dane rejestracyjne do API i zwraca odpowiedź.
   async registerUser(registerDTO: RegisterDTO) {
     try {
       const response = await axios.post(`${ApiURL}/account/register`, registerDTO);
@@ -24,6 +28,7 @@ export const AccountService = {
     }
   },
 
+  // Logowanie użytkownika - wysyła dane logowania do API, zapisuje token w Cookies i zwraca go.
   async login(loginDTO: LoginDTO) {
     try {
       const response = await axios.post(`${ApiURL}/account/login`, loginDTO);
@@ -48,16 +53,18 @@ export const AccountService = {
     }
   },
 
+  // Pobiera token autoryzacyjny z ciasteczek.
   async getToken() {
     return Cookies.get('AuthToken') || null;
   },
 
+  // Odczytuje czas wygaśnięcia tokena z dekodowanego JWT.
   async getTokenExpirationTime() {
     const token = await AccountService.getToken();
     if (token) {
       try {
         const decodedToken = jwtDecode<any>(token);
-        return decodedToken['exp'];
+        return decodedToken['exp'];   // Czas wygaśnięcia tokena w sekundach od 1970-01-01.
       }
       catch (error) {
         console.error('Failed to get token expiration time:', error);
@@ -66,18 +73,19 @@ export const AccountService = {
     return null;
   },
 
+  // Sprawdza, czy token jest nadal ważny, jeśli wygasł - usuwa go.
   async isTokenAvailable(): Promise<boolean> {
     const expirationDate = await AccountService.getTokenExpirationTime();
     if (expirationDate) {
       try {
-        const expirationTime = expirationDate * 1000;
+        const expirationTime = expirationDate * 1000;   // Konwersja na milisekundy.
         const currentTime = Date.now();
 
         if (currentTime < expirationTime) {
-          return true;
+          return true;        // Token jest nadal ważny.
         } 
         else {
-          Cookies.remove('AuthToken');
+          Cookies.remove('AuthToken');      // Usunięcie tokena, jeśli wygasł.
           return false;
         }
       }
@@ -88,6 +96,7 @@ export const AccountService = {
     return false;
   },
 
+  // Pobiera rolę użytkownika z dekodowanego tokena JWT.
   async getRole() {
     const token = await AccountService.getToken();
     if (token) {
@@ -102,6 +111,7 @@ export const AccountService = {
     return null;
   },
 
+  // Pobiera listę dostępnych ról użytkowników z API.
   async getRoles(): Promise<string[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -123,6 +133,7 @@ export const AccountService = {
     }
   },
 
+  // Pobiera identyfikator użytkownika z tokena JWT.
   async getId() {
     const token = await AccountService.getToken();
     if (token) {
@@ -137,6 +148,7 @@ export const AccountService = {
     return null;
   },
 
+  // Generuje nagłówek autoryzacyjny dla żądań HTTP.
   async getAuthorizationHeader(): Promise<string> {
     const tokenType = 'Bearer';
     const tokenJWT = await AccountService.getToken();
@@ -147,11 +159,13 @@ export const AccountService = {
       throw new Error('Token is not available');
   },
 
+  // Sprawdza, czy użytkownik jest uwierzytelniony (czy istnieje token w ciasteczkach).
   async isAuthenticated() {
     const token = await AccountService.getToken();
     return !!token;
   },
 
+  // Sprawdza, czy użytkownik ma rolę administratora.
   async isRoleAdmin(): Promise<boolean> {
     const role = await AccountService.getRole();
     if (role === Role.Admin)
@@ -160,6 +174,7 @@ export const AccountService = {
       return false;
   },
 
+  // Sprawdza, czy użytkownik ma rolę standardowego użytkownika.
   async isRoleUser(): Promise<boolean> {
     const role = await AccountService.getRole();
     if (role === Role.User)
@@ -168,10 +183,12 @@ export const AccountService = {
       return false;
   },
 
+  // Wylogowanie użytkownika - usuwa token autoryzacyjny z ciasteczek.
   async logout() {
     Cookies.remove('AuthToken', { path: '/' });
   },
 
+  // Nadanie roli administratora użytkownikowi o podanym ID.
   async makeAnAdmin(userId: string): Promise<void> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -192,6 +209,7 @@ export const AccountService = {
     }
   },
 
+  // Nadanie roli standardowego użytkownika użytkownikowi o podanym ID.
   async makeAnUser(userId: string): Promise<void> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();

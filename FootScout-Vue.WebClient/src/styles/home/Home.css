@@ -1,25 +1,25 @@
-.Home {
+.Home {     /* Styl strony głównej, z centrowaniem zawartości */
     text-align: center;
 }
 
-.Home-logo-container {
+.Home-logo-container {          /* Stylowanie logo na stronie głównej */
     color: rgb(67, 63, 63);
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 40px;
     margin-bottom: 10px;
 }
 
-.Home-logo {
+.Home-logo {        /* Kontener dla logo */
     width: 50px;
 }
 
-.startSection {
+.startSection {         /* Sekcja startowa strony z białym tłem */
     background-color: white;
     color: black;
     padding: 50px;
 }
 
-.links {
+.links {            /* Styl linków w sekcji startowej */
     padding-top: 25px;
     display: flex;
     gap: 2%;
@@ -29,53 +29,53 @@
     align-items: center;
 }
 
-.link {
+.link {         /* Stylowanie pojedynczych linków */
     color: rgb(122, 127, 121);
     font-size: 20px;
     text-decoration: none;
 }
 
-.sign {
+.sign {         /* Podkreślenie linków o określonym kolorze */
     color: rgb(108, 212, 102);
     font-weight: bold;
 }
 
-.startSection h2 {
+.startSection h2 {          /* Styl dla nagłówków w sekcji startowej */
     color: rgb(35, 143, 29);
     font-family: Garamond, serif;
     font-weight: bold;
     padding-top: 30px;
 }
 
-.startSection h4 {
+.startSection h4 {          /* Styl dla nagłówków h4 */
     font-family: 'Times New Roman', serif;
 }
 
-.blackSection {
+.blackSection {         /* Sekcja z ciemnym tłem */
     background-color: rgb(32, 31, 31);
     padding: 80px;
 }
 
-.blackSection h1 {
+.blackSection h1 {          /* Styl nagłówków w czarnej sekcji */
     color: rgb(108, 212, 102);
     padding-bottom: 20px;
 }
 
-.blackSection h5 {
+.blackSection h5 {              /* Kolor dla tekstów pomocniczych */
     color: rgb(193, 193, 193);
 }
 
-.whiteSection {
+.whiteSection {     /* Sekcja z białym tłem */
     background-color: white;
     color: rgb(47, 133, 42);
     padding-top: 80px;
     padding-bottom: 80px;
 }
 
-.whiteSection h1 {
+.whiteSection h1 {      /* Styl nagłówków w białej sekcji */
     padding-bottom: 20px;
 }
 
-.whiteSection h5 {
+.whiteSection h5 {          /* Styl dla pomocniczych tekstów w białej sekcji */
     color: rgb(55, 55, 55);
 }

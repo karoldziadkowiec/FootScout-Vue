@@ -5,10 +5,13 @@ import type { Problem } from '../../models/interfaces/Problem';
 import type { ProblemCreateDTO } from '../../models/dtos/ProblemCreateDTO';
 
 // Serwis do zarządzania zgłoszonymi problemami przez użytkowników, wykorzystujący axios do komunikacji z API
+
 const ProblemService = {
+    // Pobranie szczegółów pojedynczego problemu na podstawie jego ID
     async getProblem(problemId: number): Promise<Problem> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wysłanie zapytania GET do API, aby uzyskać szczegóły problemu
             const response = await axios.get<Problem>(`${ApiURL}/problems/${problemId}`, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -27,6 +30,7 @@ const ProblemService = {
         }
     },
 
+    // Pobranie wszystkich problemów
     async getAllProblems(): Promise<Problem[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -48,6 +52,7 @@ const ProblemService = {
         }
     },
 
+    // Pobranie wszystkich rozwiązanych problemów
     async getSolvedProblems(): Promise<Problem[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -69,6 +74,7 @@ const ProblemService = {
         }
     },
 
+    // Pobranie liczby rozwiązanych problemów
     async getSolvedProblemCount(): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -90,6 +96,7 @@ const ProblemService = {
         }
     },
 
+    // Pobranie wszystkich nierozwiązanych problemów
     async getUnsolvedProblems(): Promise<Problem[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -111,6 +118,7 @@ const ProblemService = {
         }
     },
 
+    // Pobranie liczby nierozwiązanych problemów
     async getUnsolvedProblemCount(): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -132,9 +140,11 @@ const ProblemService = {
         }
     },
 
+    // Utworzenie nowego problemu
     async createProblem(dto: ProblemCreateDTO): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wysłanie zapytania POST do API, aby utworzyć nowy problem
             await axios.post(`${ApiURL}/problems`, dto, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -152,9 +162,11 @@ const ProblemService = {
         }
     },
 
+    // Oznaczenie problemu jako rozwiązany
     async checkProblemSolved(problemId: number, problem: Problem): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
+            // Wysłanie zapytania PUT do API, aby zaktualizować status problemu
             await axios.put(`${ApiURL}/problems/${problemId}`, problem, {
                 headers: {
                     'Authorization': authorizationHeader
@@ -172,15 +184,16 @@ const ProblemService = {
         }
     },
 
+    // Eksportowanie listy problemów do pliku CSV
     async exportProblemsToCsv(): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-
+            // Wysłanie zapytania GET do API w celu pobrania danych w formacie CSV
             const response = await axios.get(`${ApiURL}/problems/export`, {
                 headers: {
                     'Authorization': authorizationHeader
                 },
-                responseType: 'blob'
+                responseType: 'blob'        // Oczekiwanie na odpowiedź w formacie blob (plik)
             });
 
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
@@ -188,7 +201,7 @@ const ProblemService = {
             link.href = url;
             link.setAttribute('download', 'problems.csv');
 
-            document.body.appendChild(link);
+            document.body.appendChild(link);    // Kliknięcie w link, aby rozpocząć pobieranie
             link.click();
             link.remove();
         }
@@ -204,4 +217,5 @@ const ProblemService = {
     }
 };
 
+// Eksportowanie serwisu, aby można było go używać w innych częściach aplikacji
 export default ProblemService;

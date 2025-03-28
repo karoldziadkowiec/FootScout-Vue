@@ -1,4 +1,4 @@
-.CurrentTimeDisplay {
+.CurrentTimeDisplay {       /* Styl dla wyświetlania bieżącego czasu, z monospace'ową czcionką */
     color: rgb(163, 163, 163);
     font-size: 16px;
     font-family: monospace;

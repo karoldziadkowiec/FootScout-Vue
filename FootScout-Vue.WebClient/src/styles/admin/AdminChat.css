@@ -1,17 +1,17 @@
-.AdminChat {
+.AdminChat {        /* Główna klasa dla strony czatu administracyjnego, ustawia tło i układ */
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(230, 247, 230);
+    background-color: rgb(230, 247, 230);       /* Jasnozielone tło */
     padding: 20px 5%;
 }
 
-.modal-content-centered {
+.modal-content-centered {       /* Kontener dla modali, wyśrodkowanie treści */
     text-align: center;
     margin: 0 auto;
 }
 
-.button-spacing {
+.button-spacing {           /* Margines między przyciskami w formularzach */
     margin-right: 10px;
 }
 
@@ -20,61 +20,61 @@
     -webkit-overflow-scrolling: touch;
 }
 
-.chat-container {
+.chat-container {       /* Styl dla kontenera czatu */
     display: flex;
     flex-direction: column;
-    height: 75vh;
+    height: 75vh;           /* Wysokość 75% wysokości ekranu */
     background-color: rgb(210, 218, 227);
     width: 100%;
-    max-width: 800px;
+    max-width: 800px;       /* Maksymalna szerokość czatu */
     padding: 2%;
-    border-radius: 20px;
+    border-radius: 20px;        /* Zaokrąglone rogi */
 }
 
-.chat-name {
-    color: rgb(255, 255, 255) !important;
+.chat-name {        /* Styl nagłówka czatu */
+    color: rgb(255, 255, 255) !important;       /* Białe litery */
     font-family: 'Trebuchet MS', Arial, sans-serif !important;
     font-weight: bold !important;
     font-size: 24px !important;
     text-align: center;
 }
 
-.message-timestamp {
+.message-timestamp {        /* Styl dla daty i godziny wiadomości */
     font-size: 14px;
 }
 
-.messages {
+.messages {     /* Kontener wiadomości */
     flex: 1;
-    overflow-y: auto;
+    overflow-y: auto;           /* Przewijanie w pionie */
     overflow-x: hidden;
-    height: 70%;
-    padding: 10px;
-    border: 1px solid #f4f4f4;
+    height: 70%;            /* Wysokość wiadomości */
+    padding: 10px;  
+    border: 1px solid #f4f4f4;      /* Lekka ramka wokół wiadomości */
     margin-bottom: 1rem;
 }
 
-.message-input {
+.message-input {                /* Styl pola do wpisywania wiadomości */
     position: sticky;
-    bottom: 0;
+    bottom: 0;              /* Przyklejone do dolnej części ekranu */
     background-color: white;
     padding: 10px;
     border-top: 1px solid #dee2e6;
-    z-index: 1000;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;          /* Wyższy z-index, aby być na wierzchu */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);      /* Cień na górze pola */
     border-radius: 20px;
 }
 
-.sticky-navbar {
+.sticky-navbar {        /* Ustawienie navbaru, aby był widoczny podczas przewijania */
     z-index: 1000;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 576px) {     /* Responsywność dla mniejszych ekranów (smartfony) */
     .chat-container {
-        width: 100%;
+        width: 100%;            /* Zajmuje pełną szerokość ekranu */
         padding: 10px;
     }
 
     .chat-name {
-        font-size: 18px !important;
+        font-size: 18px !important;     /* Mniejsza czcionka na małych ekranach */
     }
 }
