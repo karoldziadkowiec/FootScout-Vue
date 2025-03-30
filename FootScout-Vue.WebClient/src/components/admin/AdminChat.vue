@@ -1,15 +1,15 @@
-<script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useToast } from 'vue-toast-notification';
-import { closeModal  } from '../../services/modal/ModalFunction';
-import { TimeService } from '../../services/time/TimeService';
-import ChatService from '../../services/api/ChatService';
-import MessageService from '../../services/api/MessageService';
-import type { Chat } from '../../models/interfaces/Chat';
-import type { Message } from '../../models/interfaces/Message';
-import type { UserDTO } from '../../models/dtos/UserDTO';
-import '../../styles/admin/AdminChat.css';
+<script setup lang="ts">  
+import { ref, onMounted, watch, nextTick } from 'vue';    // Import funkcji Vue do zarządzania stanem i cyklem życia komponentu
+import { useRoute, useRouter } from 'vue-router';   // Importowanie routera Vue do obsługi nawigacji między stronami
+import { useToast } from 'vue-toast-notification';    // Import systemu powiadomień toast do wyświetlania komunikatów użytkownikowi
+import { closeModal  } from '../../services/modal/ModalFunction';   // Funkcja zamykająca modalne okna dialogowe
+import { TimeService } from '../../services/time/TimeService';    // Serwis do operacji na datach i czasie
+import ChatService from '../../services/api/ChatService';   // Serwis do obsługi API czatu (pobieranie, wysyłanie wiadomości)
+import MessageService from '../../services/api/MessageService';   // Serwis do obsługi API wiadomości czatu
+import type { Chat } from '../../models/interfaces/Chat';   // Typowanie dla obiektu czatu
+import type { Message } from '../../models/interfaces/Message';   // Typowanie dla obiektu wiadomości
+import type { UserDTO } from '../../models/dtos/UserDTO';   // Typowanie dla obiektu użytkownika DTO (Data Transfer Object)
+import '../../styles/admin/AdminChat.css';    // Stylowanie dla panelu administratora czatu
 
 // AdminChat.vue - Komponent zarządzający czatem administratora
 

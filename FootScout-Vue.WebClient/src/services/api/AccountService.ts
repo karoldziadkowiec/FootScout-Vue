@@ -1,10 +1,10 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { ApiURL } from '../../config/ApiURL';
-import type { LoginDTO } from '../../models/dtos/LoginDTO';
-import type { RegisterDTO } from '../../models/dtos/RegisterDTO';
-import { jwtDecode } from 'jwt-decode'
-import { Role } from '../../models/enums/Role';
+import axios from 'axios';    // Import biblioteki do wykonywania żądań HTTP (np. pobieranie danych z serwera)
+import Cookies from 'js-cookie';    // Import biblioteki do zarządzania plikami cookie, np. przechowywanie tokenów sesji
+import { ApiURL } from '../../config/ApiURL';   // stała zawierająca adres URL API, który jest używany do komunikacji z backendem
+import type { LoginDTO } from '../../models/dtos/LoginDTO';   // typ definiujący strukturę danych wymaganych do logowania użytkownika
+import type { RegisterDTO } from '../../models/dtos/RegisterDTO';   // typ definiujący strukturę danych potrzebnych do rejestracji użytkownika
+import { jwtDecode } from 'jwt-decode'    // funkcja do dekodowania tokenów JWT, aby uzyskać informacje zawarte w tokenie, takie jak dane użytkownika
+import { Role } from '../../models/enums/Role';  // Enum definiujący różne role użytkowników w systemie - admin, użytkownik
 
 // AccountService.ts - Serwis zarządzający autoryzacją użytkowników, tokenami JWT (JSON Web Token) oraz rolami w aplikacji.
 
