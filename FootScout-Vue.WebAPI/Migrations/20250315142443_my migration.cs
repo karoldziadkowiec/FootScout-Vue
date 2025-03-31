@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FootScout_Vue.WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class migracja : Migration
+    public partial class mymigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

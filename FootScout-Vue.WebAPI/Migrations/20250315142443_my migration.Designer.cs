@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootScout_Vue.WebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250326131055_migracja")]
-    partial class migracja
+    [Migration("20250315142443_my migration")]
+    partial class mymigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
